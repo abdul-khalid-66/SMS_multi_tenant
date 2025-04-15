@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Subject extends Model
+{
+    use SoftDeletes;
+
+    protected $fillable = [
+        'school_id',
+        'name',
+        'code',
+        'class_id'
+    ];
+
+    // Relationships
+    public function school()
+    {
+        return $this->belongsTo(School::class);
+    }
+
+    public function class()
+    {
+        return $this->belongsTo(Classes::class);
+    }
+
+    public function teachers()
+    {
+        return $this->belongsToMany(User::class, 'teacher_subjects')
+            ->withPivot('class_id', 'is_class_teacher');
+    }
+}
