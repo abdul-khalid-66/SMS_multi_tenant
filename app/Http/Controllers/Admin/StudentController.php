@@ -18,4 +18,14 @@ class StudentController extends Controller
     {
         return view('app.admin.students');
     }
+
+    public function create()
+    {
+        return view('app.admin.add_student');
+    }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+    }
 }

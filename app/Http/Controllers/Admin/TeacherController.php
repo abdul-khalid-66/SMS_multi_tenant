@@ -18,4 +18,14 @@ class TeacherController extends Controller
     {
         return view('app.admin.teachers');
     }
+
+    public function create()
+    {
+        return view('app.admin.add_teacher');
+    }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+    }
 }

@@ -18,4 +18,14 @@ class ParentController extends Controller
     {
         return view('app.admin.parents');
     }
+
+    public function create()
+    {
+        return view('app.admin.add_parent');
+    }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+    }
 }

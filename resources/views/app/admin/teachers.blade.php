@@ -1,21 +1,3 @@
-{{-- <x-tenant-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                    <x-link-button href="{{ route('user.index') }}">Users</x-tenant-button>
-                </div>
-            </div>
-        </div>
-    </div>
-</x-tenant-app-layout> --}}
 <x-tenant-app-layout>
     @push('css')
         <!-- favicon
@@ -93,17 +75,14 @@
                     <div class="breadcome-list">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="breadcome-heading">
-                                    {{-- <form role="search" class="sr-input-func">
-                                        <input type="text" placeholder="Search..." class="search-int form-control">
-                                        <a href="#"><i class="fa fa-search"></i></a>
-                                    </form> --}}
+                                <div class="breadcome-heading" style="margin-top: 10px">
+                                    <h3>All Teachers</h3>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <ul class="breadcome-menu">
                                     <li>
-                                        <a href="#" class="btn btn-primary btn-sm" style="color: white">
+                                        <a href="{{ route('dashboard.add.teacher') }}" class="btn btn-primary btn-sm" style="color: white">
                                             <i class="fa fa-user-plus"></i> Add Teacher
                                         </a>
                                     </li>
@@ -114,11 +93,7 @@
                 </div>
                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                    <div class="sparkline13-list">
-                       <div class="sparkline13-hd">
-                           <div class="main-sparkline13-hd">
-                               <h1>Teachers <span class="table-project-n">List</span> Table</h1>
-                           </div>
-                       </div>
+                       
                        <div class="sparkline13-graph">
                            <div class="datatable-dashv1-list custom-datatable-overright">
                                <div id="toolbar">
