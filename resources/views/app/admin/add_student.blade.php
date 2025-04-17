@@ -255,13 +255,12 @@
                                                 <div class="row">
                                                     <div class="col-lg-4"><label class="login2">Class*</label></div>
                                                     <div class="col-lg-8">
-                                                        <select name="class_id" class="form-control @error('class_id') is-invalid @enderror" required>
+
+                                                        <select name="class_id" id="class_id" class="form-control @error('class_id') is-invalid @enderror" required>
                                                             <option value="">Select Class</option>
                                                             @foreach($classes as $class)
-                                                                <option value="{{ $class->id }}">{{ $class->name }}</option>
                                                                 <option value="{{ $class->id }}" {{ old('class_id') == $class->id  ? 'selected' : '' }}>{{ $class->name }}</option>
                                                             @endforeach
-                                                            <option value="2" {{ old('class_id') == '2' ? 'selected' : '' }}>class 2</option>
                                                         </select>
                                                         @error('class_id') <small class="text-danger">{{ $message }}</small> @enderror
                                                     </div>
@@ -273,11 +272,8 @@
                                                 <div class="row">
                                                     <div class="col-lg-4"><label class="login2">Section*</label></div>
                                                     <div class="col-lg-8">
-                                                        <select name="section_id" class="form-control @error('section_id') is-invalid @enderror" required>
+                                                        <select name="section_id" id="section_id" class="form-control @error('section_id') is-invalid @enderror" required>
                                                             <option value="">Select Section</option>
-                                                            @foreach($sections as $section)
-                                                                <option value="{{ $section->id }}" {{ old('section_id') ==  $section->id  ? 'selected' : '' }}>{{ $section->name }}</option>
-                                                            @endforeach
                                                         </select>
                                                         @error('section_id') <small class="text-danger">{{ $message }}</small> @enderror
                                                     </div>
@@ -444,5 +440,33 @@
         <script src="{{ asset('backend/js/plugins.js') }}"></script>
         <!-- main JS============================================ -->
         <script src="{{ asset('backend/js/main.js') }}"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('#class_id').on('change', function() {
+                    var classId = $(this).val();
+                    $('#section_id').html('<option value="">Loading...</option>');
+        
+                    if (classId) {
+                        $.ajax({
+                            url: '/get-sections/' + classId,
+                            type: 'GET',
+                            success: function(data) {
+                                $('#section_id').empty().append('<option value="">Select Section</option>');
+                                $.each(data, function(id, name) {
+                                    $('#section_id').append('<option value="' + id + '">' + name + '</option>');
+                                });
+                            },
+                            error: function() {
+                                $('#section_id').html('<option value="">Error loading sections</option>');
+                            }
+                        });
+                    } else {
+                        $('#section_id').html('<option value="">Select Section</option>');
+                    }
+                });
+            });
+        </script>
+        
     @endpush
 </x-tenant-app-layout>

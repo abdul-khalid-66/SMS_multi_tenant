@@ -43,9 +43,8 @@ class StudentController extends Controller
 
     public function create()
     {
-        $classes = Classes::get();
-        $sections = Section::get();
-        return view('app.admin.add_student', compact('classes', 'sections'));
+        $classes = Classes::with('sections')->get();
+        return view('app.admin.add_student', compact('classes'));
     }
 
     public function store(Request $request)
@@ -146,5 +145,11 @@ class StudentController extends Controller
         Create a student resource for API responses
         Create a form request for validation
         */
+    }
+
+    public function getSections($classId)
+    {
+        $sections = Section::where('class_id', $classId)->pluck('name', 'id');
+        return response()->json($sections);
     }
 }
