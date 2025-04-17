@@ -113,281 +113,260 @@
                             <div class="row">
                                 <form id="studentForm" method="POST" action="{{ route('dashboard.store.student') }}" enctype="multipart/form-data">
                                     @csrf
-                                    
+                                
                                     <!-- Personal Information Section -->
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-12">
                                         <div class="all-form-element-inner">
                                             <div class="section-headline">
                                                 <h3>Personal Information</h3>
                                             </div>
+                                
+                                            <!-- Full Name -->
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Full Name*</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="text" class="form-control" name="name" required />
+                                                    <div class="col-lg-4"><label class="login2">Full Name*</label></div>
+                                                    <div class="col-lg-8">
+                                                        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required>
+                                                        @error('name') <small class="text-danger">{{ $message }}</small> @enderror
                                                     </div>
                                                 </div>
                                             </div>
+                                
+                                            <!-- Email -->
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Email*</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="email" class="form-control" name="email" required />
+                                                    <div class="col-lg-4"><label class="login2">Email*</label></div>
+                                                    <div class="col-lg-8">
+                                                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required>
+                                                        @error('email') <small class="text-danger">{{ $message }}</small> @enderror
                                                     </div>
                                                 </div>
                                             </div>
+                                
+                                            <!-- Phone Number -->
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Phone Number*</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="text" class="form-control" name="phone" required />
+                                                    <div class="col-lg-4"><label class="login2">Phone Number*</label></div>
+                                                    <div class="col-lg-8">
+                                                        <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" required>
+                                                        @error('phone') <small class="text-danger">{{ $message }}</small> @enderror
                                                     </div>
                                                 </div>
                                             </div>
+                                
+                                            <!-- Address -->
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Address*</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <textarea class="form-control" name="address" required></textarea>
+                                                    <div class="col-lg-4"><label class="login2">Address*</label></div>
+                                                    <div class="col-lg-8">
+                                                        <textarea name="address" class="form-control @error('address') is-invalid @enderror" required>{{ old('address') }}</textarea>
+                                                        @error('address') <small class="text-danger">{{ $message }}</small> @enderror
                                                     </div>
                                                 </div>
                                             </div>
+                                
+                                            <!-- Gender -->
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Gender*</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <select class="form-control" name="gender" required>
+                                                    <div class="col-lg-4"><label class="login2">Gender*</label></div>
+                                                    <div class="col-lg-8">
+                                                        <select name="gender" class="form-control @error('gender') is-invalid @enderror" required>
                                                             <option value="">Select Gender</option>
-                                                            <option value="male">Male</option>
-                                                            <option value="female">Female</option>
-                                                            <option value="other">Other</option>
+                                                            <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                                                            <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                                                            <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
                                                         </select>
+                                                        @error('gender') <small class="text-danger">{{ $message }}</small> @enderror
                                                     </div>
                                                 </div>
                                             </div>
+                                
+                                            <!-- DOB -->
                                             <div class="form-group-inner">
                                                 <div class="row">
                                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Date of Birth*</label>
+                                                        <label class="login2">Date of birth*</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <div class="input-group date">
-                                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                            <input type="text" class="form-control" name="dob" value="10/04/2017">
-                                                        </div>
+                                                        <div class="sparkline16-graph">
+                                                            <div class="date-picker-inner">
+                                                                <div class="form-group data-custon-pick" id="data_1">
+                                                                    <div class="input-group date">
+                                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                        <input type="text" name="dob" readonly class="form-control @error('dob') is-invalid @enderror" value="{{ old('dob') }}" required>
+
+                                                                    </div>
+                                                                    @error('dob') <small class="text-danger">{{ $message }}</small> @enderror
+
+                                                                </div>
+                                                            </div>
+                                                        </div>                                               
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    
+                                
                                     <!-- Academic Information Section -->
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-12">
                                         <div class="all-form-element-inner">
                                             <div class="section-headline">
                                                 <h3>Academic Information</h3>
                                             </div>
+                                
+                                            <!-- Admission No -->
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Admission Number*</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="text" class="form-control" name="admission_no" required />
+                                                    <div class="col-lg-4"><label class="login2">Admission Number*</label></div>
+                                                    <div class="col-lg-8">
+                                                        <input type="text" name="admission_no" class="form-control @error('admission_no') is-invalid @enderror" value="{{ old('admission_no') }}" required>
+                                                        @error('admission_no') <small class="text-danger">{{ $message }}</small> @enderror
                                                     </div>
                                                 </div>
                                             </div>
+                                
+                                            <!-- Admission Date -->
                                             <div class="form-group-inner">
                                                 <div class="row">
                                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                         <label class="login2">Admission Date*</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <div class="input-group date">
-                                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                            <input type="text" class="form-control" name="admission_date" value="10/04/2017">
-                                                        </div>
+                                                        <div class="sparkline16-graph">
+                                                            <div class="date-picker-inner">
+                                                                <div class="form-group data-custon-pick" id="data_1">
+                                                                    <div class="input-group date">
+                                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                        <input type="text" readonly name="admission_date" class="form-control @error('admission_date') is-invalid @enderror" value="{{ old('admission_date') }}" required>
+
+                                                                    </div>
+                                                                    @error('admission_date') <small class="text-danger">{{ $message }}</small> @enderror
+
+                                                                </div>
+                                                            </div>
+                                                        </div>                                               
                                                     </div>
                                                 </div>
                                             </div>
+                                            
+                                
+                                            <!-- Class -->
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Class*</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <select class="form-control select2_demo_3" name="class_id" required>
+                                                    <div class="col-lg-4"><label class="login2">Class*</label></div>
+                                                    <div class="col-lg-8">
+                                                        <select name="class_id" class="form-control @error('class_id') is-invalid @enderror" required>
                                                             <option value="">Select Class</option>
-                                                            {{-- @foreach($classes as $class)
-                                                                <option value="{{ $class->id }}">{{ $class->name }}</option>
-                                                            @endforeach --}}
-                                                            <option value="1">class 1</option>
-                                                            <option value="2">class 2</option>
+                                                            <option value="1" {{ old('class_id') == '1' ? 'selected' : '' }}>class 1</option>
+                                                            <option value="2" {{ old('class_id') == '2' ? 'selected' : '' }}>class 2</option>
                                                         </select>
+                                                        @error('class_id') <small class="text-danger">{{ $message }}</small> @enderror
                                                     </div>
                                                 </div>
                                             </div>
+                                
+                                            <!-- Section -->
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Section*</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <select class="form-control select2_demo_3" name="section_id" required>
+                                                    <div class="col-lg-4"><label class="login2">Section*</label></div>
+                                                    <div class="col-lg-8">
+                                                        <select name="section_id" class="form-control @error('section_id') is-invalid @enderror" required>
                                                             <option value="">Select Section</option>
-                                                            {{-- @foreach($sections as $section)
-                                                                <option value="{{ $section->id }}">{{ $section->name }}</option>
-                                                            @endforeach --}}
-                                                                <option value="1">section 1</option>
-                                                                <option value="2">section 2</option>
+                                                            <option value="1" {{ old('section_id') == '1' ? 'selected' : '' }}>section 1</option>
+                                                            <option value="2" {{ old('section_id') == '2' ? 'selected' : '' }}>section 2</option>
                                                         </select>
+                                                        @error('section_id') <small class="text-danger">{{ $message }}</small> @enderror
                                                     </div>
                                                 </div>
                                             </div>
+                                
+                                            <!-- Other Optional Fields -->
+                                            @php
+                                                $optionalFields = [
+                                                    'previous_school', 'blood_group', 'medical_history', 'transport_details', 'hobbies', 'awards',
+                                                ];
+                                            @endphp
+                                            @foreach($optionalFields as $field)
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Previous School</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="text" class="form-control" name="previous_school" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group-inner">
-                                                <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Blood Group</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <select class="form-control" name="blood_group">
-                                                            <option value="">Select Blood Group</option>
-                                                            <option value="A+">A+</option>
-                                                            <option value="A-">A-</option>
-                                                            <option value="B+">B+</option>
-                                                            <option value="B-">B-</option>
-                                                            <option value="AB+">AB+</option>
-                                                            <option value="AB-">AB-</option>
-                                                            <option value="O+">O+</option>
-                                                            <option value="O-">O-</option>
-                                                        </select>
+                                                    <div class="col-lg-4"><label class="login2">{{ ucwords(str_replace('_', ' ', $field)) }}</label></div>
+                                                    <div class="col-lg-8">
+                                                        @if(in_array($field, ['medical_history', 'awards']))
+                                                            <textarea name="{{ $field }}" class="form-control">{{ old($field) }}</textarea>
+                                                        @elseif($field === 'blood_group')
+                                                            <select name="blood_group" class="form-control">
+                                                                <option value="">Select Blood Group</option>
+                                                                @foreach(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] as $group)
+                                                                    <option value="{{ $group }}" {{ old('blood_group') == $group ? 'selected' : '' }}>{{ $group }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        @else
+                                                            <input type="text" name="{{ $field }}" class="form-control" value="{{ old($field) }}">
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group-inner">
-                                                <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Medical History</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <textarea class="form-control" name="medical_history"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group-inner">
-                                                <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Transport Details</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="text" class="form-control" name="transport_details" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group-inner">
-                                                <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Hobbies</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="text" class="form-control" name="hobbies" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group-inner">
-                                                <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Awards</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <textarea class="form-control" name="awards"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            @endforeach
                                         </div>
                                     </div>
-                                    
+                                
                                     <!-- Documents Section -->
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-12">
                                         <div class="all-form-element-inner">
-                                            <div class="section-headline">
-                                                <h3>Documents</h3>
-                                            </div>
+                                            <div class="section-headline"><h3>Documents</h3></div>
+                                
+                                            <!-- Student Photo -->
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Student Photo*</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="file" class="form-control" name="student_photo" required />
+                                                    <div class="col-lg-4"><label class="login2">Student Photo*</label></div>
+                                                    <div class="col-lg-8">
+                                                        <input type="file" name="student_photo" class="form-control @error('student_photo') is-invalid @enderror" required>
+                                                        @error('student_photo') <small class="text-danger">{{ $message }}</small> @enderror
                                                     </div>
                                                 </div>
                                             </div>
+                                
+                                            <!-- ID Card Issued -->
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">ID Card Issued</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <div class="bt-df-checkbox">
-                                                            <input type="checkbox" name="id_card_issued" value="1">
-                                                            <span class="checkmark"></span>
-                                                        </div>
+                                                    <div class="col-lg-4"><label class="login2">ID Card Issued</label></div>
+                                                    <div class="col-lg-8">
+                                                        <input type="checkbox" name="id_card_issued" value="1" {{ old('id_card_issued') ? 'checked' : '' }}>
                                                     </div>
                                                 </div>
                                             </div>
+                                
+                                            <!-- ID Card Number -->
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">ID Card Number</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="text" class="form-control" name="id_card_number" />
+                                                    <div class="col-lg-4"><label class="login2">ID Card Number</label></div>
+                                                    <div class="col-lg-8">
+                                                        <input type="text" name="id_card_number" class="form-control" value="{{ old('id_card_number') }}">
                                                     </div>
                                                 </div>
                                             </div>
+                                
+                                            <!-- Other Documents -->
                                             <div class="form-group-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                        <label class="login2">Other Documents</label>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="file" class="form-control" name="documents[]" multiple />
+                                                    <div class="col-lg-4"><label class="login2">Other Documents</label></div>
+                                                    <div class="col-lg-8">
+                                                        <input type="file" name="documents[]" class="form-control" multiple>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    
+                                
                                     <!-- Submit Button -->
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-12">
                                         <div class="form-group-inner">
                                             <div class="login-btn-inner">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                    <div class="col-lg-4"></div>
+                                                    <div class="col-lg-8">
                                                         <div class="login-horizental">
-                                                            <button class="btn btn-sm btn-primary login-submit-cs" type="submit">Register Student</button>
+                                                            <button type="submit" class="btn btn-sm btn-primary login-submit-cs">Register Student</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -395,6 +374,7 @@
                                         </div>
                                     </div>
                                 </form>
+                                
                             </div>
                         </div>
                     </div>

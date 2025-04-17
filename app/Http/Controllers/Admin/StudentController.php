@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;;
+use App\Http\Controllers\Controller;
+use App\Models\StudentProfile;
+use App\Models\User;;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -26,6 +29,100 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+        $validated = $request->validate([
+            'name'              => 'required|string|max:255',
+            'email'             => 'required|email|unique:users,email',
+            'phone'             => 'required|string|max:20',
+            'address'           => 'required|string',
+            'gender'            => 'required|in:male,female,other',
+            'dob'               => 'required|date',
+            'admission_no'      => 'required|string|unique:student_profiles,admission_no',
+            'admission_date'    => 'required|date',
+            'class_id'          => 'required', //|exists:classes,id,
+            'section_id'        => 'required', //|exists:sections,id,
+            'previous_school'   => 'nullable|string',
+            'blood_group'       => 'nullable|string',
+            'medical_history'   => 'nullable|string',
+            'transport_details' => 'nullable|string',
+            'hobbies'           => 'nullable|string',
+            'awards'            => 'nullable|string',
+            'id_card_issued'    => 'boolean',
+            'id_card_number'    => 'nullable|string',
+            'student_photo'     => 'nullable|image|max:2048',
+            'documents'         => 'nullable|array',
+            'documents.*'       => 'file|max:5120',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Create user account
+            $user = User::create([
+                'school_id' => auth()->user()->school_id,
+                'name'      => $validated['name'],
+                'email'     => $validated['email'],
+                'phone'     => $validated['phone'],
+                'address'   => $validated['address'],
+                'gender'    => $validated['gender'],
+                'dob'       => $validated['dob'],
+                'password'  => '12345678',
+                'role'      => 'student',
+            ]);
+
+            // Handle file uploads
+            $studentPhotoPath = null;
+            if ($request->hasFile('student_photo')) {
+                $studentPhotoPath = $request->file('student_photo')
+                    ->store("tenants/{$user->school_id}/students/{$user->id}/profile", 'public');
+            }
+
+            $documentPaths = [];
+            if ($request->hasFile('documents')) {
+                foreach ($request->file('documents') as $document) {
+                    $documentPaths[] = $document
+                        ->store("tenants/{$user->school_id}/students/{$user->id}/documents", 'public');
+                }
+            }
+
+            // Create student profile
+            $studentProfile = StudentProfile::create([
+                'student_id'        => $user->id,
+                'school_id'         => $user->school_id,
+                'admission_no'      => $validated['admission_no'],
+                'admission_date'    => $validated['admission_date'],
+                'class_id'          => $validated['class_id'],
+                'section_id'        => $validated['section_id'],
+                'previous_school'   => $validated['previous_school'],
+                'medical_history'   => $validated['medical_history'],
+                'transport_details' => $validated['transport_details'],
+                'hobbies'           => $validated['hobbies'],
+                'awards'            => $validated['awards'],
+                'blood_group'       => $validated['blood_group'],
+                'id_card_issued'    => $validated['id_card_issued'] ?? false,
+                'id_card_number'    => $validated['id_card_number'],
+                'student_photo'     => $studentPhotoPath,
+                'documents'         => json_encode($documentPaths),
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('dashboard.students')
+                ->with('success', 'Student created successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error creating student: ' . $e->getMessage());
+        }
+
+        /* Future funtionality 
+        Create a student observer to handle related events:
+        create:
+        // app/Observers/StudentObserver.php
+        // Generate ID card if needed
+        // Send welcome email
+        Delete:
+        // Soft delete related records
+        Create a student resource for API responses
+        Create a form request for validation
+        */
     }
 }

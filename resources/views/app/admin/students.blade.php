@@ -100,8 +100,8 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <ul class="breadcome-menu">
                                     <li>
-                                        <a href="{{ route('dashboard.students') }}" class="btn btn-primary btn-sm" style="color: white">
-                                            <i class="fa fa-arrow-left"></i> Back
+                                        <a href="{{ route('dashboard.add.student') }}" class="btn btn-primary btn-sm" style="color: white">
+                                            <i class="fa fa-user-plus"></i> Add Student
                                         </a>
                                     </li>
                                 </ul>

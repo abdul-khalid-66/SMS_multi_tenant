@@ -42,7 +42,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(StudentProfile::class, 'student_id');
     }
-
+    public function parents()
+    {
+        return $this->belongsToMany(User::class, 'student_parents', 'student_id', 'parent_id')
+            ->withPivot('relationship', 'is_primary');
+    }
 
     /**
      * Get the attributes that should be cast.
