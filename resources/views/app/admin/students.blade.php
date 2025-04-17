@@ -1,21 +1,3 @@
-{{-- <x-tenant-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                    <x-link-button href="{{ route('user.index') }}">Users</x-tenant-button>
-                </div>
-            </div>
-        </div>
-    </div>
-</x-tenant-app-layout> --}}
 <x-tenant-app-layout>
     @push('css')
         <!-- favicon
@@ -128,36 +110,72 @@
                                <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
                                    data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
                                    <thead>
-                                       <tr>
-                                           <th data-field="state" data-checkbox="true"></th>
-                                           <th data-field="id">ID</th>
-                                           <th data-field="name" data-editable="true">Task</th>
-                                           <th data-field="email" data-editable="true">Email</th>
-                                           <th data-field="phone" data-editable="true">Phone</th>
-                                           <th data-field="complete">Completed</th>
-                                           <th data-field="task" data-editable="true">Task</th>
-                                           <th data-field="date" data-editable="true">Date</th>
-                                           <th data-field="price" data-editable="true">Price</th>
-                                           <th data-field="action">Action</th>
-                                       </tr>
-                                   </thead>
-                                   <tbody>
-                                       <tr>
-                                           <td></td>
-                                           <td>1</td>
-                                           <td>Web Development</td>
-                                           <td>admin@uttara.com</td>
-                                           <td>+8801962067309</td>
-                                           <td class="datatable-ct"><span class="pie">1/6</span>
-                                           </td>
-                                           <td>10%</td>
-                                           <td>Jul 14, 2017</td>
-                                           <td>$5455</td>
-                                           <td class="datatable-ct"><i class="fa fa-check"></i>
-                                           </td>
-                                       </tr>
-                                      
-                                   </tbody>
+                                        <tr>
+                                            <th data-field="id" data-sortable="true">ID</th>
+                                            <th data-field="name" data-sortable="true">Name</th>
+                                            <th data-field="email">Email</th>
+                                            <th data-field="phone">Phone</th>
+                                            <th data-field="admission_no">Admission No</th>
+                                            <th data-field="class">Class</th>
+                                            <th data-field="section">Section</th>
+                                            <th data-field="dob">Date of Birth</th>
+                                            <th data-field="gender">Gender</th>
+                                            <th data-field="actions" data-align="center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($students as $student)
+                                            <tr>
+                                                <td>{{ $student->id }}</td>
+                                                <td>
+                                                    @if(isset($student->studentProfile->student_photo))
+                                                        <img src="{{ asset('storage/'.$student->studentProfile->student_photo) }}" 
+                                                            alt="{{ $student->name }}" 
+                                                            class="rounded-circle" 
+                                                            width="30" 
+                                                            height="30">
+                                                    @endif
+                                                    {{ $student->name }}
+                                                </td>
+                                                <td>{{ $student->email }}</td>
+                                                <td>{{ $student->phone }}</td>
+                                                <td>{{ $student->studentProfile->admission_no ?? 'N/A' }}</td>
+                                                <td>{{ $student->studentProfile->class->name ?? 'N/A' }}</td>
+                                                <td>{{ $student->studentProfile->section->name ?? 'N/A' }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($student->dob)->format('d-M-Y') }}</td>
+                                                <td>
+                                                    @if($student->gender == 'male')
+                                                        <span class="badge badge-primary">Male</span>
+                                                    @elseif($student->gender == 'female')
+                                                        <span class="badge badge-pink">Female</span>
+                                                    @else
+                                                        <span class="badge badge-secondary">Other</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group d-flex">
+                                                        <a href="{{ route('admin.edit.student', $student->id) }}" 
+                                                        class="btn btn-sm btn-primary m-1" 
+                                                        title="Edit" style="margin: 5px; color: white">
+                                                            Edit
+                                                        </a>
+                                                        <form action="{{ route('admin.destroy.student', $student->id) }}" 
+                                                            method="POST" 
+                                                            class="d-inline ">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" 
+                                                                    class="btn btn-sm btn-danger m-1"  style="margin: 5px; color: white"
+                                                                    title="Delete"
+                                                                    onclick="return confirm('Are you sure you want to delete this student?')">
+                                                                Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                </table>
                            </div>
                        </div>
@@ -173,7 +191,7 @@
        <!-- jquery ============================================ -->
     <script src="{{ asset('backend/js/vendor/jquery-1.12.4.min.js') }}"></script>
     <!-- bootstrap JS ============================================ -->
-    {{-- <script src="{{ asset('backend/js/bootstrap.min.js') }}"></script> --}}
+    <script src="{{ asset('backend/js/bootstrap.min.js') }}"></script>
     <!-- wow JS ============================================ -->
     <script src="{{ asset('backend/js/wow.min.js') }}"></script>
     <!-- price-slider JS ============================================ -->
@@ -218,6 +236,7 @@
     <script src="{{ asset('backend/js/plugins.js') }}"></script>
     <!-- main JS ============================================ -->
     <script src="{{ asset('backend/js/main.js') }}"></script>
+    
    @endpush
 
     

@@ -191,11 +191,11 @@
     <script src="{{ asset('backend/js/chart/jquery.peity.min.js') }}"></script>
     <script src="{{ asset('backend/js/peity/peity-active.js') }}"></script>
     <!-- tab JS ============================================ -->
-    {{-- <script src="{{ asset('backend/js/tab.js') }}"></script> --}}
+    <script src="{{ asset('backend/js/tab.js') }}"></script>
     <!-- plugins JS ============================================ -->
-    {{-- <script src="{{ asset('backend/js/plugins.js') }}"></script> --}}
+    <script src="{{ asset('backend/js/plugins.js') }}"></script>
     <!-- main JS ============================================ -->
-    {{-- <script src="{{ asset('backend/js/main.js') }}"></script> --}}
+    <script src="{{ asset('backend/js/main.js') }}"></script>
    @endpush
 
     

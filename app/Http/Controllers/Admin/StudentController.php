@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Classes;
+use App\Models\Section;
 use App\Models\StudentProfile;
 use App\Models\User;;
 
@@ -17,14 +19,33 @@ class StudentController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function index(Request $request): View
+    public function index(Request $request)
     {
-        return view('app.admin.students');
+        // Get students with their profiles and related data
+        $students = User::with(['studentProfile.class', 'studentProfile.section'])
+            ->where('role', 'student')
+            ->when($request->has('class_id'), function ($query) use ($request) {
+                $query->whereHas('studentProfile', function ($q) use ($request) {
+                    $q->where('class_id', $request->class_id);
+                });
+            })
+            ->when($request->has('section_id'), function ($query) use ($request) {
+                $query->whereHas('studentProfile', function ($q) use ($request) {
+                    $q->where('section_id', $request->section_id);
+                });
+            })
+            ->orderBy('name')
+            ->get();
+
+        // If it's an AJAX request (for table data)
+        return view('app.admin.students', compact('students'));
     }
 
     public function create()
     {
-        return view('app.admin.add_student');
+        $classes = Classes::get();
+        $sections = Section::get();
+        return view('app.admin.add_student', compact('classes', 'sections'));
     }
 
     public function store(Request $request)
@@ -69,6 +90,7 @@ class StudentController extends Controller
                 'role'      => 'student',
             ]);
 
+            $user->assignRole('student');
             // Handle file uploads
             $studentPhotoPath = null;
             if ($request->hasFile('student_photo')) {

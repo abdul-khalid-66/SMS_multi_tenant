@@ -1,21 +1,4 @@
-{{-- <x-tenant-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                    <x-link-button href="{{ route('user.index') }}">Users</x-tenant-button>
-                </div>
-            </div>
-        </div>
-    </div>
-</x-tenant-app-layout> --}}
 <x-tenant-app-layout>
     @push('css')
           <!-- favicon
@@ -49,7 +32,7 @@
             <link rel="stylesheet" href=" {{ asset('backend/css/main.css') }} ">
             <!-- educate icon CSS
                 ============================================ -->
-            {{-- <link rel="stylesheet" href="{{ asset('backend/css/educate-custon-icon.css') }}"> --}}
+            <link rel="stylesheet" href="{{ asset('backend/css/educate-custon-icon.css') }}">
             <!-- morrisjs CSS
                 ============================================ -->
             <link rel="stylesheet" href=" {{ asset('backend/css/morrisjs/morris.css') }} ">
