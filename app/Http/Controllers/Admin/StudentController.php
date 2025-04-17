@@ -59,8 +59,8 @@ class StudentController extends Controller
             'dob'               => 'required|date',
             'admission_no'      => 'required|string|unique:student_profiles,admission_no',
             'admission_date'    => 'required|date',
-            'class_id'          => 'required', //|exists:classes,id,
-            'section_id'        => 'required', //|exists:sections,id,
+            'class_id'          => 'required|exists:classes,id',
+            'section_id'        => 'required|exists:sections,id',
             'previous_school'   => 'nullable|string',
             'blood_group'       => 'nullable|string',
             'medical_history'   => 'nullable|string',
@@ -95,14 +95,14 @@ class StudentController extends Controller
             $studentPhotoPath = null;
             if ($request->hasFile('student_photo')) {
                 $studentPhotoPath = $request->file('student_photo')
-                    ->store("tenants/{$user->school_id}/students/{$user->id}/profile", 'public');
+                    ->store("tenants/{$user->school_id}/students/profile", 'public');
             }
 
             $documentPaths = [];
             if ($request->hasFile('documents')) {
                 foreach ($request->file('documents') as $document) {
                     $documentPaths[] = $document
-                        ->store("tenants/{$user->school_id}/students/{$user->id}/documents", 'public');
+                        ->store("tenants/{$user->school_id}/students/documents", 'public');
                 }
             }
 

@@ -18,7 +18,9 @@ class StudentProfile extends Model
         'section_id',
         'id_card_issued',
         'id_card_number',
-        'blood_group'
+        'blood_group',
+        'documents',
+        'student_photo',
     ];
 
     protected $casts = [
