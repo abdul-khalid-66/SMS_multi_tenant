@@ -18,8 +18,14 @@ class TeacherProfile extends Model
         'experience_years',
         'joining_date',
         'salary_grade',
+        'bank_details',
+        'emergency_contact',
+        'documents',
+        'signature',
+        'bio',
+        'social_links',
         'is_class_teacher',
-        'class_teacher_of'
+        'class_teacher_of',
     ];
 
     protected $casts = [

@@ -94,14 +94,14 @@ class StudentController extends Controller
             $studentPhotoPath = null;
             if ($request->hasFile('student_photo')) {
                 $studentPhotoPath = $request->file('student_photo')
-                    ->store("tenants/{$user->school_id}/students/profile", 'public');
+                    ->store("tenants/{$user->school_id}/students/profile", 'website');
             }
 
             $documentPaths = [];
             if ($request->hasFile('documents')) {
                 foreach ($request->file('documents') as $document) {
                     $documentPaths[] = $document
-                        ->store("tenants/{$user->school_id}/students/documents", 'public');
+                        ->store("tenants/{$user->school_id}/students/documents", 'website');
                 }
             }
 
