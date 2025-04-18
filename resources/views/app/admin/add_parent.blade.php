@@ -109,7 +109,7 @@
                     <div class="sparkline12-graph">
                         <div class="basic-login-form-ad">
                             <div class="row">
-                                <form id="parentForm" method="POST" action="{{ route('dashboard.store.parent') }}" enctype="multipart/form-data">
+                                <form id="parentForm" method="POST" action="{{ route('admin.store.parent') }}" enctype="multipart/form-data">
                                     @csrf
                                     
                                     <!-- Personal Information Section -->

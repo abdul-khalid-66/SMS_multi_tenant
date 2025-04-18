@@ -102,41 +102,94 @@
                                        <option value="all">Export All</option>
                                        <option value="selected">Export Selected</option>
                                    </select>
-                               </div>
-                               <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
-                                   data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
-                                   <thead>
-                                       <tr>
-                                           <th data-field="state" data-checkbox="true"></th>
-                                           <th data-field="id">ID</th>
-                                           <th data-field="name" data-editable="true">Task</th>
-                                           <th data-field="email" data-editable="true">Email</th>
-                                           <th data-field="phone" data-editable="true">Phone</th>
-                                           <th data-field="complete">Completed</th>
-                                           <th data-field="task" data-editable="true">Task</th>
-                                           <th data-field="date" data-editable="true">Date</th>
-                                           <th data-field="price" data-editable="true">Price</th>
-                                           <th data-field="action">Action</th>
-                                       </tr>
-                                   </thead>
-                                   <tbody>
-                                       <tr>
-                                           <td></td>
-                                           <td>1</td>
-                                           <td>Web Development</td>
-                                           <td>admin@uttara.com</td>
-                                           <td>+8801962067309</td>
-                                           <td class="datatable-ct"><span class="pie">1/6</span>
-                                           </td>
-                                           <td>10%</td>
-                                           <td>Jul 14, 2017</td>
-                                           <td>$5455</td>
-                                           <td class="datatable-ct"><i class="fa fa-check"></i>
-                                           </td>
-                                       </tr>
-                                      
-                                   </tbody>
-                               </table>
+                                </div>
+                                <table id="teacher-table" data-toggle="table" data-pagination="true" data-search="true" 
+                                data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" 
+                                data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
+                                data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" 
+                                data-toolbar="#toolbar">
+                                <thead>
+                                    <tr>
+                                        <th data-field="state" data-checkbox="true"></th>
+                                        <th data-field="id" data-sortable="true">ID</th>
+                                        <th data-field="name" data-sortable="true">Name</th>
+                                        <th data-field="employee_id" data-sortable="true">Employee ID</th>
+                                        <th data-field="email">Email</th>
+                                        <th data-field="phone">Phone</th>
+                                        <th data-field="specialization">Specialization</th>
+                                        <th data-field="class_teacher" data-sortable="true">Class Teacher</th>
+                                        <th data-field="action">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($teachers as $teacher)
+                                    <tr>
+                                        <td></td>
+                                        <td>{{ $teacher->id }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                @if($teacher->teacherProfile && $teacher->teacherProfile->signature)
+                                                    <img src="{{ asset($teacher->teacherProfile->signature) }}" 
+                                                        class="rounded-circle avatar-xs me-2" alt="signature" width="70px" height="150px">
+                                                @else
+                                                    <div class="avatar-xs me-2">
+                                                        <span class="avatar-title rounded-circle bg-soft-primary text-primary">
+                                                            {{ substr($teacher->name, 0, 1) }}
+                                                        </span>
+                                                    </div>
+                                                @endif
+                                                {{ $teacher->name }}
+                                            </div>
+                                        </td>
+                                        <td>{{ $teacher->teacherProfile->employee_id ?? 'N/A' }}</td>
+                                        <td>{{ $teacher->email }}</td>
+                                        <td>{{ $teacher->phone }}</td>
+                                        <td>{{ $teacher->teacherProfile->specialization ?? 'N/A' }}</td>
+                                        <td>
+                                            @if($teacher->teacherProfile && $teacher->teacherProfile->is_class_teacher)
+                                                Class {{ $teacher->teacherProfile->class_teacher_of ?? 'N/A' }}
+                                            @else
+                                                No
+                                            @endif
+                                        </td>
+                                        <td>
+                                            {{-- <div class="d-flex gap-2">
+                                                <a href="{{ route('admin.edit.teacher', $teacher->id) }}" class="btn btn-sm btn-warning">
+                                                    Edit
+                                                </a>
+                                                <form action="{{ route('admin.destroy.teacher', $teacher->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <a type="submit" class="btn btn-sm btn-danger" 
+                                                            onclick="return confirm('Are you sure?')">
+                                                        Delete
+                                                    </a>
+                                                </form>
+                                            </div> --}}
+                                            <div class="btn-group d-flex">
+                                                <a href="{{ route('admin.edit.teacher', $teacher->id) }}" 
+                                                class="btn btn-sm btn-primary m-1" 
+                                                title="Edit" style="margin: 5px; color: white">
+                                                    Edit
+                                                </a>
+                                                <form action="{{ route('admin.destroy.teacher', $teacher->id) }}" 
+                                                    method="POST" 
+                                                    class="d-inline ">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" 
+                                                            class="btn btn-sm btn-danger m-1"  style="margin: 5px; color: white"
+                                                            title="Delete"
+                                                            onclick="return confirm('Are you sure you want to delete this student?')">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                            </div>
                        </div>
                    </div>

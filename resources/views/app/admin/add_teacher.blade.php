@@ -165,23 +165,22 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group-inner {{ $errors->has('role') ? 'has-error' : '' }}">
+                                                   
+                                                    <div class="form-group-inner">
                                                         <div class="row">
                                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                                 <label class="login2">Select Role*</label>
                                                             </div>
                                                             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                <select class="form-control" name="role" required>
+                                                                <select name="roles[]" data-placeholder="Choose a Country..." class="chosen-select" multiple="" tabindex="-1">
                                                                     <option value="">Select Role</option>
                                                                     <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                                                                     <option value="teacher" {{ old('role') == 'teacher' ? 'selected' : '' }}>Teacher</option>
                                                                 </select>
-                                                                @if($errors->has('role'))
-                                                                    <span class="help-block text-danger">{{ $errors->first('role') }}</span>
-                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         
