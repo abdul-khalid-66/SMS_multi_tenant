@@ -131,32 +131,50 @@
                                         <tr>
                                             <th data-field="state" data-checkbox="true"></th>
                                             <th data-field="id">ID</th>
-                                            <th data-field="name" data-editable="true">Task</th>
-                                            <th data-field="email" data-editable="true">Email</th>
-                                            <th data-field="phone" data-editable="true">Phone</th>
-                                            <th data-field="complete">Completed</th>
-                                            <th data-field="task" data-editable="true">Task</th>
-                                            <th data-field="date" data-editable="true">Date</th>
-                                            <th data-field="price" data-editable="true">Price</th>
-                                            <th data-field="action">Action</th>
+                                            <th data-field="name">Parent Name</th>
+                                            <th data-field="email">Email</th>
+                                            <th data-field="phone">Phone</th>
+                                            <th data-field="occupation">Occupation</th>
+                                            <th data-field="children">Children</th>
+                                            <th data-field="relation">Relation</th>
+                                           
+                                            <th data-field="action">Action</th> 
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach($parents as $parent)
                                         <tr>
                                             <td></td>
-                                            <td>1</td>
-                                            <td>Web Development</td>
-                                            <td>admin@uttara.com</td>
-                                            <td>+8801962067309</td>
-                                            <td class="datatable-ct"><span class="pie">1/6</span>
+                                            <td>{{ $parent->id }}</td>
+                                            <td>{{ $parent->name }}</td>
+                                            <td>{{ $parent->email }}</td>
+                                            <td>{{ $parent->phone }}</td>
+                                            <td>{{ $parent->parentProfile->occupation ?? 'N/A' }}</td>
+                                            <td>
+                                                @foreach($parent->children as $child)
+                                                {{ $child->name }} ({{ $child->studentProfile->class->name ?? 'N/A' }})<br>
+                                                @endforeach
                                             </td>
-                                            <td>10%</td>
-                                            <td>Jul 14, 2017</td>
-                                            <td>$5455</td>
-                                            <td class="datatable-ct"><i class="fa fa-check"></i>
+                                            <td>
+                                                @foreach($parent->studentParentRelationships as $relationship)
+                                                {{ ucfirst($relationship->relationship) }}<br>
+                                                @endforeach
+                                            </td>
+                                            
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-xs btn-primary" data-toggle="modal" 
+                                                            data-target="#editParentModal" style="margin-right: 2px" data-parent-id="{{ $parent->id }}">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <a href="{{ route('admin.destroy.parent', $parent->id ) }}" class="btn btn-xs btn-danger delete-parent" style="margin-left: 2px"
+                                                            data-parent-id="{{ $parent->id }}">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </div>
                                             </td>
                                         </tr>
-                                        
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -218,6 +236,34 @@
     <script src="{{ asset('backend/js/plugins.js') }}"></script>
     <!-- main JS ============================================ -->
     <script src="{{ asset('backend/js/main.js') }}"></script>
+    {{-- <script>
+      
+        $(document).ready(function() {
+            // Delete parent functionality
+            $('.delete-parent').click(function() {
+                const parentId = $(this).data('parent-id');
+                if (confirm('Are you sure you want to delete this parent?')) {
+                    $.ajax({
+                        url: `{{ route('admin.destroy.parent', ':id') }}`.replace(':id', parentId),
+                        method: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                location.reload();
+                            } else {
+                                alert('Error: ' + response.message);
+                            }
+                        },
+                        error: function(xhr) {
+                            alert('Error: ' + xhr.responseJSON.message);
+                        }
+                    });
+                }
+            });
+        });
+    </script> --}}
    @endpush
 
     

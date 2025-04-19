@@ -522,6 +522,9 @@ Here's the concise relationship summary for all models:
    - teacherProfile() → hasOne(TeacherProfile::class)
    - studentProfile() → hasOne(StudentProfile::class)
    - parents() → belongsToMany(User::class, 'student_parents', 'student_id', 'parent_id')->withPivot('relationship', 'is_primary')
+   - children() → belongsToMany(User::class, 'student_parents', 'parent_id', 'student_id')->withPivot('relationship', 'is_primary')->withTimestamps();
+   - studentParentRelationships() → hasMany(StudentParent::class, 'parent_id');
+   - childParentRelationships() → hasMany(StudentParent::class, 'student_id');
 
 3. **Classes**:
    - school() → belongsTo(School::class)
@@ -549,11 +552,13 @@ Here's the concise relationship summary for all models:
    - class() → belongsTo(Classes::class)
    - section() → belongsTo(Section::class)
    - parents() → belongsToMany(User::class)
+   - parentRelationships() → hasMany(StudentParent::class, 'student_id', 'student_id')
 
 8. **ParentProfile**:
    - parent() → belongsTo(User::class)
    - school() → belongsTo(School::class)
    - children() → belongsToMany(User::class)
+   - studentRelationships() → hasMany(StudentParent::class, 'parent_id', 'parent_id')
 
 9. **TimeTable**:
    - school() → belongsTo(School::class)
@@ -638,6 +643,34 @@ Here's the concise relationship summary for all models:
 
 26. **SystemSetting**:
     - school() → belongsTo(School::class)
+
+
+    // In User.php model
+
+// For students
+public function parents()
+{
+ 
+    return $this->
+}
+
+// For parents
+public function children()
+{
+    return $this->belongsToMany(User::class, 'student_parents', 'parent_id', 'student_id')
+        ->withPivot('relationship', 'is_primary')
+        ->withTimestamps();
+}
+
+public function studentParentRelationships()
+{
+    return $this->hasMany(StudentParent::class, 'parent_id');
+}
+
+public function childParentRelationships()
+{
+    return $this->hasMany(StudentParent::class, 'student_id');
+}
 
 Application Core Modules
 Super Admin Panel >

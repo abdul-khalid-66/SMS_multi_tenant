@@ -37,4 +37,8 @@ class ParentProfile extends Model
         return $this->belongsToMany(User::class, 'student_parents', 'parent_id', 'student_id')
             ->withPivot('relationship', 'is_primary');
     }
+    public function studentRelationships()
+    {
+        return $this->hasMany(StudentParent::class, 'parent_id', 'parent_id');
+    }
 }

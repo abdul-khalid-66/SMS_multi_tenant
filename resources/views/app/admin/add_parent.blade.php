@@ -77,6 +77,21 @@
             ============================================ -->
         <script src="{{ asset('backend/js/vendor/modernizr-2.8.3.min.js') }}"></script>
 
+        <style>
+            .invalid-feedback {
+                color: #dc3545;
+                font-size: 0.875rem;
+                margin-top: 0.25rem;
+            }
+
+            .is-invalid {
+                border-color: #dc3545 !important;
+            }
+
+            .chosen-container.is-invalid .chosen-single {
+                border-color: #dc3545 !important;
+            }
+        </style>
 
     @endpush
 
@@ -124,7 +139,11 @@
                                                         <label class="login2">Full Name*</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="text" class="form-control" name="name" required />
+                                                        <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                                               name="name" value="{{ old('name') }}"  />
+                                                        @error('name')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -134,7 +153,11 @@
                                                         <label class="login2">Email*</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="email" class="form-control" name="email" required />
+                                                        <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                                               name="email" value="{{ old('email') }}"  />
+                                                        @error('email')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -144,7 +167,11 @@
                                                         <label class="login2">Phone Number*</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="text" class="form-control" name="phone" required />
+                                                        <input type="text" class="form-control @error('phone') is-invalid @enderror" 
+                                                               name="phone" value="{{ old('phone') }}"  />
+                                                        @error('phone')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -154,7 +181,11 @@
                                                         <label class="login2">Address*</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <textarea class="form-control" name="address" required></textarea>
+                                                        <textarea class="form-control @error('address') is-invalid @enderror" 
+                                                                  name="address" >{{ old('address') }}</textarea>
+                                                        @error('address')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -164,17 +195,18 @@
                                                         <label class="login2">Gender*</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <select class="form-control" name="gender" required>
+                                                        <select class="form-control @error('gender') is-invalid @enderror" name="gender" >
                                                             <option value="">Select Gender</option>
-                                                            <option value="male">Male</option>
-                                                            <option value="female">Female</option>
-                                                            <option value="other">Other</option>
+                                                            <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                                                            <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                                                            <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
                                                         </select>
+                                                        @error('gender')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                             <div class="form-group-inner">
                                                 <div class="row">
                                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
@@ -186,8 +218,13 @@
                                                                 <div class="form-group data-custon-pick" id="data_1">
                                                                     <div class="input-group date">
                                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                        <input type="text" class="form-control" value="10/04/2017">
+                                                                        <input type="text" name="dob" readonly 
+                                                                               class="form-control @error('dob') is-invalid @enderror" 
+                                                                               value="{{ old('dob') }}" >
                                                                     </div>
+                                                                    @error('dob')
+                                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                         </div>                                               
@@ -209,7 +246,11 @@
                                                         <label class="login2">Occupation*</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="text" class="form-control" name="occupation" required />
+                                                        <input type="text" class="form-control @error('occupation') is-invalid @enderror" 
+                                                               name="occupation" value="{{ old('occupation') }}"  />
+                                                        @error('occupation')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -219,7 +260,11 @@
                                                         <label class="login2">Employer</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="text" class="form-control" name="employer" />
+                                                        <input type="text" class="form-control @error('employer') is-invalid @enderror" 
+                                                               name="employer" value="{{ old('employer') }}" />
+                                                        @error('employer')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -229,14 +274,17 @@
                                                         <label class="login2">Income Range</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <select class="form-control" name="income_range">
+                                                        <select class="form-control @error('income_range') is-invalid @enderror" name="income_range">
                                                             <option value="">Select Income Range</option>
-                                                            <option value="0-25000">0 - 25,000</option>
-                                                            <option value="25001-50000">25,001 - 50,000</option>
-                                                            <option value="50001-75000">50,001 - 75,000</option>
-                                                            <option value="75001-100000">75,001 - 100,000</option>
-                                                            <option value="100001+">100,001+</option>
+                                                            <option value="0-25000" {{ old('income_range') == '0-25000' ? 'selected' : '' }}>0 - 25,000</option>
+                                                            <option value="25001-50000" {{ old('income_range') == '25001-50000' ? 'selected' : '' }}>25,001 - 50,000</option>
+                                                            <option value="50001-75000" {{ old('income_range') == '50001-75000' ? 'selected' : '' }}>50,001 - 75,000</option>
+                                                            <option value="75001-100000" {{ old('income_range') == '75001-100000' ? 'selected' : '' }}>75,001 - 100,000</option>
+                                                            <option value="100001+" {{ old('income_range') == '100001+' ? 'selected' : '' }}>100,001+</option>
                                                         </select>
+                                                        @error('income_range')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -246,15 +294,18 @@
                                                         <label class="login2">Education Level</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <select class="form-control" name="education_level">
+                                                        <select class="form-control @error('education_level') is-invalid @enderror" name="education_level">
                                                             <option value="">Select Education Level</option>
-                                                            <option value="high_school">High School</option>
-                                                            <option value="some_college">Some College</option>
-                                                            <option value="associate">Associate Degree</option>
-                                                            <option value="bachelor">Bachelor's Degree</option>
-                                                            <option value="master">Master's Degree</option>
-                                                            <option value="doctorate">Doctorate</option>
+                                                            <option value="high_school" {{ old('education_level') == 'high_school' ? 'selected' : '' }}>High School</option>
+                                                            <option value="some_college" {{ old('education_level') == 'some_college' ? 'selected' : '' }}>Some College</option>
+                                                            <option value="associate" {{ old('education_level') == 'associate' ? 'selected' : '' }}>Associate Degree</option>
+                                                            <option value="bachelor" {{ old('education_level') == 'bachelor' ? 'selected' : '' }}>Bachelor's Degree</option>
+                                                            <option value="master" {{ old('education_level') == 'master' ? 'selected' : '' }}>Master's Degree</option>
+                                                            <option value="doctorate" {{ old('education_level') == 'doctorate' ? 'selected' : '' }}>Doctorate</option>
                                                         </select>
+                                                        @error('education_level')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -264,14 +315,17 @@
                                                         <label class="login2">Relation Type*</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <select class="form-control" name="relation_type" required>
+                                                        <select class="form-control @error('relation_type') is-invalid @enderror" name="relation_type" >
                                                             <option value="">Select Relation</option>
-                                                            <option value="father">Father</option>
-                                                            <option value="mother">Mother</option>
-                                                            <option value="guardian">Guardian</option>
-                                                            <option value="grandparent">Grandparent</option>
-                                                            <option value="other">Other</option>
+                                                            <option value="father" {{ old('relation_type') == 'father' ? 'selected' : '' }}>Father</option>
+                                                            <option value="mother" {{ old('relation_type') == 'mother' ? 'selected' : '' }}>Mother</option>
+                                                            <option value="guardian" {{ old('relation_type') == 'guardian' ? 'selected' : '' }}>Guardian</option>
+                                                            <option value="grandparent" {{ old('relation_type') == 'grandparent' ? 'selected' : '' }}>Grandparent</option>
+                                                            <option value="other" {{ old('relation_type') == 'other' ? 'selected' : '' }}>Other</option>
                                                         </select>
+                                                        @error('relation_type')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -281,7 +335,11 @@
                                                         <label class="login2">Emergency Contact*</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="text" class="form-control" name="emergency_contact" required />
+                                                        <input type="text" class="form-control @error('emergency_contact') is-invalid @enderror" 
+                                                               name="emergency_contact" value="{{ old('emergency_contact') }}"  />
+                                                        @error('emergency_contact')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -296,39 +354,22 @@
                                             </div>
                                             <div id="children-container">
                                                 <div class="child-entry">
-                                                    
-                                                    
                                                     <div class="form-group-inner">
                                                         <div class="row">
                                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                                <label class="login2">Student/Chile*</label>
+                                                                <label class="login2">Student/Child*</label>
                                                             </div>
                                                             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                <select data-placeholder="Choose a Country..." class="chosen-select" multiple="" tabindex="-1">
-                                                                    <option value="">Select Student</option>
-                                                                    {{-- @foreach($students as $student)
-                                                                        <option value="{{ $student->id }}">{{ $student->name }} ({{ $student->admission_no }})</option>
-                                                                    @endforeach --}}
-                                                                    <option value="1">Student 1</option>
-                                                                    <option value="2">Student 2</option>
+                                                                <select name="children[]" class="chosen-select @error('children') is-invalid @enderror" multiple tabindex="-1" >
+                                                                    @foreach($students as $student)
+                                                                        <option value="{{ $student->id }}" {{ in_array($student->id, old('children', [])) ? 'selected' : '' }}>
+                                                                            {{ $student->name }} ({{ $student->studentProfile->admission_no ?? 'N/A' }})
+                                                                        </option>
+                                                                    @endforeach
                                                                 </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                                <label class="login2">Relationship Type*</label>
-                                                            </div>
-                                                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                <select class="form-control" name="children[0][relationship_type]" required>
-                                                                    <option value="">Select Relationship</option>
-                                                                    <option value="father">Father</option>
-                                                                    <option value="mother">Mother</option>
-                                                                    <option value="guardian">Guardian</option>
-                                                                    <option value="grandparent">Grandparent</option>
-                                                                    <option value="other">Other</option>
-                                                                </select>
+                                                                @error('children')
+                                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                                @enderror
                                                             </div>
                                                         </div>
                                                     </div>
@@ -339,9 +380,12 @@
                                                             </div>
                                                             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                                                                 <div class="bt-df-checkbox">
-                                                                    <input type="checkbox" name="is_primary" value="1">
+                                                                    <input type="checkbox" name="is_primary" value="1" {{ old('is_primary') ? 'checked' : '' }}>
                                                                     <span class="checkmark"></span>
                                                                 </div>
+                                                                @error('is_primary')
+                                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                                @enderror
                                                             </div>
                                                         </div>
                                                     </div>
@@ -363,7 +407,10 @@
                                                         <label class="login2">Address Proof*</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="file" class="form-control" name="address_proof" required />
+                                                        <input type="file" class="form-control @error('address_proof') is-invalid @enderror" name="address_proof"  />
+                                                        @error('address_proof')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -373,7 +420,10 @@
                                                         <label class="login2">ID Proof*</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="file" class="form-control" name="id_proof" required />
+                                                        <input type="file" class="form-control @error('id_proof') is-invalid @enderror" name="id_proof"  />
+                                                        @error('id_proof')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -383,7 +433,10 @@
                                                         <label class="login2">Other Documents</label>
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                        <input type="file" class="form-control" name="documents[]" multiple />
+                                                        <input type="file" class="form-control @error('documents.*') is-invalid @enderror" name="documents[]" multiple />
+                                                        @error('documents.*')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -471,89 +524,54 @@
         <script src="{{ asset('backend/js/plugins.js') }}"></script>
         <!-- main JS============================================ -->
         <script src="{{ asset('backend/js/main.js') }}"></script>
-    @endpush
-    {{-- @push('js')
-        <!-- Include all the same JS files as student form -->
-        <script src="{{ asset('backend/js/vendor/jquery-1.12.4.min.js') }}"></script>
-        <script src="{{ asset('backend/js/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('backend/js/wow.min.js') }}"></script>
-        <script src="{{ asset('backend/js/jquery-price-slider.js') }}"></script>
-        <script src="{{ asset('backend/js/jquery.meanmenu.js') }}"></script>
-        <script src="{{ asset('backend/js/owl.carousel.min.js') }}"></script>
-        <script src="{{ asset('backend/js/jquery.sticky.js') }}"></script>
-        <script src="{{ asset('backend/js/jquery.scrollUp.min.js') }}"></script>
-        <script src="{{ asset('backend/js/scrollbar/jquery.mCustomScrollbar.concat.min.js') }}"></script>
-        <script src="{{ asset('backend/js/scrollbar/mCustomScrollbar-active.js') }}"></script>
-        <script src="{{ asset('backend/js/metisMenu/metisMenu.min.js') }}"></script>
-        <script src="{{ asset('backend/js/metisMenu/metisMenu-active.js') }}"></script>
-        <script src="{{ asset('backend/js/touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
-        <script src="{{ asset('backend/js/touchspin/touchspin-active.js') }}"></script>
-        <script src="{{ asset('backend/js/colorpicker/jquery.spectrum.min.js') }}"></script>
-        <script src="{{ asset('backend/js/colorpicker/color-picker-active.js') }}"></script>
-        <script src="{{ asset('backend/js/datapicker/bootstrap-datepicker.js') }}"></script>
-        <script src="{{ asset('backend/js/datapicker/datepicker-active.js') }}"></script>
-        <script src="{{ asset('backend/js/input-mask/jasny-bootstrap.min.js') }}"></script>
-        <script src="{{ asset('backend/js/chosen/chosen.jquery.js') }}"></script>
-        <script src="{{ asset('backend/js/chosen/chosen-active.js') }}"></script>
-        <script src="{{ asset('backend/js/select2/select2.full.min.js') }}"></script>
-        <script src="{{ asset('backend/js/select2/select2-active.js') }}"></script>
-        <script src="{{ asset('backend/js/ionRangeSlider/ion.rangeSlider.min.js') }}"></script>
-        <script src="{{ asset('backend/js/ionRangeSlider/ion.rangeSlider.active.js') }}"></script>
-        <script src="{{ asset('backend/js/rangle-slider/jquery-ui-1.10.4.custom.min.js') }}"></script>
-        <script src="{{ asset('backend/js/rangle-slider/jquery-ui-touch-punch.min.js') }}"></script>
-        <script src="{{ asset('backend/js/rangle-slider/rangle-active.js') }}"></script>
-        <script src="{{ asset('backend/js/knob/jquery.knob.js') }}"></script>
-        <script src="{{ asset('backend/js/knob/knob-active.js') }}"></script>
-        <script src="{{ asset('backend/js/tab.js') }}"></script>
-        <script src="{{ asset('backend/js/plugins.js') }}"></script>
-        <script src="{{ asset('backend/js/main.js') }}"></script>
-
         <script>
             $(document).ready(function() {
-                // Initialize date picker
-                // $('.input-group.date').datepicker({
-                //     format: 'mm/dd/yyyy',
-                //     todayHighlight: true,
-                //     autoclose: true
-                // });
-
-                // Initialize select2
-                $('.select2_demo_3').select2({
-                    placeholder: "Select an option",
-                    allowClear: true
-                });
-
-                // Add child functionality
-                let childCount = 1;
-                $('#add-child').click(function() {
-                    const newChild = $('.child-entry').first().clone();
-                    newChild.find('select').val('');
-                    newChild.find('input[type="checkbox"]').prop('checked', false);
-                    newChild.find('.remove-child').show();
+                $('#parentForm').submit(function(e) {
+                    let isValid = true;
                     
-                    // Update the name attributes with the new index
-                    newChild.find('[name]').each(function() {
-                        const name = $(this).attr('name').replace(/\[\d+\]/, '[' + childCount + ']');
-                        $(this).attr('name', name);
+                    // Clear previous errors
+                    $('.is-invalid').removeClass('is-invalid');
+                    $('.invalid-feedback').remove();
+                    
+                    // Validate emergency contact (must be numeric)
+                    const emergencyContact = $('input[name="emergency_contact"]').val();
+                    if (!emergencyContact || !/^\d+$/.test(emergencyContact)) {
+                        $('input[name="emergency_contact"]').addClass('is-invalid');
+                        $('input[name="emergency_contact"]').after(
+                            '<div class="invalid-feedback">Please enter a valid phone number (digits only)</div>'
+                        );
+                        isValid = false;
+                    }
+                    
+                    // Validate required fields
+                    $('[required]').each(function() {
+                        if (!$(this).val()) {
+                            $(this).addClass('is-invalid');
+                            $(this).after(
+                                '<div class="invalid-feedback">This field is required</div>'
+                            );
+                            isValid = false;
+                        }
                     });
                     
-                    $('#children-container').append(newChild);
-                    childCount++;
+                    // Validate at least one child selected
+                    if ($('.chosen-select option:selected').length === 0) {
+                        $('.chosen-select').addClass('is-invalid');
+                        $('.chosen-select').after(
+                            '<div class="invalid-feedback">Please select at least one child</div>'
+                        );
+                        isValid = false;
+                    }
                     
-                    // Reinitialize select2 for the new element
-                    newChild.find('.select2_demo_3').select2({
-                        placeholder: "Select an option",
-                        allowClear: true
-                    });
-                });
-
-                // Remove child functionality
-                $(document).on('click', '.remove-child', function() {
-                    if ($('.child-entry').length > 1) {
-                        $(this).closest('.child-entry').remove();
+                    if (!isValid) {
+                        e.preventDefault();
+                        $('html, body').animate({
+                            scrollTop: $('.is-invalid').first().offset().top - 100
+                        }, 500);
                     }
                 });
             });
         </script>
-    @endpush --}}
+    @endpush
+    
 </x-tenant-app-layout>

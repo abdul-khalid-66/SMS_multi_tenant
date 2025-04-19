@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('parent_id')->constrained('users');
             $table->enum('relationship', ['father', 'mother', 'guardian']);
             $table->boolean('is_primary')->default(false);
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
 
             $table->unique(['student_id', 'parent_id']);

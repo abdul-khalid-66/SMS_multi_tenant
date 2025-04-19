@@ -34,6 +34,7 @@ class StudentController extends Controller
                     $q->where('section_id', $request->section_id);
                 });
             })
+            ->where('school_id', auth()->user()->school_id)
             ->orderBy('name')
             ->get();
 
