@@ -153,19 +153,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            {{-- <div class="d-flex gap-2">
-                                                <a href="{{ route('admin.edit.teacher', $teacher->id) }}" class="btn btn-sm btn-warning">
-                                                    Edit
-                                                </a>
-                                                <form action="{{ route('admin.destroy.teacher', $teacher->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <a type="submit" class="btn btn-sm btn-danger" 
-                                                            onclick="return confirm('Are you sure?')">
-                                                        Delete
-                                                    </a>
-                                                </form>
-                                            </div> --}}
+                                           
                                             <div class="btn-group d-flex">
                                                 <a href="{{ route('admin.edit.teacher', $teacher->id) }}" 
                                                 class="btn btn-sm btn-primary m-1" 

@@ -160,6 +160,7 @@ CREATE TABLE student_parents (
   is_primary BOOLEAN DEFAULT false,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMP NULL,
   FOREIGN KEY (student_id) REFERENCES users(id),
   FOREIGN KEY (parent_id) REFERENCES users(id),
   UNIQUE KEY (student_id, parent_id)

@@ -28,9 +28,9 @@
                             <span class="mini-click-non">Academic Setup</span>
                         </a>
                         <ul class="submenu-angle" aria-expanded="false">
-                            <li><a href="#">Classes</a></li>
-                            <li><a href="#">Sections</a></li>
-                            <li><a href="#">Subjects</a></li>
+                            <li><a href="{{ route('dashboard.academic.classes.index') }}">Classes</a></li>
+                            <li><a href="{{ route('dashboard.academic.sections.index') }}">Sections</a></li>
+                            <li><a href="{{ route('dashboard.academic.subjects.index') }}">Subjects</a></li>
                         </ul>
                     </li>
                     <li>

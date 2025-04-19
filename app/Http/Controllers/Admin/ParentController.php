@@ -155,7 +155,6 @@ class ParentController extends Controller
 
     public function destroy($id)
     {
-        dd($id);
         try {
 
             DB::beginTransaction();

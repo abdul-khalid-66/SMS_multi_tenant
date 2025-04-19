@@ -11,6 +11,9 @@ use App\Http\Controllers\Admin\{
     TeacherController,
     StudentController,
     ParentController,
+    ClassesController,
+    SectionController,
+    SubjectController
 };
 
 use Illuminate\Support\Facades\Route;
@@ -61,6 +64,41 @@ Route::middleware([
     Route::get('/edit_teacher', [TeacherController::class, 'edit'])->middleware(['auth', 'verified'])->name('admin.edit.teacher');
     Route::post('/edit_teacher', [TeacherController::class, 'update'])->middleware(['auth', 'verified'])->name('admin.update.teacher');
     Route::delete('/destroy_teacher', [TeacherController::class, 'destroy'])->middleware(['auth', 'verified'])->name('admin.destroy.teacher');
+
+
+    // Class Routes
+    Route::prefix('classes')->middleware(['auth', 'verified'])->name('dashboard.academic.classes.')->group(function () {
+        Route::get('/', [ClassesController::class, 'index'])->name('index');
+        Route::get('/create', [ClassesController::class, 'create'])->name('create');
+        Route::post('/', [ClassesController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [ClassesController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [ClassesController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ClassesController::class, 'destroy'])->name('destroy'); // <-- DELETE route
+    });
+
+    // Section Routes
+    Route::prefix('sections')->middleware(['auth', 'verified'])->name('dashboard.academic.sections.')->group(function () {
+        Route::get('/', [SectionController::class, 'index'])->name('index');
+        Route::get('/create', [SectionController::class, 'create'])->name('create');
+        Route::post('/', [SectionController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [SectionController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [SectionController::class, 'update'])->name('update');
+        Route::delete('/{id}', [SectionController::class, 'destroy'])->name('destroy');
+    });
+
+    // Subject Routes
+    Route::prefix('subjects')->middleware(['auth', 'verified'])->name('dashboard.academic.subjects.')->group(function () {
+        Route::get('/', [SubjectController::class, 'index'])->name('index');
+        Route::get('/create', [SubjectController::class, 'create'])->name('create');
+        Route::post('/', [SubjectController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [SubjectController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [SubjectController::class, 'update'])->name('update');
+        Route::delete('/{id}', [SubjectController::class, 'destroy'])->name('destroy');
+    });
+    Route::get('subject_assign/', [SubjectController::class, 'destroy'])->name('dashboard.academic.subjects.assign');
+
+
+
 
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
