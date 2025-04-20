@@ -82,10 +82,10 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <ul class="breadcome-menu">
                                     <li>
-                                        <a href="{{ route('dashboard.academic.subjects.create') }}" class="btn btn-primary btn-sm" style="color: white">
+                                        <a href="{{ route('admin.academic.subjects.create') }}" class="btn btn-primary btn-sm" style="color: white">
                                             <i class="fa fa-plus"></i> Add Subject
                                         </a>
-                                        <a href="{{ route('dashboard.academic.subjects.assign') }}" class="btn btn-info btn-sm" style="color: white; margin-left: 10px">
+                                        <a href="{{ route('admin.academic.subjects.assign') }}" class="btn btn-info btn-sm" style="color: white; margin-left: 10px">
                                             <i class="fa fa-user-tie"></i> Assign Teachers
                                         </a>
                                     </li>
@@ -149,14 +149,14 @@
                                             </td>
                                             <td>
                                                 <div style="display: flex; align-items: center; gap: 4px;">
-                                                    <a href="{{ route('dashboard.academic.subjects.edit', $subject->id) }}" 
+                                                    <a href="{{ route('admin.academic.subjects.edit', $subject->id) }}" 
                                                        class="btn btn-xs btn-primary" 
                                                        style="margin-right: 2px"
                                                        title="Edit">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
                                                     
-                                                    <form action="{{ route('dashboard.academic.subjects.destroy', $subject->id) }}" 
+                                                    <form action="{{ route('admin.academic.subjects.destroy', $subject->id) }}" 
                                                           method="POST" 
                                                           class="d-inline delete-subject-form">
                                                         @csrf

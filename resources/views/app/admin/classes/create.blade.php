@@ -47,7 +47,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <ul class="breadcome-menu">
                                     <li>
-                                        <a href="{{ route('dashboard.academic.classes.index') }}" 
+                                        <a href="{{ route('admin.academic.classes.index') }}" 
                                            class="btn btn-primary btn-sm" style="color: white">
                                             <i class="fa fa-arrow-left"></i> Back
                                         </a>
@@ -62,7 +62,7 @@
                         <div class="sparkline12-graph">
                             <div class="basic-login-form-ad">
                                 <div class="row">
-                                    <form method="POST" action="{{ route('dashboard.academic.classes.store') }}">
+                                    <form method="POST" action="{{ route('admin.academic.classes.store') }}">
                                         @csrf
                                         
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

@@ -58,7 +58,7 @@ class ClassesController extends Controller
 
         Classes::create($validated);
 
-        return redirect()->route('dashboard.academic.classes.index')
+        return redirect()->route('admin.academic.classes.index')
             ->with('success', 'Class created successfully');
     }
 
@@ -101,7 +101,7 @@ class ClassesController extends Controller
 
         $class->update($validated);
 
-        return redirect()->route('dashboard.academic.classes.index')
+        return redirect()->route('admin.academic.classes.index')
             ->with('success', 'Class updated successfully');
     }
 
@@ -123,7 +123,7 @@ class ClassesController extends Controller
 
         $class->delete();
 
-        return redirect()->route('dashboard.academic.classes.index')
+        return redirect()->route('admin.academic.classes.index')
             ->with('success', 'Class deleted successfully');
     }
 }

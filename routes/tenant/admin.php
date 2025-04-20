@@ -67,7 +67,7 @@ Route::middleware([
 
 
     // Class Routes
-    Route::prefix('classes')->middleware(['auth', 'verified'])->name('dashboard.academic.classes.')->group(function () {
+    Route::prefix('classes')->middleware(['auth', 'verified'])->name('admin.academic.classes.')->group(function () {
         Route::get('/', [ClassesController::class, 'index'])->name('index');
         Route::get('/create', [ClassesController::class, 'create'])->name('create');
         Route::post('/', [ClassesController::class, 'store'])->name('store');
@@ -77,7 +77,7 @@ Route::middleware([
     });
 
     // Section Routes
-    Route::prefix('sections')->middleware(['auth', 'verified'])->name('dashboard.academic.sections.')->group(function () {
+    Route::prefix('sections')->middleware(['auth', 'verified'])->name('admin.academic.sections.')->group(function () {
         Route::get('/', [SectionController::class, 'index'])->name('index');
         Route::get('/create', [SectionController::class, 'create'])->name('create');
         Route::post('/', [SectionController::class, 'store'])->name('store');
@@ -87,7 +87,7 @@ Route::middleware([
     });
 
     // Subject Routes
-    Route::prefix('subjects')->middleware(['auth', 'verified'])->name('dashboard.academic.subjects.')->group(function () {
+    Route::prefix('subjects')->middleware(['auth', 'verified'])->name('admin.academic.subjects.')->group(function () {
         Route::get('/', [SubjectController::class, 'index'])->name('index');
         Route::get('/create', [SubjectController::class, 'create'])->name('create');
         Route::post('/', [SubjectController::class, 'store'])->name('store');
@@ -95,7 +95,7 @@ Route::middleware([
         Route::put('/{id}', [SubjectController::class, 'update'])->name('update');
         Route::delete('/{id}', [SubjectController::class, 'destroy'])->name('destroy');
     });
-    Route::get('subject_assign/', [SubjectController::class, 'destroy'])->name('dashboard.academic.subjects.assign');
+    Route::get('subject_assign/', [SubjectController::class, 'destroy'])->name('admin.academic.subjects.assign');
 
 
 

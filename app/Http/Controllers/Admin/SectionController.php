@@ -59,7 +59,7 @@ class SectionController extends Controller
 
         Section::create($validated);
 
-        return redirect()->route('dashboard.academic.sections.index')
+        return redirect()->route('admin.academic.sections.index')
             ->with('success', 'Section created successfully');
     }
 
@@ -101,7 +101,7 @@ class SectionController extends Controller
 
         $section->update($validated);
 
-        return redirect()->route('dashboard.academic.sections.index')
+        return redirect()->route('admin.academic.sections.index')
             ->with('success', 'Section updated successfully');
     }
 
@@ -123,7 +123,7 @@ class SectionController extends Controller
 
         $section->delete();
 
-        return redirect()->route('dashboard.academic.sections.index')
+        return redirect()->route('admin.academic.sections.index')
             ->with('success', 'Section deleted successfully');
     }
 }

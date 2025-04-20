@@ -82,7 +82,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <ul class="breadcome-menu">
                                     <li>
-                                        <a href="{{ route('dashboard.academic.classes.create') }}" class="btn btn-primary btn-sm" style="color: white">
+                                        <a href="{{ route('admin.academic.classes.create') }}" class="btn btn-primary btn-sm" style="color: white">
                                             <i class="fa fa-plus"></i> Add Class
                                         </a>
                                     </li>
@@ -134,12 +134,12 @@
                                                 
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a class="btn btn-xs btn-primary" data-toggle="modal" href="{{ route('dashboard.academic.classes.edit', 4) }}"
+                                                        <a class="btn btn-xs btn-primary" data-toggle="modal" href="{{ route('admin.academic.classes.edit', 4) }}"
                                                                 data-target="#editParentModal" style="margin-right: 2px">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
                                                         
-                                                        <a href="{{ route('dashboard.academic.classes.destroy', 4) }}" class="btn btn-xs btn-danger delete-parent" style="margin-left: 2px"
+                                                        <a href="{{ route('admin.academic.classes.destroy', 4) }}" class="btn btn-xs btn-danger delete-parent" style="margin-left: 2px"
                                                                 data-parent-id="4">
                                                             <i class="fa fa-trash"></i>
                                                         </a>

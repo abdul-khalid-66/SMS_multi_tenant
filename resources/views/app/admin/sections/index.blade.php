@@ -82,7 +82,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <ul class="breadcome-menu">
                                     <li>
-                                        <a href="{{ route('dashboard.academic.sections.create') }}" class="btn btn-primary btn-sm" style="color: white">
+                                        <a href="{{ route('admin.academic.sections.create') }}" class="btn btn-primary btn-sm" style="color: white">
                                             <i class="fa fa-plus"></i> Add Section
                                         </a>
                                     </li>
@@ -134,13 +134,13 @@
                                             <td>{{ $section->students_count }}</td>
                                             <td>
                                                 <div style="display: flex; align-items: center; gap: 4px;">
-                                                    <a href="{{ route('dashboard.academic.sections.edit', $section->id) }}" 
+                                                    <a href="{{ route('admin.academic.sections.edit', $section->id) }}" 
                                                        class="btn btn-xs btn-primary" 
                                                        title="Edit">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
                                             
-                                                    <form action="{{ route('dashboard.academic.sections.destroy', $section->id) }}" 
+                                                    <form action="{{ route('admin.academic.sections.destroy', $section->id) }}" 
                                                           method="POST" 
                                                           class="delete-form">
                                                         @csrf

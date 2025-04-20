@@ -58,7 +58,7 @@ class SubjectController extends Controller
 
         Subject::create($validated);
 
-        return redirect()->route('dashboard.academic.subjects.index')
+        return redirect()->route('admin.academic.subjects.index')
             ->with('success', 'Subject created successfully');
     }
 
@@ -100,7 +100,7 @@ class SubjectController extends Controller
 
         $subject->update($validated);
 
-        return redirect()->route('dashboard.academic.subjects.index')
+        return redirect()->route('admin.academic.subjects.index')
             ->with('success', 'Subject updated successfully');
     }
 
@@ -122,7 +122,7 @@ class SubjectController extends Controller
 
         $subject->delete();
 
-        return redirect()->route('dashboard.academic.subjects.index')
+        return redirect()->route('admin.academic.subjects.index')
             ->with('success', 'Subject deleted successfully');
     }
 
@@ -200,7 +200,7 @@ class SubjectController extends Controller
             }
         }
 
-        return redirect()->route('dashboard.academic.subjects.index')
+        return redirect()->route('admin.academic.subjects.index')
             ->with('success', 'Teacher assignments updated successfully');
     }
 }

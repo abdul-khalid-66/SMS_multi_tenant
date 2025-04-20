@@ -455,61 +455,33 @@ CREATE TABLE system_settings (
 Here's the concise format for all tables as requested:
 
 1. schools  => `id | name | address | phone | email | logo | session_year | deleted_at | created_at | updated_at`
-
 2. users  => `id | school_id | name | email | email_verified_at | password | phone | address | gender | dob | remember_token | role | deleted_at | created_at | updated_at`
-
 3. classes  => `id | school_id | name | numeric_value | teacher_id | deleted_at | created_at | updated_at`
-
 4. sections  => `id | school_id | class_id | name | capacity | deleted_at | created_at | updated_at`
-
 5. subjects  => `id | school_id | name | code | class_id | deleted_at | created_at | updated_at`
-
 6. teacher_profiles  => `id | teacher_id | school_id | employee_id | qualification | specialization | experience_years | joining_date | salary_grade | bank_details | emergency_contact | documents | signature | bio | social_links | is_class_teacher | class_teacher_of | deleted_at | created_at | updated_at`
-
 7. student_profiles  => `id | student_id | school_id | admission_no | admission_date | class_id | section_id | previous_school | medical_history | transport_details | hobbies | awards | documents | student_photo | id_card_issued | id_card_number | blood_group | deleted_at | created_at | updated_at`
-
 8. parent_profiles  => `id | parent_id | school_id | occupation | employer | income_range | education_level | relation_type | is_primary | address_proof | id_proof | emergency_contact | deleted_at | created_at | updated_at`
-
-9. student_parents  => `id | student_id | parent_id | relationship | is_primary | created_at | updated_at`
-
+9. student_parents  => `id | student_id | parent_id | relationship | is_primary | created_at | updated_at | deleted_at`
 10. teacher_subjects  => `id | teacher_id | subject_id | class_id | is_class_teacher | created_at | updated_at`
-
 11. time_tables  => `id | school_id | class_id | section_id | subject_id | teacher_id | day_of_week | start_time | end_time | room_number | is_recurring | effective_from | effective_to | deleted_at | created_at | updated_at`
-
 12. attendance_sessions  => `id | school_id | time_table_id | date | recorded_by | notes | created_at | updated_at`
-
 13. student_attendances  => `id | session_id | student_id | status | remarks | deleted_at | created_at | updated_at`
-
 14. fee_categories  => `id | school_id | name | description | deleted_at | created_at | updated_at`
-
 15. fee_structures  => `id | school_id | category_id | class_id | name | amount | frequency | due_date | deleted_at | created_at | updated_at`
-
 16. fees  => `id | school_id | student_id | structure_id | invoice_number | amount | discount | due_date | status | payment_date | payment_method | transaction_reference | notes | deleted_at | created_at | updated_at`
-
 17. fee_payments  => `id | fee_id | amount | payment_date | payment_method | transaction_reference | received_by | notes | created_at | updated_at`
-
 18. exams  => `id | school_id | name | description | start_date | end_date | is_published | deleted_at | created_at | updated_at`
-
 19. exam_schedules  => `id | exam_id | subject_id | class_id | exam_date | start_time | end_time | room_number | max_marks | passing_marks | deleted_at | created_at | updated_at`
-
 20. exam_results  => `id | school_id | exam_id | student_id | subject_id | marks_obtained | grade | remarks | published_at | deleted_at | created_at | updated_at`
-
 21. books  => `id | school_id | title | author | isbn | publisher | edition | category | price | quantity | available | shelf_number | deleted_at | created_at | updated_at`
-
 22. book_issues  => `id | school_id | book_id | user_id | issue_date | return_date | due_date | status | fine_amount | notes | deleted_at | created_at | updated_at`
-
 23. inventory_items  => `id | school_id | name | category | quantity | min_quantity | unit | location | description | deleted_at | created_at | updated_at`
-
 24. inventory_transactions  => `id | school_id | item_id | user_id | quantity | transaction_type | reference_number | notes | deleted_at | created_at | updated_at`
-
 25. notices  => `id | school_id | title | content | target_roles | target_classes | start_date | end_date | is_published | deleted_at | created_at | updated_at`
-
 26. holidays  => `id | school_id | title | description | start_date | end_date | is_recurring | recurring_pattern | deleted_at | created_at | updated_at`
-
 27. audit_logs  => `id | user_id | action | table_affected | record_id | old_values | new_values | ip_address | created_at`
-
 28. system_settings  => `id | school_id | setting_key | setting_value | is_encrypted | created_at | updated_at`
-
 
 Here's the concise relationship summary for all models:
 
@@ -517,8 +489,7 @@ Here's the concise relationship summary for all models:
    - users() → hasMany(User::class)
    - classes() → hasMany(Classes::class)
    - notices() → hasMany(Notice::class)
-
-2. **User**:
+   =>2. **User**:
    - school() → belongsTo(School::class)
    - teacherProfile() → hasOne(TeacherProfile::class)
    - studentProfile() → hasOne(StudentProfile::class)
@@ -526,154 +497,118 @@ Here's the concise relationship summary for all models:
    - children() → belongsToMany(User::class, 'student_parents', 'parent_id', 'student_id')->withPivot('relationship', 'is_primary')->withTimestamps();
    - studentParentRelationships() → hasMany(StudentParent::class, 'parent_id');
    - childParentRelationships() → hasMany(StudentParent::class, 'student_id');
-
-3. **Classes**:
+   =>3. **Classes**:
    - school() → belongsTo(School::class)
    - classTeacher() → belongsTo(User::class)
    - sections() → hasMany(Section::class)
-
-4. **Section**:
+   =>4. **Section**:
    - school() → belongsTo(School::class)
    - class() → belongsTo(Classes::class)
    - students() → hasMany(StudentProfile::class)
-
-5. **Subject**:
+   =>5. **Subject**:
    - school() → belongsTo(School::class)
    - class() → belongsTo(Classes::class)
-   - teachers() → belongsToMany(User::class)
-
-6. **TeacherProfile**:
+   - teachers() → belongsToMany(User::class, 'teacher_subjects', 'subject_id', 'teacher_id')->withPivot('class_id', 'is_class_teacher')
+   =>6. **TeacherProfile**:
    - teacher() → belongsTo(User::class)
    - school() → belongsTo(School::class)
    - classTeacherOf() → belongsTo(Classes::class)
-
-7. **StudentProfile**:
+   =>7. **StudentProfile**:
    - student() → belongsTo(User::class)
    - school() → belongsTo(School::class)
    - class() → belongsTo(Classes::class)
    - section() → belongsTo(Section::class)
    - parents() → belongsToMany(User::class)
    - parentRelationships() → hasMany(StudentParent::class, 'student_id', 'student_id')
-
-8. **ParentProfile**:
+   =>8. **ParentProfile**:
    - parent() → belongsTo(User::class)
    - school() → belongsTo(School::class)
    - children() → belongsToMany(User::class)
    - studentRelationships() → hasMany(StudentParent::class, 'parent_id', 'parent_id')
-
-9. **TimeTable**:
+   =>9. **TimeTable**:
    - school() → belongsTo(School::class)
    - class() → belongsTo(Classes::class)
    - section() → belongsTo(Section::class)
    - subject() → belongsTo(Subject::class)
    - teacher() → belongsTo(User::class)
    - attendanceSessions() → hasMany(AttendanceSession::class)
-
-10. **AttendanceSession**:
+   =>10. **AttendanceSession**:
     - school() → belongsTo(School::class)
     - timeTable() → belongsTo(TimeTable::class)
     - recordedBy() → belongsTo(User::class)
     - attendances() → hasMany(StudentAttendance::class)
-
-11. **StudentAttendance**:
+    =>11. **StudentAttendance**:
     - session() → belongsTo(AttendanceSession::class)
     - student() → belongsTo(User::class)
-
-12. **FeeCategory**:
+    =>12. **FeeCategory**:
     - school() → belongsTo(School::class)
     - structures() → hasMany(FeeStructure::class)
-
-13. **FeeStructure**:
+    =>13. **FeeStructure**:
     - school() → belongsTo(School::class)
     - category() → belongsTo(FeeCategory::class)
     - class() → belongsTo(Classes::class)
     - fees() → hasMany(Fee::class)
-
-14. **Fee**:
+    =>14. **Fee**:
     - school() → belongsTo(School::class)
     - student() → belongsTo(User::class)
     - structure() → belongsTo(FeeStructure::class)
     - payments() → hasMany(FeePayment::class)
-
-15. **FeePayment**:
+    =>15. **FeePayment**:
     - fee() → belongsTo(Fee::class)
     - receivedBy() → belongsTo(User::class)
-
-16. **Exam**:
+    =>16. **Exam**:
     - school() → belongsTo(School::class)
     - schedules() → hasMany(ExamSchedule::class)
     - results() → hasMany(ExamResult::class)
-
-17. **ExamSchedule**:
+    =>17. **ExamSchedule**:
     - exam() → belongsTo(Exam::class)
     - subject() → belongsTo(Subject::class)
     - class() → belongsTo(Classes::class)
-
-18. **ExamResult**:
+    =>18. **ExamResult**:
     - school() → belongsTo(School::class)
     - exam() → belongsTo(Exam::class)
     - student() → belongsTo(User::class)
     - subject() → belongsTo(Subject::class)
-
-19. **Book**:
+    =>19. **Book**:
     - school() → belongsTo(School::class)
     - issues() → hasMany(BookIssue::class)
-
-20. **BookIssue**:
+    =>20. **BookIssue**:
     - school() → belongsTo(School::class)
     - book() → belongsTo(Book::class)
     - user() → belongsTo(User::class)
-
-21. **InventoryItem**:
+    =>21. **InventoryItem**:
     - school() → belongsTo(School::class)
     - transactions() → hasMany(InventoryTransaction::class)
-
-22. **InventoryTransaction**:
+    =>22. **InventoryTransaction**:
     - school() → belongsTo(School::class)
     - item() → belongsTo(InventoryItem::class)
     - user() → belongsTo(User::class)
-
-23. **Notice**:
+    =>23. **Notice**:
     - school() → belongsTo(School::class)
-
-24. **Holiday**:
+    =>24. **Holiday**:
     - school() → belongsTo(School::class)
-
-25. **AuditLog**:
+    =>25. **AuditLog**:
     - user() → belongsTo(User::class)
-
-26. **SystemSetting**:
+    =>26. **SystemSetting**:
     - school() → belongsTo(School::class)
-
-
+    =>
     // In User.php model
 
-// For students
-public function parents()
-{
- 
-    return $this->
-}
-
-// For parents
+=>// For parents
 public function children()
 {
-    return $this->belongsToMany(User::class, 'student_parents', 'parent_id', 'student_id')
-        ->withPivot('relationship', 'is_primary')
-        ->withTimestamps();
+    return $this->belongsToMany(User::class, 'student_parents', 'parent_id', 'student_id')->withPivot('relationship', 'is_primary')->withTimestamps();
 }
-
-public function studentParentRelationships()
+=>public function studentParentRelationships()
 {
     return $this->hasMany(StudentParent::class, 'parent_id');
 }
-
-public function childParentRelationships()
+=>public function childParentRelationships()
 {
     return $this->hasMany(StudentParent::class, 'student_id');
 }
 
-Application Core Modules
+=>Application Core Modules
 Super Admin Panel >
 🏠 Dashboard
 🏫 Schools Management
@@ -997,61 +932,61 @@ file/directory structure
     │       ├── general.blade.php
     │       ├── security.blade.php
     │       └── appearance.blade.php
-    │
-    ├── admin/
-    │   ├── students/
-    │   │   ├── index.blade.php
-    │   │   ├── create.blade.php
-    │   │   ├── edit.blade.php
-    │   │   └── show.blade.php
-    │   │
-    │   ├── teachers/
-    │   │   ├── index.blade.php
-    │   │   ├── create.blade.php
-    │   │   └── edit.blade.php
-    │   │
-    │   ├── attendance/
-    │   │   ├── index.blade.php
-    │   │   └── mark.blade.php
-    │   │
-    │   ├── exams/
-    │   │   ├── index.blade.php
-    │   │   ├── create.blade.php
-    │   │   └── results.blade.php
-    │   │
-    │   ├── fees/
-    │   │   ├── index.blade.php
-    │   │   ├── create.blade.php
-    │   │   └── report.blade.php
-    │   │
-    │   └── library/
-    │       ├── books.blade.php
-    │       └── issues.blade.php
-    │
-    ├── teacher/
-    │   ├── dashboard.blade.php
-    │   ├── attendance/
-    │   │   ├── index.blade.php
-    │   │   └── mark.blade.php
-    │   ├── exams/
-    │   │   ├── index.blade.php
-    │   │   └── create.blade.php
-    │   └── students/
-    │       └── list.blade.php
-    │
-    ├── parent/
-    │   ├── dashboard.blade.php
-    │   ├── students/
-    │   │   └── show.blade.php
-    │   └── fees/
-    │       └── index.blade.php
-    │
-    └── auth/
-        ├── login.blade.php
-        ├── register.blade.php
-        ├── forgot-password.blade.php
-        ├── verify-email.blade.php
-        └── confirm-password.blade.php
+    └── app 
+        ├── admin/
+        │   ├── students/
+        │   │   ├── index.blade.php
+        │   │   ├── create.blade.php
+        │   │   ├── edit.blade.php
+        │   │   └── show.blade.php
+        │   │
+        │   ├── teachers/
+        │   │   ├── index.blade.php
+        │   │   ├── create.blade.php
+        │   │   └── edit.blade.php
+        │   │
+        │   ├── attendance/
+        │   │   ├── index.blade.php
+        │   │   └── mark.blade.php
+        │   │
+        │   ├── exams/
+        │   │   ├── index.blade.php
+        │   │   ├── create.blade.php
+        │   │   └── results.blade.php
+        │   │
+        │   ├── fees/
+        │   │   ├── index.blade.php
+        │   │   ├── create.blade.php
+        │   │   └── report.blade.php
+        │   │
+        │   └── library/
+        │       ├── books.blade.php
+        │       └── issues.blade.php
+        │
+        ├── teacher/
+        │   ├── dashboard.blade.php
+        │   ├── attendance/
+        │   │   ├── index.blade.php
+        │   │   └── mark.blade.php
+        │   ├── exams/
+        │   │   ├── index.blade.php
+        │   │   └── create.blade.php
+        │   └── students/
+        │       └── list.blade.php
+        │
+        ├── parent/
+        │   ├── dashboard.blade.php
+        │   ├── students/
+        │   │   └── show.blade.php
+        │   └── fees/
+        │       └── index.blade.php
+        │
+        └── auth/
+            ├── login.blade.php
+            ├── register.blade.php
+            ├── forgot-password.blade.php
+            ├── verify-email.blade.php
+            └── confirm-password.blade.php
         
 📁 routes/
 ├── api.php
@@ -1127,52 +1062,55 @@ file/directory structure
     └── central.log
 
 
+
+    📁 resources/views/admin/
+    └─── academic/
+                ├──── classes/
+                │      ├── index.blade.php
+                │      ├── create.blade.php
+                │      ├── edit.blade.php
+                │      ├── show.blade.php
+                │      └── _form.blade.php (partial)
+                │   
+                ├─── sections/
+                │      ├── index.blade.php
+                │      ├── create.blade.php
+                │      ├── edit.blade.php
+                │      ├── show.blade.php
+                │      └── _form.blade.php (partial)
+                │   
+                └──── subjects/
+                       ├── index.blade.php
+                       ├── create.blade.php
+                       ├── edit.blade.php
+                       ├── show.blade.php
+                       ├── assign.blade.php (for teacher assignment)
+                       └── _form.blade.php (partial)  
+
     5. Yeh App Schools Ko Kaise Help Karegi?
     ✔ Complete School Management
-    
-    Har School Ka Apna Alag Database
-    
-    Teachers, Students, Parents Ka Full Record
-    
-    ✔ Automated Systems
-    
-    Attendance Automatic Calculate Hota Hai
-    
-    Fees Automatic Generate Hota Hai
-    
-    Results Automatic Process Hote Hain
-    
-    ✔ Multi-Role Support
-    
-    Admin: Pure School Ko Control Kare
-    
-    Teacher: Apne Classes Manage Kare
-    
-    Parent: Sirf Apne Bacchon Ka Data Dekhe
-    
-    ✔ Advanced Features
-    
-    Library System (Books Tracking)
-    
-    Inventory Management (School Supplies)
-    
-    Automatic Reports Generation
-    
-    ✔ Security & Privacy
-    
-    Har School Ka Data Alag Alag Secure Hota Hai
-    
-    Har User Ki Activity Log Hoti Hai
-    
-    Final Notes:
-    
-    Laravel Multi-Tenancy: Har School Ka Alag Database
-    
-    Breeze Package: Secure Authentication Ke Liye
-    
-    Tailwind CSS: Professional School Dashboard
-    
-    Automated Jobs: Emails, Reports, Reminders
+    -> Har School Ka Apna Alag Database
+    -> Teachers, Students, Parents Ka Full Record
+    -> ✔ Automated Systems
+    -> Attendance Automatic Calculate Hota Hai
+    -> Fees Automatic Generate Hota Hai
+    -> Results Automatic Process Hote Hain
+    -> ✔ Multi-Role Support
+    -> Admin: Pure School Ko Control Kare
+    -> Teacher: Apne Classes Manage Kare
+    -> Parent: Sirf Apne Bacchon Ka Data Dekhe
+    -> ✔ Advanced Features
+    -> Library System (Books Tracking)
+    -> Inventory Management (School Supplies)
+    -> Automatic Reports Generation
+    -> ✔ Security & Privacy
+    -> Har School Ka Data Alag Alag Secure Hota Hai
+    -> Har User Ki Activity Log Hoti Hai
+    -> Final Notes:
+    -> Laravel Multi-Tenancy: Har School Ka Alag Database
+    -> Breeze Package: Secure Authentication Ke Liye
+    -> Tailwind CSS: Professional School Dashboard
+    -> Automated Jobs: Emails, Reports, Reminders
 
 
 
@@ -1376,155 +1314,6 @@ Final deployment
 
 Pro Tip: Har phase complete hone pe testing zaroor karna! Pehle core modules (attendance, fees) complete karo, phir advanced features add karna.
 
-
-
-
-
-Form Structure for student teacher parent
-
-Teacher Form Fields:
-
-    Personal Information:
-
-    Name (from users table)
-
-    Email (from users table)
-
-    Phone (from users table)
-
-    Address (from users table)
-
-    Gender (from users table)
-
-    Date of Birth (from users table)
-
-    Professional Information (from teacher_profiles):
-
-    Employee ID
-
-    Qualification
-
-    Specialization
-
-    Years of Experience
-
-    Joining Date
-
-    Salary Grade
-
-    Bank Details
-
-    Emergency Contact
-
-    Bio
-
-    Social Links
-
-    Is Class Teacher (checkbox)
-
-    Class Teacher Of (dropdown)
-
-    Documents:
-
-    Upload Qualifications
-
-    Upload Signature
-
-    Other Documents
-
-Student Form Fields:
-
-    Personal Information (from users table):
-
-    Name
-
-    Email
-
-    Phone
-
-    Address
-
-    Gender
-
-    Date of Birth
-
-    Academic Information (from student_profiles):
-
-    Admission Number
-
-    Admission Date
-
-    Class (dropdown)
-
-    Section (dropdown)
-
-    Previous School
-
-    Blood Group
-
-    Medical History
-
-    Transport Details
-
-    Hobbies
-
-    Awards
-
-    Documents:
-
-    Student Photo
-
-    ID Card Issued (checkbox)
-
-    ID Card Number
-
-    Other Documents
-
-Parent Form Fields:
-
-    Personal Information (from users table):
-
-    Name
-
-    Email
-
-    Phone
-
-    Address
-
-    Gender
-
-    Date of Birth
-
-    Family Information (from parent_profiles):
-
-    Occupation
-
-    Employer
-
-    Income Range
-
-    Education Level
-
-    Relation Type (dropdown)
-
-    Is Primary (checkbox)
-
-    Emergency Contact
-
-    Documents:
-
-    Address Proof
-
-    ID Proof
-
-    Children Information (from student_parents):
-
-    Link to Students (multi-select)
-
-    Relationship Type for each child
-
-    Is Primary for each child (checkbox)
 
 
 
@@ -1763,3 +1552,7 @@ Parent Form Fields:
 -------------------------------------------
     Add This latter
     FileStorageService
+
+
+
+    
