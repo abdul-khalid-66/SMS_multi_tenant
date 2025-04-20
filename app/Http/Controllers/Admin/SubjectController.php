@@ -21,16 +21,7 @@ class SubjectController extends Controller
         $subjects = Subject::with(['class', 'teachers'])
             ->where('school_id', auth()->user()->school_id)
             ->orderBy('name')
-            ->get()
-            ->map(function ($subject) {
-                return [
-                    'id' => $subject->id,
-                    'name' => $subject->name,
-                    'code' => $subject->code,
-                    'class' => $subject->class ? $subject->class->name : 'All Classes',
-                    'teachers' => $subject->teachers->pluck('name')->toArray()
-                ];
-            });
+            ->get();
 
         return view('app.admin.subjects.index', compact('subjects'));
     }

@@ -261,7 +261,7 @@
                                                     <li>
                                                         <a href="#">
                                                             <div class="message-img">
-                                                                <img src="tenancy/assets/backend/img/contact/1.jpg" alt="">
+                                                                <img src="{{ asset('backend/img/contact/1.jpg') }}" alt="">
                                                             </div>
                                                             <div class="message-content">
                                                                 <span class="message-date">16 Sept</span>
@@ -274,7 +274,7 @@
                                                     <li>
                                                         <a href="#">
                                                             <div class="message-img">
-                                                                <img src="tenancy/assets/backend/img/contact/4.jpg" alt="">
+                                                                <img src="{{ asset('backend/img/contact/4.jpg') }}" alt="">
                                                             </div>
                                                             <div class="message-content">
                                                                 <span class="message-date">16 Sept</span>
@@ -287,7 +287,7 @@
                                                     <li>
                                                         <a href="#">
                                                             <div class="message-img">
-                                                                <img src="tenancy/assets/backend/img/contact/3.jpg" alt="">
+                                                                <img src="{{ asset('backend/img/contact/3.jpg') }}" alt="">
                                                             </div>
                                                             <div class="message-content">
                                                                 <span class="message-date">16 Sept</span>
@@ -300,7 +300,7 @@
                                                     <li>
                                                         <a href="#">
                                                             <div class="message-img">
-                                                                <img src="tenancy/assets/backend/img/contact/2.jpg" alt="">
+                                                                <img src="{{ asset('backend/img/contact/2.jpg') }}" alt="">
                                                             </div>
                                                             <div class="message-content">
                                                                 <span class="message-date">16 Sept</span>

@@ -91,135 +91,7 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="sparkline13-list">
-                        <div class="sparkline13-graph">
-                            <div class="datatable-dashv1-list custom-datatable-overright">
-                                <div id="toolbar">
-                                    <select class="form-control dt-tb">
-                                        <option value="">Export Basic</option>
-                                        <option value="all">Export All</option>
-                                        <option value="selected">Export Selected</option>
-                                    </select>
-                                </div>
-                                <table id="classes-table" data-toggle="table" data-pagination="true" data-search="true" 
-                                    data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" 
-                                    data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
-                                    data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" 
-                                    data-toolbar="#toolbar">
-                                    <thead>
-                                        <tr>
-                                            <th data-field="state" data-checkbox="true"></th>
-                                            <th data-field="id" data-sortable="true">ID</th>
-                                            <th data-field="name" data-sortable="true">Class Name</th>
-                                            <th data-field="numeric_value" data-sortable="true">Numeric Value</th>
-                                            <th data-field="teacher" data-sortable="true">Class Teacher</th>
-                                            <th data-field="sections">Sections</th>
-                                            <th data-field="action">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td>3</td>
-                                            <td>Class 1</td>
-                                            <td>1</td>
-                                            <td>Michael Brown</td>
-                                            <td>
-                                                <span class="badge badge-primary">A</span>
-                                                <span class="badge badge-primary">B</span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group d-flex">
-                                                    <a href="{{ route('dashboard.academic.classes.edit', 3) }}" 
-                                                        class="btn btn-sm btn-primary m-1" 
-                                                        title="Edit" style="margin: 5px; color: white">
-                                                        Edit
-                                                    </a>
-                                                    <form action="{{ route('dashboard.academic.classes.destroy', 3) }}" 
-                                                        method="POST" 
-                                                        class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" 
-                                                                class="btn btn-sm btn-danger m-1" style="margin: 5px; color: white"
-                                                                title="Delete"
-                                                                onclick="return confirm('Are you sure you want to delete this class?')">
-                                                            Delete
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>4</td>
-                                            <td>Class 2</td>
-                                            <td>2</td>
-                                            <td>Emily Davis</td>
-                                            <td>
-                                                <span class="badge badge-primary">A</span>
-                                                <span class="badge badge-primary">B</span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group d-flex">
-                                                    <a href="{{ route('dashboard.academic.classes.edit', 4) }}" 
-                                                        class="btn btn-sm btn-primary m-1" 
-                                                        title="Edit" style="margin: 5px; color: white">
-                                                        Edit
-                                                    </a>
-                                                    <form action="{{ route('dashboard.academic.classes.destroy', 4) }}" 
-                                                        method="POST" 
-                                                        class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" 
-                                                                class="btn btn-sm btn-danger m-1" style="margin: 5px; color: white"
-                                                                title="Delete"
-                                                                onclick="return confirm('Are you sure you want to delete this class?')">
-                                                            Delete
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>5</td>
-                                            <td>Class 3</td>
-                                            <td>3</td>
-                                            <td>Robert Wilson</td>
-                                            <td>
-                                                <span class="badge badge-primary">A</span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group d-flex">
-                                                    <a href="{{ route('dashboard.academic.classes.edit', 5) }}" 
-                                                        class="btn btn-sm btn-primary m-1" 
-                                                        title="Edit" style="margin: 5px; color: white">
-                                                        Edit
-                                                    </a>
-                                                    <form action="{{ route('dashboard.academic.classes.destroy', 5) }}" 
-                                                        method="POST" 
-                                                        class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" 
-                                                                class="btn btn-sm btn-danger m-1" style="margin: 5px; color: white"
-                                                                title="Delete"
-                                                                onclick="return confirm('Are you sure you want to delete this class?')">
-                                                            Delete
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
+                
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="sparkline13-list">
                         <div class="sparkline13-hd">
@@ -250,32 +122,50 @@
                                         </tr>
                                      </thead>
                                      <tbody>
-                                         {{-- @foreach ($students as $student) --}}
+                                         @foreach ($classes as $class)
                                              <tr>
                                                 <td></td>
-                                                <td>5</td>
-                                                <td>Class 3</td>
-                                                <td>3</td>
-                                                <td>Robert Wilson</td>
+                                                <td>{{ $class->id??"" }}</td>
+                                                <td>{{ $class->name??"" }}</td>
+                                                <td>{{ $class->numeric_value??"" }}</td>
                                                 <td>
-                                                    <span class="badge badge-primary">A</span>
+                                                    @if($class->classTeacher)
+                                                        {{ $class->classTeacher->name }}
+                                                    @else
+                                                        <span class="text-muted">Not assigned</span>
+                                                    @endif
                                                 </td>
-                                                
                                                 <td>
-                                                    <div class="btn-group">
-                                                        <a class="btn btn-xs btn-primary" data-toggle="modal" href="{{ route('dashboard.academic.classes.edit', 4) }}"
-                                                                data-target="#editParentModal" style="margin-right: 2px">
+                                                    @forelse($class->sections as $section)
+                                                        <span class="badge badge-primary">{{ $section->name }}</span>
+                                                    @empty
+                                                        <span class="text-muted">No sections</span>
+                                                    @endforelse
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                        <a href="{{ route('dashboard.academic.classes.edit', $class->id) }}" 
+                                                           class="btn btn-xs btn-primary" 
+                                                           title="Edit">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
-                                                        
-                                                        <a href="{{ route('dashboard.academic.classes.destroy', 4) }}" class="btn btn-xs btn-danger delete-parent" style="margin-left: 2px"
-                                                                data-parent-id="4">
-                                                            <i class="fa fa-trash"></i>
-                                                        </a>
+                                                
+                                                        <form action="{{ route('dashboard.academic.classes.destroy', $class->id) }}" 
+                                                              method="POST" 
+                                                              class="delete-form">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" 
+                                                                    class="btn btn-xs btn-danger" 
+                                                                    title="Delete"
+                                                                    onclick="return confirm('Are you sure you want to delete this section?')">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </td>
                                              </tr>
-                                         {{-- @endforeach --}}
+                                         @endforeach
                                      </tbody>
                                 </table>
                             </div>

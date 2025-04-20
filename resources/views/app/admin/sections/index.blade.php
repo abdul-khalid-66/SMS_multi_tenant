@@ -107,8 +107,11 @@
                                         <option value="selected">Export Selected</option>
                                     </select>
                                 </div>
-                                <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
-                                    data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                                <table id="sections-table" data-toggle="table" data-pagination="true" data-search="true" 
+                                    data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" 
+                                    data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
+                                    data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" 
+                                    data-toolbar="#toolbar">
                                     <thead>
                                         <tr>
                                             <th data-field="state" data-checkbox="true"></th>
@@ -116,35 +119,46 @@
                                             <th data-field="name" data-sortable="true">Section Name</th>
                                             <th data-field="class" data-sortable="true">Class</th>
                                             <th data-field="capacity" data-sortable="true">Capacity</th>
-                                            <th data-field="students">Students</th>
+                                            <th data-field="students" data-sortable="true">Students</th>
                                             <th data-field="action">Actions</th>
                                         </tr>
                                     </thead>
-                                     <tbody>
-                                         {{-- @foreach ($students as $student) --}}
-                                             <tr>
-                                                <td></td>
-                                                <td>1</td>
-                                                <td>Section A</td>
-                                                <td>Class 1</td>
-                                                <td>30</td>
-                                                <td>2</td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <a class="btn btn-xs btn-primary" data-toggle="modal" href="{{ route('dashboard.academic.sections.edit', 4) }}"
-                                                                data-target="#editParentModal" style="margin-right: 2px">
-                                                            <i class="fa fa-edit"></i>
-                                                        </a>
-                                                        
-                                                        <a href="{{ route('dashboard.academic.sections.destroy', 4) }}" class="btn btn-xs btn-danger delete-parent" style="margin-left: 2px"
-                                                                data-parent-id="4">
+                                    <tbody>
+                                        @foreach($sections as $section)
+                                        <tr>
+                                            <td></td>
+                                            <td>{{ $section->id }}</td>
+                                            <td>{{ $section->name }}</td>
+                                            <td>{{ $section->class->name ?? 'N/A' }}</td>
+                                            <td>{{ $section->capacity }}</td>
+                                            <td>{{ $section->students_count }}</td>
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: 4px;">
+                                                    <a href="{{ route('dashboard.academic.sections.edit', $section->id) }}" 
+                                                       class="btn btn-xs btn-primary" 
+                                                       title="Edit">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                            
+                                                    <form action="{{ route('dashboard.academic.sections.destroy', $section->id) }}" 
+                                                          method="POST" 
+                                                          class="delete-form">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" 
+                                                                class="btn btn-xs btn-danger" 
+                                                                title="Delete"
+                                                                onclick="return confirm('Are you sure you want to delete this section?')">
                                                             <i class="fa fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                             </tr>
-                                         {{-- @endforeach --}}
-                                     </tbody>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                            
+                                            
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

@@ -21,17 +21,8 @@ class SectionController extends Controller
             ->where('school_id', auth()->user()->school_id)
             ->orderBy('class_id')
             ->orderBy('name')
-            ->get()
-            ->map(function ($section) {
-                return [
-                    'id' => $section->id,
-                    'name' => $section->name,
-                    'class' => $section->class->name,
-                    'class_id' => $section->class_id,
-                    'capacity' => $section->capacity,
-                    'students_count' => $section->students->count()
-                ];
-            });
+            ->get();
+
 
         return view('app.admin.sections.index', compact('sections'));
     }

@@ -8,7 +8,7 @@
     <title>Dashboard V.1 | Kiaalap - Kiaalap Admin Template</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('backend/img/favicon.ico') }}">
     @stack('css')
 </head>
 
@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 20px">
                     <div class="logo-pro">
-                        <a href="index.html"><img class="main-logo" src="tenancy/assets/backend/img/logo/logo.png" alt="" /></a>
+                        <a href="index.html"><img class="main-logo" src="{{ asset('backend/img/logo/logo.png') }}" alt="" /></a>
                     </div>
                 </div>
             </div>

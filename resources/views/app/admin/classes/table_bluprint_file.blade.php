@@ -76,24 +76,21 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <div class="breadcome-heading" style="margin-top: 10px">
-                                    <h3>All Subjects</h3>
+                                    <h3>All Classes</h3>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <ul class="breadcome-menu">
                                     <li>
-                                        <a href="{{ route('dashboard.academic.subjects.create') }}" class="btn btn-primary btn-sm" style="color: white">
-                                            <i class="fa fa-plus"></i> Add Subject
-                                        </a>
-                                        <a href="{{ route('dashboard.academic.subjects.assign') }}" class="btn btn-info btn-sm" style="color: white; margin-left: 10px">
-                                            <i class="fa fa-user-tie"></i> Assign Teachers
+                                        <a href="{{ route('dashboard.academic.classes.create') }}" class="btn btn-primary btn-sm" style="color: white">
+                                            <i class="fa fa-plus"></i> Add Class
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                </div>              
+                </div>                
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="sparkline13-list">
                         <div class="sparkline13-hd">
@@ -110,70 +107,47 @@
                                         <option value="selected">Export Selected</option>
                                     </select>
                                 </div>
-                                <table id="sections-table" data-toggle="table" data-pagination="true" data-search="true" 
-                                    data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" 
-                                    data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
-                                    data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" 
-                                    data-toolbar="#toolbar">
+                                <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
+                                    data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
                                     <thead>
                                         <tr>
                                             <th data-field="state" data-checkbox="true"></th>
-                                            <th data-field="id" data-sortable="true">S#</th>
-                                            <th data-field="name" data-sortable="true">Subject Name</th>
-                                            <th data-field="code" data-sortable="true">Code</th>
-                                            <th data-field="classes">Assigned Classes</th>
-                                            <th data-field="teachers">Assigned Teachers</th>
+                                            <th data-field="id" data-sortable="true">ID</th>
+                                            <th data-field="name" data-sortable="true">Class Name</th>
+                                            <th data-field="numeric_value" data-sortable="true">Numeric Value</th>
+                                            <th data-field="teacher" data-sortable="true">Class Teacher</th>
+                                            <th data-field="sections">Sections</th>
                                             <th data-field="action">Actions</th>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($subjects as $key => $subject)
-                                        <tr>
-                                            <td></td>
-                                            <td>{{ $key+1 }}</td>
-                                            <td>{{ $subject->name }}</td>
-                                            <td>{{ $subject->code }}</td>
-                                            <td>
-                                                @if($subject->class)
-                                                    {{ $subject->class->name }}
-                                                @else
-                                                    <span class="badge badge-info">All Classes</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @forelse($subject->teachers as $teacher)
-                                                    <span class="badge badge-primary">{{ $teacher->name }}</span>
-                                                @empty
-                                                    <span class="text-muted">Not assigned</span>
-                                                @endforelse
-                                            </td>
-                                            <td>
-                                                <div style="display: flex; align-items: center; gap: 4px;">
-                                                    <a href="{{ route('dashboard.academic.subjects.edit', $subject->id) }}" 
-                                                       class="btn btn-xs btn-primary" 
-                                                       style="margin-right: 2px"
-                                                       title="Edit">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    
-                                                    <form action="{{ route('dashboard.academic.subjects.destroy', $subject->id) }}" 
-                                                          method="POST" 
-                                                          class="d-inline delete-subject-form">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" 
-                                                                class="btn btn-xs btn-danger" 
-                                                                style="margin-left: 2px"
-                                                                title="Delete"
-                                                                data-subject-id="{{ $subject->id }}">
+                                     </thead>
+                                     <tbody>
+                                         {{-- @foreach ($students as $student) --}}
+                                             <tr>
+                                                <td></td>
+                                                <td>5</td>
+                                                <td>Class 3</td>
+                                                <td>3</td>
+                                                <td>Robert Wilson</td>
+                                                <td>
+                                                    <span class="badge badge-primary">A</span>
+                                                </td>
+                                                
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-xs btn-primary" data-toggle="modal" href="{{ route('dashboard.academic.classes.edit', 4) }}"
+                                                                data-target="#editParentModal" style="margin-right: 2px">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        
+                                                        <a href="{{ route('dashboard.academic.classes.destroy', 4) }}" class="btn btn-xs btn-danger delete-parent" style="margin-left: 2px"
+                                                                data-parent-id="4">
                                                             <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                             </tr>
+                                         {{-- @endforeach --}}
+                                     </tbody>
                                 </table>
                             </div>
                         </div>

@@ -17,7 +17,7 @@
                 <li class="active">
                     <a class="has-arrow" href="javascript:void(0)">
                         <span class="educate-icon educate-home icon-wrap"></span>
-                        <span class="mini-click-non">Schools Management</span>
+                        <span class="mini-click-non">Tenant Schools</span>
                     </a>
                     <ul class="submenu-angle" aria-expanded="true">
                         <li><a title="Create New School" href="{{ route('tenant.create') }}"><span class="mini-sub-pro">Create New School</span></a></li>
@@ -28,7 +28,7 @@
                 <li>
                     <a title="System Configuration" href="#" aria-expanded="false">
                         <span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span>
-                        <span class="mini-click-non">User Management</span>
+                        <span class="mini-click-non">Tenant User</span>
                     </a>
                 </li>
                 <li>

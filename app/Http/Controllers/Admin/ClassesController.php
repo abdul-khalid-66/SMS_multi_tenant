@@ -20,18 +20,7 @@ class ClassesController extends Controller
         $classes = Classes::with(['classTeacher', 'sections'])
             ->where('school_id', auth()->user()->school_id)
             ->orderBy('numeric_value')
-            ->get()
-            ->map(function ($class) {
-                return [
-                    'id' => $class->id,
-                    'name' => $class->name,
-                    'numeric_value' => $class->numeric_value,
-                    'teacher' => $class->classTeacher ? $class->classTeacher->name : 'Not assigned',
-                    'sections_count' => $class->sections->count(),
-                    'sections' => $class->sections->pluck('name')->toArray()
-                ];
-            });
-
+            ->get();
         return view('app.admin.classes.index', compact('classes'));
     }
 
@@ -48,7 +37,7 @@ class ClassesController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('app.admin.classes.index.create', compact('teachers'));
+        return view('app.admin.classes.create', compact('teachers'));
     }
 
     /**
@@ -89,7 +78,7 @@ class ClassesController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('app.admin.classes.index.edit', compact('class', 'teachers'));
+        return view('app.admin.classes.edit', compact('class', 'teachers'));
     }
 
     /**
