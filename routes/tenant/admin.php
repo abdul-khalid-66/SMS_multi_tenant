@@ -96,6 +96,7 @@ Route::middleware([
         Route::delete('/{id}', [SubjectController::class, 'destroy'])->name('destroy');
     });
     Route::get('subject_assign/', [SubjectController::class, 'assign'])->name('admin.academic.subjects.assign');
+    Route::post('subject_assign/', [SubjectController::class, 'assignTeacherStore'])->name('admin.academic.subjects.assign_teacher');
 
     // Subject Teacher Assignment
     // Route::get('academic/subjects', [SubjectController::class, 'assignTeacher'])->name('admin.academic.subjects.assign');

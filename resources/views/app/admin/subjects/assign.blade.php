@@ -104,7 +104,7 @@
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="all-form-element-inner">
-                                            <form id="assignTeacherForm" method="POST" action="">
+                                            <form id="assignTeacherForm" method="POST" action="{{ route('admin.academic.subjects.assign_teacher') }}">
                                                 @csrf
                                                 
                                                 <div class="table-responsive">
@@ -137,13 +137,24 @@
                                                                                 @endforeach
                                                                             </select>
                                                                             
-                                                                            <div class="checkbox checkbox-primary mt-2">
+                                                                            {{-- <div class="checkbox checkbox-primary mt-2">
                                                                                 <input id="is_class_teacher_{{ $subject->id }}_{{ $class->id }}" 
                                                                                     name="assignments[{{ $subject->id }}][{{ $class->id }}][is_class_teacher]" 
                                                                                     type="checkbox" 
                                                                                     value="1"
                                                                                     {{ $assignments[$subject->id][$class->id]['is_class_teacher'] ? 'checked' : '' }}>
                                                                                 <label for="is_class_teacher_{{ $subject->id }}_{{ $class->id }}">
+                                                                                    Class Teacher
+                                                                                </label>
+                                                                            </div> --}}
+                                                                            <div class="form-check mt-2 d-flex align-items-center">
+                                                                                <input class="form-check-input m-0" 
+                                                                                       type="checkbox" 
+                                                                                       id="is_class_teacher_{{ $subject->id }}_{{ $class->id }}"
+                                                                                       name="assignments[{{ $subject->id }}][{{ $class->id }}][is_class_teacher]"
+                                                                                       value="1"
+                                                                                       {{ $assignments[$subject->id][$class->id]['is_class_teacher'] ? 'checked' : '' }}>
+                                                                                <label class="form-check-label ms-2" for="is_class_teacher_{{ $subject->id }}_{{ $class->id }}">
                                                                                     Class Teacher
                                                                                 </label>
                                                                             </div>
