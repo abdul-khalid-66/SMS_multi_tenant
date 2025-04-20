@@ -141,8 +141,8 @@ class SubjectController extends Controller
             ->orderBy('numeric_value')
             ->get();
 
-        $teachers = User::where('school_id', auth()->user()->school_id)
-            ->where('role', 'teacher')
+        $teachers = User::role('teacher')
+            ->where('school_id', auth()->user()->school_id)
             ->orderBy('name')
             ->get();
 
@@ -161,7 +161,7 @@ class SubjectController extends Controller
             }
         }
 
-        return view('app.admin.classes.assign', compact('subjects', 'classes', 'teachers', 'assignments'));
+        return view('app.admin.subjects.assign', compact('subjects', 'classes', 'teachers', 'assignments'));
     }
 
     /**

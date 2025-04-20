@@ -95,10 +95,13 @@ Route::middleware([
         Route::put('/{id}', [SubjectController::class, 'update'])->name('update');
         Route::delete('/{id}', [SubjectController::class, 'destroy'])->name('destroy');
     });
-    Route::get('subject_assign/', [SubjectController::class, 'destroy'])->name('admin.academic.subjects.assign');
+    Route::get('subject_assign/', [SubjectController::class, 'assign'])->name('admin.academic.subjects.assign');
 
-
-
+    // Subject Teacher Assignment
+    // Route::get('academic/subjects', [SubjectController::class, 'assignTeacher'])->name('admin.academic.subjects.assign');
+    // Route::put('academic/subjects/{subject}/assign-teacher', [SubjectController::class, 'assignTeacherStore'])->name('admin.academic.subjects.assign-teacher');
+    // // For AJAX section loading
+    // Route::get('academic/sections/by-class', [SectionController::class, 'getSectionsByClass'])->name('admin.academic.sections.by-class');
 
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
