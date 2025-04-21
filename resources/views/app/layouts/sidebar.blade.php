@@ -17,7 +17,7 @@
                         </a>
                     </li>
                     <li>
-                        <a title="School Profile" href="#" aria-expanded="false">
+                        <a title="School Profile" href="{{ route('schools.show') }}" aria-expanded="false">
                             <span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span>
                             <span class="mini-click-non">School Profile</span>
                         </a>

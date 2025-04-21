@@ -88,6 +88,9 @@ CREATE TABLE teacher_profiles (
   experience_years INT,
   joining_date DATE,
   salary_grade VARCHAR(20),
+  base_salary DECIMAL(12,2) NOT NULL,
+  current_salary DECIMAL(12,2) NOT NULL,
+  last_increment_date DATE NUL,
   bank_details JSON,
   emergency_contact JSON,
   documents JSON,
@@ -452,6 +455,33 @@ CREATE TABLE system_settings (
   UNIQUE KEY (school_id, setting_key)
 );
 
+-- Create salary payments table (similar to fee_payments)
+CREATE TABLE salary_payments (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    teacher_id BIGINT UNSIGNED NOT NULL,
+    school_id BIGINT UNSIGNED NOT NULL,
+    payment_date DATE NOT NULL,
+    amount DECIMAL(12,2) NOT NULL,
+    bonus DECIMAL(12,2) DEFAULT 0.00,
+    deductions DECIMAL(12,2) DEFAULT 0.00,
+    tax_amount DECIMAL(12,2) DEFAULT 0.00,
+    payment_method VARCHAR(20),
+    transaction_reference VARCHAR(100),
+    status VARCHAR(20) DEFAULT 'pending',
+    notes TEXT,
+    recorded_by BIGINT UNSIGNED NULL,
+    deleted_at TIMESTAMP NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_salary_teacher FOREIGN KEY (teacher_id) 
+        REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_salary_school FOREIGN KEY (school_id) 
+        REFERENCES schools(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_salary_recorded_by FOREIGN KEY (recorded_by) 
+        REFERENCES users(id) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 Here's the concise format for all tables as requested:
 
 1. schools  => `id | name | address | phone | email | logo | session_year | deleted_at | created_at | updated_at`
@@ -459,7 +489,7 @@ Here's the concise format for all tables as requested:
 3. classes  => `id | school_id | name | numeric_value | teacher_id | deleted_at | created_at | updated_at`
 4. sections  => `id | school_id | class_id | name | capacity | deleted_at | created_at | updated_at`
 5. subjects  => `id | school_id | name | code | class_id | deleted_at | created_at | updated_at`
-6. teacher_profiles  => `id | teacher_id | school_id | employee_id | qualification | specialization | experience_years | joining_date | salary_grade | bank_details | emergency_contact | documents | signature | bio | social_links | is_class_teacher | class_teacher_of | deleted_at | created_at | updated_at`
+6. teacher_profiles  => `id | teacher_id | school_id | employee_id | qualification | specialization | experience_years | joining_date | salary_grade |base_salary | current_salary | last_increment_date | bank_details | emergency_contact | documents | signature | bio | social_links | is_class_teacher | class_teacher_of | deleted_at | created_at | updated_at`
 7. student_profiles  => `id | student_id | school_id | admission_no | admission_date | class_id | section_id | previous_school | medical_history | transport_details | hobbies | awards | documents | student_photo | id_card_issued | id_card_number | blood_group | deleted_at | created_at | updated_at`
 8. parent_profiles  => `id | parent_id | school_id | occupation | employer | income_range | education_level | relation_type | is_primary | address_proof | id_proof | emergency_contact | deleted_at | created_at | updated_at`
 9. student_parents  => `id | student_id | parent_id | relationship | is_primary | created_at | updated_at | deleted_at`
@@ -482,8 +512,9 @@ Here's the concise format for all tables as requested:
 26. holidays  => `id | school_id | title | description | start_date | end_date | is_recurring | recurring_pattern | deleted_at | created_at | updated_at`
 27. audit_logs  => `id | user_id | action | table_affected | record_id | old_values | new_values | ip_address | created_at`
 28. system_settings  => `id | school_id | setting_key | setting_value | is_encrypted | created_at | updated_at`
+29. salary_payments => id | teacher_id | school_id | payment_date | amount | bonus | deductions | tax_amount | payment_method | transaction_reference | status | notes | recorded_by | deleted_at | created_at | updated_at | PRIMARY |
 
-Here's the concise relationship summary for all models:
+Here's the concise relationship summary for all existing models:
 
 1. **School**:
    - users() → hasMany(User::class)
@@ -501,6 +532,7 @@ Here's the concise relationship summary for all models:
    - school() → belongsTo(School::class)
    - classTeacher() → belongsTo(User::class)
    - sections() → hasMany(Section::class)
+   - class() → $this->belongsToMany(Subject::class, 'subject_classes');
    =>4. **Section**:
    - school() → belongsTo(School::class)
    - class() → belongsTo(Classes::class)
@@ -509,6 +541,9 @@ Here's the concise relationship summary for all models:
    - school() → belongsTo(School::class)
    - class() → belongsTo(Classes::class)
    - teachers() → belongsToMany(User::class, 'teacher_subjects', 'subject_id', 'teacher_id')->withPivot('class_id', 'is_class_teacher')
+   - classes() return $this->belongsToMany(Classes::class, 'subject_classes');
+   - teacherSubjects() return $this->hasMany(TeacherSubject::class);
+
    =>6. **TeacherProfile**:
    - teacher() → belongsTo(User::class)
    - school() → belongsTo(School::class)
@@ -592,7 +627,13 @@ Here's the concise relationship summary for all models:
     =>26. **SystemSetting**:
     - school() → belongsTo(School::class)
     =>
-    // In User.php model
+    =>27 ,**Salary Payment** 
+  school() => $this->belongsTo(School::class) 
+  teacher() => $this->belongsTo(User::class, 'teacher_id') 
+  recordedBy() => $this->belongsTo(User::class, 'recorded_by') 
+  getNetSalaryAttribute() => $this->amount + $this->bonus - $this->deductions - $this->tax_amount 
+  scopeForMonth($query, $monthYear) => $query->where('month_year', $monthYear) 
+  scopeForTeacher($query, $teacherId) => $query->where('teacher_id', $teacherId) 
 
 =>// For parents
 public function children()
@@ -607,6 +648,11 @@ public function children()
 {
     return $this->hasMany(StudentParent::class, 'student_id');
 }
+
+TeacherSubject => 
+  subject()return $this->belongsTo(Subject::class);
+  class()return $this->belongsTo(Classes::class);
+
 
 =>Application Core Modules
 Super Admin Panel >
@@ -1087,6 +1133,8 @@ file/directory structure
                        ├── assign.blade.php (for teacher assignment)
                        └── _form.blade.php (partial)  
 
+
+Mera Complete School Management System - Roman Urdu Mein Full Details
     5. Yeh App Schools Ko Kaise Help Karegi?
     ✔ Complete School Management
     -> Har School Ka Apna Alag Database
@@ -1111,13 +1159,6 @@ file/directory structure
     -> Breeze Package: Secure Authentication Ke Liye
     -> Tailwind CSS: Professional School Dashboard
     -> Automated Jobs: Emails, Reports, Reminders
-
-
-
-
-
-
-Mera Complete School Management System - Roman Urdu Mein Full Details
 
 Ye ek professional-grade school management software hai jo Laravel aur MySQL pe based hai. System ko maine multi-tenant architecture mein design kiya hai jahan:
 
@@ -1313,11 +1354,6 @@ Feedback collection
 Final deployment
 
 Pro Tip: Har phase complete hone pe testing zaroor karna! Pehle core modules (attendance, fees) complete karo, phir advanced features add karna.
-
-
-
-
-
 
     -- Insert data into schools table
     INSERT INTO schools (NAME, address, phone, email, logo, session_year) VALUES

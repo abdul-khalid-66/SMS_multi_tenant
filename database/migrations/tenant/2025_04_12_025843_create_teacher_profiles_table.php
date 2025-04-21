@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('specialization', 100)->nullable();
             $table->integer('experience_years')->nullable();
             $table->date('joining_date')->nullable();
+            $table->decimal('base_salary', 12, 2)->nullable();
+            $table->decimal('current_salary', 12, 2)->nullable();
+            $table->date('last_increment_date')->nullable();
             $table->string('salary_grade', 20)->nullable();
             $table->json('bank_details')->nullable();
             $table->json('emergency_contact')->nullable();

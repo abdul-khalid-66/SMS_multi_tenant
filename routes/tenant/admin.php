@@ -13,7 +13,8 @@ use App\Http\Controllers\Admin\{
     ParentController,
     ClassesController,
     SectionController,
-    SubjectController
+    SubjectController,
+    SchoolProfileController
 };
 
 use Illuminate\Support\Facades\Route;
@@ -98,11 +99,29 @@ Route::middleware([
     Route::get('subject_assign/', [SubjectController::class, 'assign'])->name('admin.academic.subjects.assign');
     Route::post('subject_assign/', [SubjectController::class, 'assignTeacherStore'])->name('admin.academic.subjects.assign_teacher');
 
-    // Subject Teacher Assignment
-    // Route::get('academic/subjects', [SubjectController::class, 'assignTeacher'])->name('admin.academic.subjects.assign');
-    // Route::put('academic/subjects/{subject}/assign-teacher', [SubjectController::class, 'assignTeacherStore'])->name('admin.academic.subjects.assign-teacher');
-    // // For AJAX section loading
-    // Route::get('academic/sections/by-class', [SectionController::class, 'getSectionsByClass'])->name('admin.academic.sections.by-class');
+
+    Route::get('schoo_profile', [SchoolProfileController::class, 'index'])->middleware(['auth', 'verified'])->name('admin.school.profile');
+    Route::get('schoo_edit', [SchoolProfileController::class, 'edit'])->middleware(['auth', 'verified'])->name('admin.school.profile.edit');
+    Route::put('schoo_profile', [SchoolProfileController::class, 'update'])->middleware(['auth', 'verified'])->name('admin.school.profile.update');
+    Route::get('setting', [SchoolProfileController::class, 'showSettings'])->middleware(['auth', 'verified'])->name('admin.school.setting');
+    Route::put('setting', [SchoolProfileController::class, 'updateSettings'])->middleware(['auth', 'verified'])->name('admin.school.setting.update');
+
+    // routes/web.php
+
+    Route::middleware(['auth', 'verified'])->group(function () {
+        // School Profile Routes
+        Route::get('/schools', [SchoolProfileController::class, 'index'])->name('schools.show');
+        Route::get('/schools/edit', [SchoolProfileController::class, 'edit'])->name('schools.edit');
+        Route::put('/schools', [SchoolProfileController::class, 'update'])->name('schools.update');
+
+        // School Settings Routes
+        Route::prefix('schools/settings')->group(function () {
+            Route::get('/', [SchoolProfileController::class, 'showSettings'])->name('schools.settings');
+            Route::put('/', [SchoolProfileController::class, 'updateSettings'])->name('schools.update-settings');
+            Route::put('/academic', [SchoolProfileController::class, 'updateAcademicSettings'])->name('schools.update-academic-settings');
+            Route::put('/attendance', [SchoolProfileController::class, 'updateAttendanceSettings'])->name('schools.update-attendance-settings');
+        });
+    });
 
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
