@@ -19,6 +19,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('logo')->nullable();
             $table->string('session_year', 20)->nullable();
+            // New fields
+            $table->string('type')->nullable()->comment('public/private/international');
+            $table->string('affiliation')->nullable()->comment('School affiliation number');
+            $table->string('principal')->nullable()->comment('Principal name');
+            $table->text('about')->nullable()->comment('About school description');
+            $table->year('established_year')->nullable()->comment('Year school was established');
+            $table->json('social_links')->nullable()->comment('Social media links');
+            // Timestamps
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });

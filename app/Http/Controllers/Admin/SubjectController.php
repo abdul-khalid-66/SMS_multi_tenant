@@ -19,7 +19,10 @@ class SubjectController extends Controller
     public function index()
     {
         // Get subjects with their classes and teachers
-        $subjects = Subject::with(['class', 'teachers'])
+        $subjects = Subject::with([
+            'subjectTeacherClass.user',
+            'subjectTeacherClass.class',
+        ])
             ->where('school_id', auth()->user()->school_id)
             ->orderBy('name')
             ->get();

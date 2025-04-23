@@ -122,19 +122,19 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <div class="breadcome-heading" style="margin-top: 10px">
-                                <h3>Parent Registration Form</h3>
+                                <h3>School Profile</h3>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <ul class="breadcome-menu">
                                 <li>
                                     <a href="{{ route('schools.edit') }}" class="btn btn-primary btn-sm" style="color: white">
-                                        <i class="fa fa-arrow-left"></i> Profile Edit
+                                        <i class="fa fa-graduation-cap"></i> Profile Edit
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ route('schools.settings') }}" class="btn btn-primary btn-sm" style="color: white">
-                                        <i class="fa fa-arrow-left"></i> Setting
+                                        <i class="fa fa-cog"></i> Setting
                                     </a>
                                 </li>
                             </ul>
@@ -144,214 +144,203 @@
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="sparkline12-list">
-                    <div class="sparkline12-graph">
-                        <div class="basic-login-form-ad">
-                            <div class="row">
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                        <div class="text-center">
-                                            <div class="logo-container mx-auto">
-                                                @if($school->logo)
-                                                    <img src="{{ asset('storage/'.$school->logo) }}" alt="School Logo" class="img-fluid">
-                                                @else
-                                                    <img src="{{ asset('backend/img/school-default.png') }}" alt="School Logo" class="img-fluid">
-                                                @endif
-                                            </div>
-                                            <h3 class="mt-3">{{ $school->name }}</h3>
-                                            <p class="text-muted">{{ $school->session_year }} Session</p>
-                                        </div>
-                                        
-                                        <div class="mt-4">
-                                            <h4>Quick Stats</h4>
-                                            <div class="stat-card" style="background-color: #4e73df;">
-                                                <i class="fa fa-users"></i>
-                                                <h3>{{ $stats['students'] }}</h3>
-                                                <p>Total Students</p>
-                                            </div>
-                                            <div class="stat-card" style="background-color: #1cc88a;">
-                                                <i class="fa fa-chalkboard-teacher"></i>
-                                                <h3>{{ $stats['teachers'] }}</h3>
-                                                <p>Teaching Staff</p>
-                                            </div>
-                                            <div class="stat-card" style="background-color: #36b9cc;">
-                                                <i class="fa fa-door-open"></i>
-                                                <h3>{{ $stats['classes'] }}</h3>
-                                                <p>Classes</p>
-                                            </div>
-                                        </div>
+  
+                            
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="text-center">
+                                <div class="logo-container mx-auto">
+                                    @if($school->logo)
+                                        <img src="{{ asset($school->logo) }}" alt="School Logo" class="img-fluid">
+                                    @else
+                                        <img src="{{ asset('backend/img/school-default.png') }}" alt="School Logo" class="img-fluid">
+                                    @endif
+                                </div>
+                                <h3 class="mt-3">{{ $school->name }}</h3>
+                                <p class="text-muted">{{ $school->session_year }} Session</p>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h4>Quick Stats</h4>
+                                <div class="stat-card" style="background-color: #4e73df;">
+                                    <i class="fa fa-users"></i>
+                                    <h3>{{ $stats['students'] }}</h3>
+                                    <p>Total Students</p>
+                                </div>
+                                <div class="stat-card" style="background-color: #1cc88a;">
+                                    <i class="fa fa-chalkboard-teacher"></i>
+                                    <h3>{{ $stats['teachers'] }}</h3>
+                                    <p>Teaching Staff</p>
+                                </div>
+                                <div class="stat-card" style="background-color: #36b9cc;">
+                                    <i class="fa fa-door-open"></i>
+                                    <h3>{{ $stats['classes'] }}</h3>
+                                    <p>Classes</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                            <div class="profile-tabs">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#basic" data-toggle="tab">Basic Information</a></li>
+                                    <li><a href="#contact" data-toggle="tab">Contact Details</a></li>
+                                    <li><a href="#academic" data-toggle="tab">Academic Structure</a></li>
+                                </ul>
+                                
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="basic">
+                                        <table class="profile-info table">
+                                            <tr>
+                                                <td>School Name</td>
+                                                <td>{{ $school->name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Academic Session</td>
+                                                <td>{{ $school->session_year }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Established</td>
+                                                <td>{{ $school->established_year ?? 'Not specified' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>School Type</td>
+                                                <td>{{ $school->type ?? 'Not specified' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Affiliation</td>
+                                                <td>{{ $school->affiliation ?? 'Not specified' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Principal</td>
+                                                <td>{{ $school->principal ?? 'Not specified' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>About School</td>
+                                                <td>{{ $school->about ?? 'Not specified' }}</td>
+                                            </tr>
+                                        </table>
                                     </div>
                                     
-                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                        <div class="profile-tabs">
-                                            <ul class="nav nav-tabs">
-                                                <li class="active"><a href="#basic" data-toggle="tab">Basic Information</a></li>
-                                                <li><a href="#contact" data-toggle="tab">Contact Details</a></li>
-                                                <li><a href="#academic" data-toggle="tab">Academic Structure</a></li>
-                                            </ul>
-                                            
-                                            <div class="tab-content">
-                                                <div class="tab-pane active" id="basic">
-                                                    <table class="profile-info table">
-                                                        <tr>
-                                                            <td>School Name</td>
-                                                            <td>{{ $school->name }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Academic Session</td>
-                                                            <td>{{ $school->session_year }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Established</td>
-                                                            <td>{{ $school->established_year ?? 'Not specified' }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>School Type</td>
-                                                            <td>{{ $school->type ?? 'Not specified' }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Affiliation</td>
-                                                            <td>{{ $school->affiliation ?? 'Not specified' }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Principal</td>
-                                                            <td>{{ $school->principal ?? 'Not specified' }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>About School</td>
-                                                            <td>{{ $school->about ?? 'Not specified' }}</td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                
-                                                <div class="tab-pane" id="contact">
-                                                    <table class="profile-info table">
-                                                        <tr>
-                                                            <td>Address</td>
-                                                            <td>{{ $school->address }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Phone Number</td>
-                                                            <td>{{ $school->phone }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Email Address</td>
-                                                            <td>{{ $school->email }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Website</td>
-                                                            <td>{{ $school->website ?? 'Not specified' }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Social Media</td>
-                                                            <td>
-                                                                @if($school->social_links)
-                                                                    @foreach(json_decode($school->social_links) as $platform => $link)
-                                                                        @if($link)
-                                                                            <a href="{{ $link }}" target="_blank" class="btn btn-default btn-xs">
-                                                                                <i class="fa fa-{{ $platform }}"></i> {{ ucfirst($platform) }}
-                                                                            </a>
-                                                                        @endif
+                                    <div class="tab-pane" id="contact">
+                                        <table class="profile-info table">
+                                            <tr>
+                                                <td>Address</td>
+                                                <td>{{ $school->address }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Phone Number</td>
+                                                <td>{{ $school->phone }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Email Address</td>
+                                                <td>{{ $school->email }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Website</td>
+                                                <td>{{ $school->website ?? 'Not specified' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Social Media</td>
+                                                <td>
+                                                    @if($school->social_links)
+                                                        @foreach(json_decode($school->social_links) as $platform => $link)
+                                                            @if($link)
+                                                                <a href="{{ $link }}" target="_blank" class="btn btn-default btn-xs">
+                                                                    <i class="fa fa-{{ $platform }}"></i> {{ ucfirst($platform) }}
+                                                                </a>
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        Not specified
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>School Hours</td>
+                                                <td>{{ $school->working_hours ?? 'Not specified' }}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    
+                                    <div class="tab-pane" id="academic">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h4>Classes & Sections</h4>
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Class</th>
+                                                                <th>Sections</th>
+                                                                <th>Class Teacher</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($classes as $class)
+                                                            <tr>
+                                                                <td>{{ $class->name }}</td>
+                                                                <td>
+                                                                    @foreach($class->sections as $section)
+                                                                        <span class="badge badge-primary">{{ $section->name }}</span>
                                                                     @endforeach
-                                                                @else
-                                                                    Not specified
-                                                                @endif
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>School Hours</td>
-                                                            <td>{{ $school->working_hours ?? 'Not specified' }}</td>
-                                                        </tr>
+                                                                </td>
+                                                                <td>
+                                                                    @if($class->classTeacher)
+                                                                        {{ $class->classTeacher->name }}
+                                                                    @else
+                                                                        Not assigned
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                            
+                                                        </tbody>
                                                     </table>
-                                                </div>
-                                                
-                                                <div class="tab-pane" id="academic">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <h4>Classes & Sections</h4>
-                                                            <div class="table-responsive">
-                                                                <table class="table table-striped">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Class</th>
-                                                                            <th>Sections</th>
-                                                                            <th>Class Teacher</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        @foreach($classes as $class)
-                                                                        <tr>
-                                                                            <td>{{ $class->name }}</td>
-                                                                            <td>
-                                                                                @foreach($class->sections as $section)
-                                                                                    <span class="badge badge-primary">{{ $section->name }}</span>
-                                                                                @endforeach
-                                                                            </td>
-                                                                            <td>
-                                                                                @if($class->classTeacher)
-                                                                                    {{ $class->classTeacher->name }}
-                                                                                @else
-                                                                                    Not assigned
-                                                                                @endif
-                                                                            </td>
-                                                                        </tr>
-                                                                        @endforeach
-                                                                        
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="col-md-6">
-                                                            <h4>Subjects Offered</h4>
-                                                            <div class="table-responsive">
-                                                                <table class="table table-striped">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Subject</th>
-                                                                            <th>Code</th>
-                                                                            <th>Classes</th>
-                                                                            {{-- <th>Teacher</th> --}}
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        @foreach($subjects as $subject)
-                                                                        <tr>
-                                                                            <td>{{ $subject->name }}</td>
-                                                                            <td>{{ $subject->code ?? '-' }}</td>
-                                                                            <td>
-                                                                                @if($subject->teacherSubjects && $subject->teacherSubjects->count())
-                                                                                    @foreach($subject->teacherSubjects as $class)
-                                                                                        <span class="badge badge-info">{{ $class->class->name }}</span>
-                                                                                    @endforeach
-                                                                                @else
-                                                                                    Not assigned
-                                                                                @endif
-                                                                            </td>
-                                                                            {{-- <td>
-                                                                                @if($subject->teacherSubjects && $subject->teacherSubjects->count())
-                                                                                    @foreach($subject->teacherSubjects as $teacher)
-                                                                                        <span class="badge badge-info">{{ $teacher->teacher->name }}</span>
-                                                                                    @endforeach
-                                                                                @else
-                                                                                    Not assigned
-                                                                                @endif
-                                                                            </td> --}}
-                                                                        </tr>
-                                                                        @endforeach
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                    </div>
                                                 </div>
                                             </div>
+                                            
+                                            <div class="col-md-6">
+                                                <h4>Subjects Offered</h4>
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Subject</th>
+                                                                <th>Code</th>
+                                                                <th>Classes</th>
+                                                                {{-- <th>Teacher</th> --}}
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($subjects as $subject)
+                                                            <tr>
+                                                                <td>{{ $subject->name }}</td>
+                                                                <td>{{ $subject->code ?? '-' }}</td>
+                                                                <td>
+                                                                    @if($subject->teacherSubjects && $subject->teacherSubjects->count())
+                                                                        @foreach($subject->teacherSubjects as $class)
+                                                                            <span class="badge badge-info">{{ $class->class->name }}</span>
+                                                                        @endforeach
+                                                                    @else
+                                                                        Not assigned
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                            
+                       
                 </div>
             </div>
         </div>

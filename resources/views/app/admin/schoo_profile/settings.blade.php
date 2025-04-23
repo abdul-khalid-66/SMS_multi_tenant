@@ -1,99 +1,102 @@
 <x-tenant-app-layout>
-    
+
     @push('css')
-        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-        <!-- Google Fonts
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <!-- Google Fonts
             ============================================ -->
-        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
-        <!-- Bootstrap CSS
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/bootstrap.min.css') }}">
-        <!-- Bootstrap CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/bootstrap.min.css') }}">
+    <!-- Bootstrap CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/font-awesome.min.css') }}">
-        <!-- owl.carousel CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/font-awesome.min.css') }}">
+    <!-- owl.carousel CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/owl.carousel.css') }}">
-        <link rel="stylesheet" href="{{ asset('backend/css/owl.theme.css') }}">
-        <link rel="stylesheet" href="{{ asset('backend/css/owl.transitions.css') }}">
-        <!-- animate CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/owl.theme.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/owl.transitions.css') }}">
+    <!-- animate CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/animate.css') }}">
-        <!-- normalize CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/animate.css') }}">
+    <!-- normalize CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/normalize.css') }}">
-        <!-- meanmenu icon CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/normalize.css') }}">
+    <!-- meanmenu icon CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/meanmenu.min.css') }}">
-        <!-- main CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/meanmenu.min.css') }}">
+    <!-- main CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/main.css') }}">
-        <!-- educate icon CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/main.css') }}">
+    <!-- educate icon CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/educate-custon-icon.css') }}">
-        <!-- morrisjs CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/educate-custon-icon.css') }}">
+    <!-- morrisjs CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/morrisjs/morris.css') }}">
-        <!-- mCustomScrollbar CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/morrisjs/morris.css') }}">
+    <!-- mCustomScrollbar CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/scrollbar/jquery.mCustomScrollbar.min.css') }}">
-        <!-- metisMenu CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/scrollbar/jquery.mCustomScrollbar.min.css') }}">
+    <!-- metisMenu CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/metisMenu/metisMenu.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('backend/css/metisMenu/metisMenu-vertical.css') }}">
-        <!-- calendar CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/metisMenu/metisMenu.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/metisMenu/metisMenu-vertical.css') }}">
+    <!-- calendar CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/calendar/fullcalendar.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('backend/css/calendar/fullcalendar.print.min.css') }}">
-        <!-- touchspin CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/calendar/fullcalendar.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/calendar/fullcalendar.print.min.css') }}">
+    <!-- touchspin CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/touchspin/jquery.bootstrap-touchspin.min.css') }}">
-        <!-- datapicker CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/touchspin/jquery.bootstrap-touchspin.min.css') }}">
+    <!-- datapicker CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/datapicker/datepicker3.css') }}">
-        <!-- forms CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/datapicker/datepicker3.css') }}">
+    <!-- forms CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/form/themesaller-forms.css') }}">
-        <!-- colorpicker CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/form/themesaller-forms.css') }}">
+    <!-- colorpicker CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/colorpicker/colorpicker.css') }}">
-        <!-- select2 CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/colorpicker/colorpicker.css') }}">
+    <!-- select2 CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/select2/select2.min.css') }}">
-        <!-- chosen CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/select2/select2.min.css') }}">
+    <!-- chosen CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/chosen/bootstrap-chosen.css') }}">
-        <!-- ionRangeSlider CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/chosen/bootstrap-chosen.css') }}">
+    <!-- ionRangeSlider CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/ionRangeSlider/ion.rangeSlider.css') }}">
-        <link rel="stylesheet" href="{{ asset('backend/css/ionRangeSlider/ion.rangeSlider.skinFlat.css') }}">
-        <!-- style CSS
+    <link rel="stylesheet" href="{{ asset('backend/css/ionRangeSlider/ion.rangeSlider.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/ionRangeSlider/ion.rangeSlider.skinFlat.css') }}">
+    <!-- style CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/style.css') }}">
-        <!-- responsive CSS
+    <link rel="stylesheet" href="{{ asset('backend/style.css') }}">
+    <!-- responsive CSS
             ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/responsive.css') }}">
-        <!-- modernizr JS
+    <link rel="stylesheet" href="{{ asset('backend/css/responsive.css') }}">
+    <!-- modernizr JS
             ============================================ -->
-        <script src="{{ asset('backend/js/vendor/modernizr-2.8.3.min.js') }}"></script>
-        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="{{ asset('backend/js/vendor/modernizr-2.8.3.min.js') }}"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
     <style>
         .settings-card {
             border-radius: 5px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
             background: #fff;
         }
+
         .settings-card h4 {
             border-bottom: 1px solid #eee;
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
+
         .settings-group {
             margin-bottom: 15px;
         }
+
         .settings-label {
             font-weight: 600;
             margin-bottom: 5px;
@@ -110,10 +113,31 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="breadcome-list">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="breadcome-heading" style="margin-top: 10px">
+                                <h3>School Setting</h3>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <ul class="breadcome-menu">
+                                <li>
+                                    <a href="{{ route('schools.show') }}" class="btn btn-primary btn-sm" style="color: white">
+                                        <i class="fa fa-arrow-left"></i> Back
+                                    </a>
+                                </li>
+                               
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="sparkline12-list">
                     <div class="sparkline12-hd">
                         <div class="main-sparkline12-hd">
-                            <h1>School Settings</h1>
+                            <h1>School Profile</h1>
                         </div>
                     </div>
                     <div class="sparkline12-graph">
@@ -131,84 +155,141 @@
                                         </ul>
                                     </div>
                                 </div>
-                                
+    
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                                     <div class="tab-content">
                                         <div class="tab-pane active" id="general">
-                                            <form action="{{ route('schools.update-settings', 1) }}" method="POST">
+                                            <form action="{{ route('schools.update-settings') }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
-                                                
+    
                                                 <div class="settings-card">
                                                     <h4>Basic Information</h4>
-                                                    
-                                                    <div class="settings-group">
-                                                        <label class="settings-label">School Name</label>
-                                                        <input type="text" name="name" class="form-control" value="{{ $settings['name'] ?? $school->name }}" required>
-                                                    </div>
-                                                    
-                                                    <div class="settings-group">
-                                                        <label class="settings-label">School Logo</label>
-                                                        @if($school->logo)
-                                                        <div class="mb-2">
-                                                            <img src="{{ asset('storage/'.$school->logo) }}" alt="School Logo" style="max-height: 100px;">
-                                                        </div>
-                                                        @endif
-                                                        <input type="file" name="logo" class="form-control">
-                                                    </div>
-                                                    
+    
                                                     <div class="settings-group">
                                                         <label class="settings-label">Time Zone</label>
                                                         <select name="timezone" class="form-control" required>
                                                             @foreach(timezone_identifiers_list() as $tz)
-                                                            <option value="{{ $tz }}" {{ ($settings['timezone'] ?? 'UTC') == $tz ? 'selected' : '' }}>{{ $tz }}</option>
+                                                            <option value="{{ $tz }}" {{ ($settings['timezone'] ?? 'UTC') == $tz ? 'selected' : '' }}>
+                                                                {{ $tz }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    
+    
                                                     <div class="settings-group">
                                                         <label class="settings-label">Date Format</label>
                                                         <select name="date_format" class="form-control" required>
-                                                            <option value="d/m/Y" {{ ($settings['date_format'] ?? 'd/m/Y') == 'd/m/Y' ? 'selected' : '' }}>DD/MM/YYYY</option>
-                                                            <option value="m/d/Y" {{ ($settings['date_format'] ?? 'd/m/Y') == 'm/d/Y' ? 'selected' : '' }}>MM/DD/YYYY</option>
-                                                            <option value="Y-m-d" {{ ($settings['date_format'] ?? 'd/m/Y') == 'Y-m-d' ? 'selected' : '' }}>YYYY-MM-DD</option>
+                                                            <option value="d/m/Y" {{ ($settings['date_format'] ?? 'd/m/Y') == 'd/m/Y' ? 'selected' : '' }}>
+                                                                DD/MM/YYYY</option>
+                                                            <option value="m/d/Y" {{ ($settings['date_format'] ?? 'd/m/Y') == 'm/d/Y' ? 'selected' : '' }}>
+                                                                MM/DD/YYYY</option>
+                                                            <option value="Y-m-d" {{ ($settings['date_format'] ?? 'd/m/Y') == 'Y-m-d' ? 'selected' : '' }}>
+                                                                YYYY-MM-DD</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                
+    
                                                 <div class="text-right">
                                                     <button type="submit" class="btn btn-primary">Save Changes</button>
                                                 </div>
                                             </form>
                                         </div>
-                                        
+    
                                         <div class="tab-pane" id="academic">
-                                            <form action="{{ route('schools.update-academic-settings', 1) }}" method="POST">
+                                            <form action="{{ route('schools.update-academic-settings') }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
-                                                
+    
                                                 <div class="settings-card">
                                                     <h4>Academic Configuration</h4>
-                                                    
+    
                                                     <div class="settings-group">
-                                                        <label class="settings-label">Current Session Year</label>
-                                                        <input type="text" name="session_year" class="form-control" value="{{ $school->session_year }}" required>
+                                                        <label>Working Hours</label>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="small">From Time</label>
+                                                                <input type="time" name="working_hours_start" class="form-control @error('working_hours_start') is-invalid @enderror" value="{{ old('working_hours_start', $settings['working_hours_start'] ?? '08:00') }}">
+                                                                @error('working_hours_start')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                @enderror
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="small">To Time</label>
+                                                                <input type="time" name="working_hours_end" class="form-control @error('working_hours_end') is-invalid @enderror" value="{{ old('working_hours_end', $settings['working_hours_end'] ?? '15:00') }}">
+                                                                @error('working_hours_end')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    
+    
+                                                    <div class="settings-group">
+                                                        <label>Working Days</label>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="small">From Day</label>
+                                                                <select name="working_days_start" class="form-control @error('working_days_start') is-invalid @enderror">
+                                                                    <option value="Monday" {{ old('working_days_start', $settings['working_days_start'] ?? 'Monday') == 'Monday' ? 'selected' : '' }}>
+                                                                        Monday</option>
+                                                                    <option value="Tuesday" {{ old('working_days_start', $settings['working_days_start'] ?? 'Monday') == 'Tuesday' ? 'selected' : '' }}>
+                                                                        Tuesday</option>
+                                                                    <option value="Wednesday" {{ old('working_days_start', $settings['working_days_start'] ?? 'Monday') == 'Wednesday' ? 'selected' : '' }}>
+                                                                        Wednesday</option>
+                                                                    <option value="Thursday" {{ old('working_days_start', $settings['working_days_start'] ?? 'Monday') == 'Thursday' ? 'selected' : '' }}>
+                                                                        Thursday</option>
+                                                                    <option value="Friday" {{ old('working_days_start', $settings['working_days_start'] ?? 'Monday') == 'Friday' ? 'selected' : '' }}>
+                                                                        Friday</option>
+                                                                    <option value="Saturday" {{ old('working_days_start', $settings['working_days_start'] ?? 'Monday') == 'Saturday' ? 'selected' : '' }}>
+                                                                        Saturday</option>
+                                                                    <option value="Sunday" {{ old('working_days_start', $settings['working_days_start'] ?? 'Monday') == 'Sunday' ? 'selected' : '' }}>
+                                                                        Sunday</option>
+                                                                </select>
+                                                                @error('working_days_start')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                @enderror
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="small">To Day</label>
+                                                                <select name="working_days_end" class="form-control @error('working_days_end') is-invalid @enderror">
+                                                                    <option value="Monday" {{ old('working_days_end', $settings['working_days_end'] ?? 'Friday') == 'Monday' ? 'selected' : '' }}>
+                                                                        Monday</option>
+                                                                    <option value="Tuesday" {{ old('working_days_end', $settings['working_days_end'] ?? 'Friday') == 'Tuesday' ? 'selected' : '' }}>
+                                                                        Tuesday</option>
+                                                                    <option value="Wednesday" {{ old('working_days_end', $settings['working_days_end'] ?? 'Friday') == 'Wednesday' ? 'selected' : '' }}>
+                                                                        Wednesday</option>
+                                                                    <option value="Thursday" {{ old('working_days_end', $settings['working_days_end'] ?? 'Friday') == 'Thursday' ? 'selected' : '' }}>
+                                                                        Thursday</option>
+                                                                    <option value="Friday" {{ old('working_days_end', $settings['working_days_end'] ?? 'Friday') == 'Friday' ? 'selected' : '' }}>
+                                                                        Friday</option>
+                                                                    <option value="Saturday" {{ old('working_days_end', $settings['working_days_end'] ?? 'Friday') == 'Saturday' ? 'selected' : '' }}>
+                                                                        Saturday</option>
+                                                                    <option value="Sunday" {{ old('working_days_end', $settings['working_days_end'] ?? 'Friday') == 'Sunday' ? 'selected' : '' }}>
+                                                                        Sunday</option>
+                                                                </select>
+                                                                @error('working_days_end')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                    </div>
+    
                                                     <div class="settings-group">
                                                         <label class="settings-label">Grading System</label>
                                                         <select name="grading_system" class="form-control" required>
-                                                            <option value="percentage" {{ ($settings['grading_system'] ?? 'percentage') == 'percentage' ? 'selected' : '' }}>Percentage</option>
-                                                            <option value="letter" {{ ($settings['grading_system'] ?? 'percentage') == 'letter' ? 'selected' : '' }}>Letter Grades</option>
-                                                            <option value="gpa" {{ ($settings['grading_system'] ?? 'percentage') == 'gpa' ? 'selected' : '' }}>GPA Scale</option>
+                                                            <option value="percentage" {{ ($settings['grading_system'] ?? 'percentage') == 'percentage' ? 'selected' : '' }}>
+                                                                Percentage</option>
+                                                            <option value="letter" {{ ($settings['grading_system'] ?? 'percentage') == 'letter' ? 'selected' : '' }}>
+                                                                Letter Grades</option>
+                                                            <option value="gpa" {{ ($settings['grading_system'] ?? 'percentage') == 'gpa' ? 'selected' : '' }}>
+                                                                GPA Scale</option>
                                                         </select>
                                                     </div>
-                                                    
+    
                                                     <div class="settings-group">
                                                         <label class="settings-label">Default Class Capacity</label>
                                                         <input type="number" name="default_class_capacity" class="form-control" value="{{ $settings['default_class_capacity'] ?? 30 }}" min="10" max="60">
                                                     </div>
-                                                    
+    
                                                     <div class="settings-group">
                                                         <label class="settings-label">Enable Automatic Promotion</label>
                                                         <div class="toggle-switch">
@@ -217,33 +298,36 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+    
                                                 <div class="text-right">
                                                     <button type="submit" class="btn btn-primary">Save Changes</button>
                                                 </div>
                                             </form>
                                         </div>
-                                        
+    
                                         <div class="tab-pane" id="attendance">
-                                            <form action="{{ route('schools.update-attendance-settings', 1) }}" method="POST">                                                @csrf
+                                            <form action="{{ route('schools.update-attendance-settings') }}" method="POST">
+                                                @csrf
                                                 @method('PUT')
-                                                
+    
                                                 <div class="settings-card">
                                                     <h4>Attendance Configuration</h4>
-                                                    
+    
                                                     <div class="settings-group">
                                                         <label class="settings-label">Attendance Method</label>
                                                         <select name="attendance_method" class="form-control" required>
-                                                            <option value="daily" {{ ($settings['attendance_method'] ?? 'daily') == 'daily' ? 'selected' : '' }}>Daily Attendance</option>
-                                                            <option value="session" {{ ($settings['attendance_method'] ?? 'daily') == 'session' ? 'selected' : '' }}>Per Session</option>
+                                                            <option value="daily" {{ ($settings['attendance_method'] ?? 'daily') == 'daily' ? 'selected' : '' }}>
+                                                                Daily Attendance</option>
+                                                            <option value="session" {{ ($settings['attendance_method'] ?? 'daily') == 'session' ? 'selected' : '' }}>
+                                                                Per Session</option>
                                                         </select>
                                                     </div>
-                                                    
+    
                                                     <div class="settings-group">
                                                         <label class="settings-label">Late Arrival Threshold (minutes)</label>
                                                         <input type="number" name="late_threshold" class="form-control" value="{{ $settings['late_threshold'] ?? 15 }}" min="1" max="60">
                                                     </div>
-                                                    
+    
                                                     <div class="settings-group">
                                                         <label class="settings-label">Send Absence Notifications</label>
                                                         <div class="toggle-switch">
@@ -251,26 +335,25 @@
                                                             <label for="send_absence_notifications">Enable notifications</label>
                                                         </div>
                                                     </div>
-                                                    
+    
                                                     <div class="settings-group">
                                                         <label class="settings-label">Notification Method</label>
                                                         <select name="absence_notification_method" class="form-control">
-                                                            <option value="email" {{ ($settings['absence_notification_method'] ?? 'email') == 'email' ? 'selected' : '' }}>Email</option>
-                                                            <option value="sms" {{ ($settings['absence_notification_method'] ?? 'email') == 'sms' ? 'selected' : '' }}>SMS</option>
-                                                            <option value="both" {{ ($settings['absence_notification_method'] ?? 'email') == 'both' ? 'selected' : '' }}>Both</option>
+                                                            <option value="email" {{ ($settings['absence_notification_method'] ?? 'email') == 'email' ? 'selected' : '' }}>
+                                                                Email</option>
+                                                            <option value="sms" {{ ($settings['absence_notification_method'] ?? 'email') == 'sms' ? 'selected' : '' }}>
+                                                                SMS</option>
+                                                            <option value="both" {{ ($settings['absence_notification_method'] ?? 'email') == 'both' ? 'selected' : '' }}>
+                                                                Both</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                
+    
                                                 <div class="text-right">
                                                     <button type="submit" class="btn btn-primary">Save Changes</button>
                                                 </div>
                                             </form>
                                         </div>
-                                        
-                                        <!-- Additional tabs (Fee, Notifications, Security) would go here -->
-                                        <!-- Content structure similar to above tabs -->
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -280,6 +363,7 @@
             </div>
         </div>
     </div>
+   
 
     @push('js')
     <!-- jquery ============================================ -->
@@ -333,13 +417,13 @@
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Initialize left tabs
-            $('.settings-menu .nav-tabs a').click(function(e) {
+            $('.settings-menu .nav-tabs a').click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
             });
-            
+
             // Initialize toggle switches
             $('.toggle-switch input[type="checkbox"]').bootstrapToggle({
                 on: 'Enabled',

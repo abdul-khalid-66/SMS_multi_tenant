@@ -36,7 +36,7 @@ class SchoolProfileController extends Controller
             ->orderBy('numeric_value')
             ->get();
 
-        $subjects = Subject::with(['teacherSubjects.class', 'teacherSubjects.teacher'])
+        $subjects = Subject::with(['teacherSubjects.class', 'teacherSubjects.user'])
             ->where('school_id', auth()->user()->school_id)
             ->orderBy('name')
             ->get();
@@ -70,36 +70,39 @@ class SchoolProfileController extends Controller
             'about' => 'nullable|string',
             'established_year' => 'nullable|integer|min:1900|max:' . date('Y'),
             'working_hours' => 'nullable|string',
-            'social_links' => 'nullable|json',
+            'social_links' => 'nullable|array',
+            'social_links.facebook' => 'nullable|url',
+            'social_links.twitter' => 'nullable|url',
+            'social_links.instagram' => 'nullable|url',
+            'social_links.youtube' => 'nullable|url',
         ]);
 
-
-        if ($request->hasFile('student_photo')) {
-            $studentPhotoPath = $request->file('student_photo')
-                ->store("tenants/{$user->school_id}/students/profile", 'website');
-        }
+        // Handle logo upload
         if ($request->hasFile('logo')) {
-            // Delete old logo from the correct disk
+            // Delete old logo if it exists
             if ($school->logo && Storage::disk('website')->exists($school->logo)) {
                 Storage::disk('website')->delete($school->logo);
             }
 
             // Store new logo
             $logoPath = $request->file('logo')
-                ->store("tenants/" . auth()->user()->school_id . "/school/profile", 'website');
+                ->store("tenants/" . tenant('id') . "/school/profile", 'website');
 
             $validated['logo'] = $logoPath;
         }
 
-        // Handle social links
-        $socialLinks = [];
-        foreach (['facebook', 'twitter', 'instagram', 'youtube'] as $platform) {
-            if ($request->input("social_links.{$platform}")) {
-                $socialLinks[$platform] = $request->input("social_links.{$platform}");
-            }
+        // Process social links - filter out empty values and convert to JSON
+        if (isset($validated['social_links'])) {
+            $validated['social_links'] = json_encode(
+                array_filter($validated['social_links'], function ($value) {
+                    return !empty($value);
+                })
+            );
+        } else {
+            $validated['social_links'] = null;
         }
-        $validated['social_links'] = !empty($socialLinks) ? json_encode($socialLinks) : null;
 
+        // Update the school record
         $school->update($validated);
 
         return redirect()->route('schools.show', $school->id)
@@ -137,11 +140,17 @@ class SchoolProfileController extends Controller
     {
         $school = School::find(auth()->user()->school_id);
         $validated = $request->validate([
-            'session_year' => 'required|string|max:20',
+            'working_hours_start' => 'required|date_format:H:i',
+            'working_hours_end' => 'required|date_format:H:i|after:working_hours_start',
+            'working_days_start' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+            'working_days_end' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
             'grading_system' => 'required|in:percentage,letter,gpa',
             'default_class_capacity' => 'required|integer|min:10|max:60',
             'auto_promotion' => 'nullable|boolean',
         ]);
+
+        // Convert checkbox value to boolean
+        $validated['auto_promotion'] = $request->has('auto_promotion');
 
         foreach ($validated as $key => $value) {
             SystemSetting::updateOrCreate(
@@ -159,7 +168,7 @@ class SchoolProfileController extends Controller
         $validated = $request->validate([
             'attendance_method' => 'required|in:daily,session',
             'late_threshold' => 'required|integer|min:1|max:60',
-            'send_absence_notifications' => 'nullable|boolean',
+            'send_absence_notifications' => 'nullable',
             'absence_notification_method' => 'required|in:email,sms,both',
         ]);
 

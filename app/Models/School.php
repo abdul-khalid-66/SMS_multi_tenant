@@ -15,7 +15,14 @@ class School extends Model
         'phone',
         'email',
         'logo',
-        'session_year'
+        'session_year',
+        'type',
+        'affiliation',
+        'principal',
+        'about',
+        'established_year',
+        'social_links',
+
     ];
 
     // Relationships

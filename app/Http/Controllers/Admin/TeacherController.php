@@ -91,20 +91,20 @@ class TeacherController extends Controller
             $qualificationDocPath = null;
             if ($request->hasFile('qualification_documents')) {
                 $qualificationDocPath = $request->file('qualification_documents')
-                    ->store("tenants/{$user->school_id}/teachers/qualifications", 'website');
+                    ->store("tenants/" . tenant('id') . "/teachers/qualifications", 'website');
             }
 
             $signaturePath = null;
             if ($request->hasFile('signature')) {
                 $signaturePath = $request->file('signature')
-                    ->store("tenants/{$user->school_id}/teachers/signatures", 'website');
+                    ->store("tenants/" . tenant('id') . "/teachers/signatures", 'website');
             }
 
             $documentPaths = [];
             if ($request->hasFile('documents')) {
                 foreach ($request->file('documents') as $document) {
                     $documentPaths[] = $document
-                        ->store("tenants/{$user->school_id}/teachers/documents", 'website');
+                        ->store("tenants/" . tenant('id') . "/teachers/documents", 'website');
                 }
             }
 

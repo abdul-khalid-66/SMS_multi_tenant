@@ -100,17 +100,17 @@ Route::middleware([
     Route::post('subject_assign/', [SubjectController::class, 'assignTeacherStore'])->name('admin.academic.subjects.assign_teacher');
 
 
-    Route::get('schoo_profile', [SchoolProfileController::class, 'index'])->middleware(['auth', 'verified'])->name('admin.school.profile');
-    Route::get('schoo_edit', [SchoolProfileController::class, 'edit'])->middleware(['auth', 'verified'])->name('admin.school.profile.edit');
-    Route::put('schoo_profile', [SchoolProfileController::class, 'update'])->middleware(['auth', 'verified'])->name('admin.school.profile.update');
-    Route::get('setting', [SchoolProfileController::class, 'showSettings'])->middleware(['auth', 'verified'])->name('admin.school.setting');
-    Route::put('setting', [SchoolProfileController::class, 'updateSettings'])->middleware(['auth', 'verified'])->name('admin.school.setting.update');
+    // Route::get('schoo_profile', [SchoolProfileController::class, 'index'])->middleware(['auth', 'verified'])->name('admin.school.profile');
+    // Route::get('schoo_edit', [SchoolProfileController::class, 'edit'])->middleware(['auth', 'verified'])->name('admin.school.profile.edit');
+    // Route::put('schoo_profile', [SchoolProfileController::class, 'update'])->middleware(['auth', 'verified'])->name('admin.school.profile.update');
+    // Route::get('setting', [SchoolProfileController::class, 'showSettings'])->middleware(['auth', 'verified'])->name('admin.school.setting');
+    // Route::put('setting', [SchoolProfileController::class, 'updateSettings'])->middleware(['auth', 'verified'])->name('admin.school.setting.update');
 
     // routes/web.php
 
     Route::middleware(['auth', 'verified'])->group(function () {
         // School Profile Routes
-        Route::get('/schools', [SchoolProfileController::class, 'index'])->name('schools.show');
+        Route::get('/school', [SchoolProfileController::class, 'index'])->name('schools.show');
         Route::get('/schools/edit', [SchoolProfileController::class, 'edit'])->name('schools.edit');
         Route::put('/schools', [SchoolProfileController::class, 'update'])->name('schools.update');
 

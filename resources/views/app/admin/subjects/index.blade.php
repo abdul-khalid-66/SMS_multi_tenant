@@ -121,8 +121,8 @@
                                             <th data-field="id" data-sortable="true">S#</th>
                                             <th data-field="name" data-sortable="true">Subject Name</th>
                                             <th data-field="code" data-sortable="true">Code</th>
-                                            <th data-field="classes">Assigned Classes</th>
-                                            <th data-field="teachers">Assigned Teachers</th>
+                                            <th data-field="classes">Assigned Teacher $ Classes</th>
+                                            {{-- <th data-field="teachers">Assigned Teachers</th> --}}
                                             <th data-field="action">Actions</th>
                                         </tr>
                                     </thead>
@@ -134,19 +134,24 @@
                                             <td>{{ $subject->name }}</td>
                                             <td>{{ $subject->code }}</td>
                                             <td>
-                                                @if($subject->class)
-                                                    {{ $subject->class->name }}
+                                                @if($subject->subjectTeacherClass && $subject->subjectTeacherClass->count())
+                                                    @foreach($subject->subjectTeacherClass as $classAssignment)
+                                                        <span class="badge badge-info">
+                                                            {{ $classAssignment->class->name??"" }} : 
+                                                            {{ $classAssignment->user->name??"" }}
+                                                        </span>
+                                                    @endforeach
                                                 @else
-                                                    <span class="badge badge-info">All Classes</span>
+                                                    Not assigned
                                                 @endif
                                             </td>
-                                            <td>
+                                            {{-- <td>
                                                 @forelse($subject->teachers as $teacher)
                                                     <span class="badge badge-primary">{{ $teacher->name }}</span>
                                                 @empty
                                                     <span class="text-muted">Not assigned</span>
                                                 @endforelse
-                                            </td>
+                                            </td> --}}
                                             <td>
                                                 <div style="display: flex; align-items: center; gap: 4px;">
                                                     <a href="{{ route('admin.academic.subjects.edit', $subject->id) }}" 
