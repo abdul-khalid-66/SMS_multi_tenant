@@ -36,7 +36,7 @@ class SchoolProfileController extends Controller
             ->orderBy('numeric_value')
             ->get();
 
-        $subjects = Subject::with(['teacherSubjects.class', 'teacherSubjects.user'])
+        $subjects = Subject::with(['teacherSubjects.class', 'teacherSubjects.teacher'])
             ->where('school_id', auth()->user()->school_id)
             ->orderBy('name')
             ->get();
