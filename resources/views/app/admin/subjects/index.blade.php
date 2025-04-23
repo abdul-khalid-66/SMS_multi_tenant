@@ -138,20 +138,14 @@
                                                     @foreach($subject->subjectTeacherClass as $classAssignment)
                                                         <span class="badge badge-info">
                                                             {{ $classAssignment->class->name??"" }} : 
-                                                            {{ $classAssignment->user->name??"" }}
+                                                            {{ $classAssignment->teacher->name??"" }}
                                                         </span>
                                                     @endforeach
                                                 @else
                                                     Not assigned
                                                 @endif
                                             </td>
-                                            {{-- <td>
-                                                @forelse($subject->teachers as $teacher)
-                                                    <span class="badge badge-primary">{{ $teacher->name }}</span>
-                                                @empty
-                                                    <span class="text-muted">Not assigned</span>
-                                                @endforelse
-                                            </td> --}}
+                                           
                                             <td>
                                                 <div style="display: flex; align-items: center; gap: 4px;">
                                                     <a href="{{ route('admin.academic.subjects.edit', $subject->id) }}" 

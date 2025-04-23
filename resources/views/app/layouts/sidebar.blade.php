@@ -4,7 +4,7 @@
             <a href="index.html"><img class="main-logo" src="{{ asset('backend/img/logo/logo.png') }}" alt="" /></a>
             <strong><a href="index.html"><img src="{{ asset('backend/img/logo/logosn.png') }}" alt="" /></a></strong>
         </div>
-        <div class="left-custom-menu-adp-wrap comment-scrollbar">
+        <div class="left-custom-menu-adp-wrap comment-scrollbar" style="height: calc(100vh - 100px); overflow-y: auto;">
             <nav class="sidebar-nav left-sidebar-menu-pro">
                 <ul class="metismenu" id="menu1">
                     

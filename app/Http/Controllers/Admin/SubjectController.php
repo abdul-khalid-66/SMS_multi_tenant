@@ -20,7 +20,7 @@ class SubjectController extends Controller
     {
         // Get subjects with their classes and teachers
         $subjects = Subject::with([
-            'subjectTeacherClass.user',
+            'subjectTeacherClass.teacher',
             'subjectTeacherClass.class',
         ])
             ->where('school_id', auth()->user()->school_id)
