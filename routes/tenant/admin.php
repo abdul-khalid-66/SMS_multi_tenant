@@ -24,17 +24,6 @@ use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
-/*
-|--------------------------------------------------------------------------
-| Tenant Routes
-|--------------------------------------------------------------------------
-|
-| Here you can register the tenant routes for your application.
-| These routes are loaded by the TenantRouteServiceProvider.
-|
-| Feel free to customize them however you want. Good luck!
-|
-*/
 
 Route::middleware([
     'web',
@@ -45,14 +34,16 @@ Route::middleware([
         return view('App.welcome');
     });
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+    // Parent
     Route::get('/parents', [ParentController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.parents');
     Route::post('/add_parent', [ParentController::class, 'Store'])->middleware(['auth', 'verified'])->name('admin.store.parent');
     Route::get('/add_parent', [ParentController::class, 'create'])->middleware(['auth', 'verified'])->name('dashboard.add.parent');
     Route::get('/edit_parent', [ParentController::class, 'edit'])->middleware(['auth', 'verified'])->name('admin.edit.parent');
     Route::post('/edit_parent', [ParentController::class, 'update'])->middleware(['auth', 'verified'])->name('admin.update.parent');
-    // Route::delete('/destroy_parent/{id}', [ParentController::class, 'destroy'])->middleware(['auth', 'verified'])->name('admin.destroy.parent');
     Route::get('/destroy_parent/{encryptedId}', [ParentController::class, 'destroy'])->middleware(['auth', 'verified'])->name('admin.destroy.parent');
 
+    // Student
     Route::get('/students', [StudentController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.students');
     Route::get('/add_student', [StudentController::class, 'create'])->middleware(['auth', 'verified'])->name('dashboard.add.student');
     Route::post('/add_student', [StudentController::class, 'store'])->middleware(['auth', 'verified'])->name('admin.store.student');
@@ -61,14 +52,13 @@ Route::middleware([
     Route::delete('/destroy_student', [StudentController::class, 'destroy'])->middleware(['auth', 'verified'])->name('admin.destroy.student');
     Route::get('/get-sections/{classId}', [StudentController::class, 'getSections'])->middleware(['auth', 'verified']);
 
-
+    // Teacher
     Route::get('/teachers', [TeacherController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.teachers');
     Route::get('/add_teacher', [TeacherController::class, 'create'])->middleware(['auth', 'verified'])->name('dashboard.add.teacher');
     Route::post('/add_teacher', [TeacherController::class, 'store'])->middleware(['auth', 'verified'])->name('admin.store.teacher');
     Route::get('/edit_teacher', [TeacherController::class, 'edit'])->middleware(['auth', 'verified'])->name('admin.edit.teacher');
     Route::post('/edit_teacher', [TeacherController::class, 'update'])->middleware(['auth', 'verified'])->name('admin.update.teacher');
     Route::delete('/destroy_teacher', [TeacherController::class, 'destroy'])->middleware(['auth', 'verified'])->name('admin.destroy.teacher');
-
 
     // Class Routes
     Route::prefix('classes')->middleware(['auth', 'verified'])->name('admin.academic.classes.')->group(function () {
@@ -102,8 +92,6 @@ Route::middleware([
     Route::get('subject_assign/', [SubjectController::class, 'assign'])->name('admin.academic.subjects.assign');
     Route::post('subject_assign/', [SubjectController::class, 'assignTeacherStore'])->name('admin.academic.subjects.assign_teacher');
 
-    // routes/web.php
-
     Route::middleware(['auth', 'verified'])->group(function () {
         // School Profile Routes
         Route::get('/school', [SchoolProfileController::class, 'index'])->name('schools.show');
@@ -119,6 +107,7 @@ Route::middleware([
         });
     });
 
+    // User Profile
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -126,10 +115,7 @@ Route::middleware([
         Route::resource('user', UserController::class);
     });
 
-
-
-
-    // timetable routes
+    // Timetable
     Route::prefix('timetable')->middleware(['auth', 'verified'])->name('admin.timetable.')->group(function () {
         Route::get('/', [TimetableController::class, 'index'])->name('index');
         Route::get('/create', [TimetableController::class, 'create'])->name('create');
@@ -139,19 +125,6 @@ Route::middleware([
         Route::delete('/{id}', [TimetableController::class, 'destroy'])->name('destroy');
     });
     Route::get('add_schedule', [TimetableController::class, 'add_schedule'])->name('admin.timetable.add.schedule');
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     require __DIR__ . '/tenant-auth.php';
 });
