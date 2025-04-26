@@ -248,61 +248,10 @@ class TimetableController extends Controller
         return view('app.timetable.create', compact('classes', 'sections', 'subjects', 'teachers'));
     }
 
-    // public function store(Request $request)
-    // {
-
-    //     $validated = $request->validate([
-    //         'class_id' => 'required|exists:classes,id',
-    //         'section_id' => 'required|exists:sections,id',
-    //         'periods' => 'required|array',
-    //         'periods.*.day' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
-    //         'periods.*.start_time' => 'required|date_format:H:i',
-    //         'periods.*.end_time' => 'required|date_format:H:i|after:periods.*.start_time',
-    //         'periods.*.subject_id' => 'nullable|exists:subjects,id',
-    //         'periods.*.teacher_id' => 'nullable|exists:users,id',
-    //         'periods.*.room_number' => 'nullable|string|max:20',
-    //         'periods.*.is_break' => 'sometimes|boolean',
-    //         'periods.*.break_name' => 'nullable|string|max:50',
-    //     ]);
-    //     // dd($request->all());
-    //     // try {
-    //     // Delete existing timetable for this class/section
-    //     TimeTable::where('class_id', $validated['class_id'])
-    //         ->where('section_id', $validated['section_id'])
-    //         ->delete();
-
-    //     // Create new timetable entries
-    //     foreach ($validated['periods'] as $period) {
-    //         dd($period);
-    //         TimeTable::create([
-    //             'school_id' => auth()->user()->school_id,
-    //             'class_id' => $validated['class_id'],
-    //             'section_id' => $validated['section_id'],
-    //             'subject_id' => $period['is_break'] ?? false ? null : $period['subject_id'],
-    //             'teacher_id' => $period['is_break'] ?? false ? null : $period['teacher_id'],
-    //             'day_of_week' => $period['day'],
-    //             'period_name' => isset($period['period_name']) && $period['period_name'] !== null
-    //                 ? $period['period_name']
-    //                 : 'Period',
-    //             'start_time' => $period['start_time'],
-    //             'end_time' => $period['end_time'],
-    //             'room_number' => $period['room_number'],
-    //             'is_break' => $period['is_break'] ?? false,
-    //             'break_name' => $period['break_name'] ?? null,
-    //             'is_recurring' => true,
-    //         ]);
-    //     }
-
-    //     return redirect()->route('admin.timetable.index')->with('success', 'Timetable created successfully!');
-    //     // } catch (\Exception $e) {
-    //     //     return back()->with('error', 'Error creating timetable: ' . $e->getMessage());
-    //     // }
-    // }
 
 
     public function store(Request $request)
     {
-        // dd($request->all());
         // $validated = $request->validate([
         //     'class_id' => 'required|exists:classes,id',
         //     'section_id' => 'required|exists:sections,id',
@@ -332,65 +281,62 @@ class TimetableController extends Controller
             'periods.*.break_name' => 'nullable',
         ]);
 
-        // dd($request->all());
-        // try {
-        DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-        // Delete existing timetable first
-        TimeTable::where('class_id', $validated['class_id'])
-            ->where('section_id', $validated['section_id'])
-            ->delete();
+            // Delete existing timetable first
+            TimeTable::where('class_id', $validated['class_id'])
+                ->where('section_id', $validated['section_id'])
+                ->delete();
 
-        // Track existing time slots to prevent overlaps
-        $timeSlots = [];
+            // Track existing time slots to prevent overlaps
+            $timeSlots = [];
 
-        foreach ($validated['periods'] as $index => $period) {
-            // Validate period name exists
-            if (!isset($period['period_name'])) {
-                throw new \Exception("Period name is missing for period {$index}");
+            foreach ($validated['periods'] as $index => $period) {
+                // Validate period name exists
+                if (!isset($period['period_name'])) {
+                    throw new \Exception("Period name is missing for period {$index}");
+                }
+
+                // Check for time slot conflicts
+                $timeSlotKey = "{$validated['class_id']}-{$validated['section_id']}-{$period['day']}-{$period['start_time']}";
+
+                if (isset($timeSlots[$timeSlotKey])) {
+                    throw new \Exception("Duplicate time slot detected for {$period['day']} at {$period['start_time']}");
+                }
+
+                $timeSlots[$timeSlotKey] = true;
+
+                // Prepare data
+                $isBreak = isset($period['is_break']) ? 1 : 0;
+                $timeTableData = [
+                    'school_id' => auth()->user()->school_id ?? 1,
+                    'class_id' => $validated['class_id'],
+                    'section_id' => $validated['section_id'],
+                    'day_of_week' => $period['day'],
+                    'period_name' => $period['period_name'],
+                    'start_time' => $period['start_time'],
+                    'end_time' => $period['end_time'],
+                    'room_number' => $period['room_number'] ?? null,
+                    'is_recurring' => true,
+                    'is_break' => $isBreak,
+                    'break_name' => $isBreak ? ($period['break_name'] ?? null) : null,
+                    'subject_id' => $isBreak ? null : ($period['subject_id'] ?? null),
+                    'teacher_id' => $isBreak ? null : ($period['teacher_id'] ?? null),
+                ];
+
+                // Create the entry
+                TimeTable::create($timeTableData);
             }
 
-            // Check for time slot conflicts
-            $timeSlotKey = "{$validated['class_id']}-{$validated['section_id']}-{$period['day']}-{$period['start_time']}";
-
-            if (isset($timeSlots[$timeSlotKey])) {
-                throw new \Exception("Duplicate time slot detected for {$period['day']} at {$period['start_time']}");
-            }
-
-            $timeSlots[$timeSlotKey] = true;
-
-            // Prepare data
-            $isBreak = isset($period['is_break']) ? 1 : 0;
-            $timeTableData = [
-                'school_id' => auth()->user()->school_id ?? 1,
-                'class_id' => $validated['class_id'],
-                'section_id' => $validated['section_id'],
-                'day_of_week' => $period['day'],
-                'period_name' => $period['period_name'],
-                'start_time' => $period['start_time'],
-                'end_time' => $period['end_time'],
-                'room_number' => $period['room_number'] ?? null,
-                'is_recurring' => true,
-                'is_break' => $isBreak,
-                'break_name' => $isBreak ? ($period['break_name'] ?? null) : null,
-                'subject_id' => $isBreak ? null : ($period['subject_id'] ?? null),
-                'teacher_id' => $isBreak ? null : ($period['teacher_id'] ?? null),
-            ];
-
-            \Log::debug("Creating timetable entry:", $timeTableData);
-
-            // Create the entry
-            TimeTable::create($timeTableData);
+            DB::commit();
+            return redirect()->route('admin.timetable.index')->with('success', 'Timetable created successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Timetable creation failed: ' . $e->getMessage());
+            return back()->withInput()
+                ->with('error', 'Error creating timetable: ' . $e->getMessage());
         }
-
-        DB::commit();
-        return redirect()->route('admin.timetable.index')->with('success', 'Timetable created successfully!');
-        // } catch (\Exception $e) {
-        //     DB::rollBack();
-        //     \Log::error('Timetable creation failed: ' . $e->getMessage());
-        //     return back()->withInput()
-        //         ->with('error', 'Error creating timetable: ' . $e->getMessage());
-        // }
     }
 
 
@@ -400,4 +346,15 @@ class TimetableController extends Controller
     public function update(Request $request, $id) {}
 
     public function destroy($id) {}
+
+
+    public function add_schedule()
+    {
+        $teachers = User::with('teacherProfile')->role('teacher')->get();
+        $subjects = Subject::get();
+        return response()->json([
+            'teachers' => $teachers,
+            'subjects' => $subjects,
+        ]);
+    }
 }

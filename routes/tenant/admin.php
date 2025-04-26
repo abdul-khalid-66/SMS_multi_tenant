@@ -138,6 +138,7 @@ Route::middleware([
         Route::put('/{id}', [TimetableController::class, 'update'])->name('update');
         Route::delete('/{id}', [TimetableController::class, 'destroy'])->name('destroy');
     });
+    Route::get('add_schedule', [TimetableController::class, 'add_schedule'])->name('admin.timetable.add.schedule');
 
 
 

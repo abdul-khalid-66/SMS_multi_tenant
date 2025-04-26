@@ -150,31 +150,31 @@
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                             <div class="text-center">
                                 <div class="logo-container mx-auto">
-                                    @if($school->logo)
+                                    @if(isset($school->logo))
                                         <img src="{{ asset($school->logo) }}" alt="School Logo" class="img-fluid">
                                     @else
                                         <img src="{{ asset('backend/img/school-default.png') }}" alt="School Logo" class="img-fluid">
                                     @endif
                                 </div>
-                                <h3 class="mt-3">{{ $school->name }}</h3>
-                                <p class="text-muted">{{ $school->session_year }} Session</p>
+                                <h3 class="mt-3">{{ $school->name??"" }}</h3>
+                                <p class="text-muted">{{ $school->session_year??"" }} Session</p>
                             </div>
                             
                             <div class="mt-4">
                                 <h4>Quick Stats</h4>
                                 <div class="stat-card" style="background-color: #4e73df;">
                                     <i class="fa fa-users"></i>
-                                    <h3>{{ $stats['students'] }}</h3>
+                                    <h3>{{ $stats['students']??"" }}</h3>
                                     <p>Total Students</p>
                                 </div>
                                 <div class="stat-card" style="background-color: #1cc88a;">
                                     <i class="fa fa-chalkboard-teacher"></i>
-                                    <h3>{{ $stats['teachers'] }}</h3>
+                                    <h3>{{ $stats['teachers']??"" }}</h3>
                                     <p>Teaching Staff</p>
                                 </div>
                                 <div class="stat-card" style="background-color: #36b9cc;">
                                     <i class="fa fa-door-open"></i>
-                                    <h3>{{ $stats['classes'] }}</h3>
+                                    <h3>{{ $stats['classes']??"" }}</h3>
                                     <p>Classes</p>
                                 </div>
                             </div>
@@ -193,11 +193,11 @@
                                         <table class="profile-info table">
                                             <tr>
                                                 <td>School Name</td>
-                                                <td>{{ $school->name }}</td>
+                                                <td>{{ $school->name??"" }}</td>
                                             </tr>
                                             <tr>
                                                 <td>Academic Session</td>
-                                                <td>{{ $school->session_year }}</td>
+                                                <td>{{ $school->session_year??"" }}</td>
                                             </tr>
                                             <tr>
                                                 <td>Established</td>
@@ -226,15 +226,15 @@
                                         <table class="profile-info table">
                                             <tr>
                                                 <td>Address</td>
-                                                <td>{{ $school->address }}</td>
+                                                <td>{{ $school->address ?? ""}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Phone Number</td>
-                                                <td>{{ $school->phone }}</td>
+                                                <td>{{ $school->phone??"" }}</td>
                                             </tr>
                                             <tr>
                                                 <td>Email Address</td>
-                                                <td>{{ $school->email }}</td>
+                                                <td>{{ $school->email??"" }}</td>
                                             </tr>
                                             <tr>
                                                 <td>Website</td>
@@ -243,7 +243,7 @@
                                             <tr>
                                                 <td>Social Media</td>
                                                 <td>
-                                                    @if($school->social_links)
+                                                    @if(isset($school->social_links))
                                                         @foreach(json_decode($school->social_links) as $platform => $link)
                                                             @if($link)
                                                                 <a href="{{ $link }}" target="_blank" class="btn btn-default btn-xs">
@@ -279,15 +279,15 @@
                                                         <tbody>
                                                             @foreach($classes as $class)
                                                             <tr>
-                                                                <td>{{ $class->name }}</td>
+                                                                <td>{{ $class->name??"" }}</td>
                                                                 <td>
                                                                     @foreach($class->sections as $section)
-                                                                        <span class="badge badge-primary">{{ $section->name }}</span>
+                                                                        <span class="badge badge-primary">{{ $section->name??"" }}</span>
                                                                     @endforeach
                                                                 </td>
                                                                 <td>
                                                                     @if($class->classTeacher)
-                                                                        {{ $class->classTeacher->name }}
+                                                                        {{ $class->classTeacher->name??"" }}
                                                                     @else
                                                                         Not assigned
                                                                     @endif
@@ -315,12 +315,12 @@
                                                         <tbody>
                                                             @foreach($subjects as $subject)
                                                             <tr>
-                                                                <td>{{ $subject->name }}</td>
+                                                                <td>{{ $subject->name??"" }}</td>
                                                                 <td>{{ $subject->code ?? '-' }}</td>
                                                                 <td>
                                                                     @if($subject->teacherSubjects && $subject->teacherSubjects->count())
                                                                         @foreach($subject->teacherSubjects as $class)
-                                                                            <span class="badge badge-info">{{ $class->class->name }}</span>
+                                                                            <span class="badge badge-info">{{ $class->class->name??"" }}</span>
                                                                         @endforeach
                                                                     @else
                                                                         Not assigned

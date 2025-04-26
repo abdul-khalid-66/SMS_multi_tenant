@@ -110,90 +110,330 @@
                 </div>
 
 
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="breadcome-list">
-                        <div class="row">
-                            @foreach($timetables as $timetable)
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="sparkline12-list mg-b-30">
-                                    <div class="sparkline12-hd">
-                                        <div class="main-sparkline12-hd">
-                                            <h1>{{ $timetable['class_name'] }}</h1>
-                                        </div>
-                                    </div>
-                                    <div class="sparkline12-graph">
-                                        <div class="static-table-list">
-                                            <table class="table hover-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Periods</th>
-                                                        <th>Monday</th>
-                                                        <th>Tuesday</th>
-                                                        <th>Wednesday</th>
-                                                        <th>Thursday</th>
-                                                        <th>Friday</th>
-                                                        <th>Saturday</th>
-                                                        <th>Sunday</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                  
-                                                    @foreach($timetable['periods'] as $periodName => $days)
-                                                    
-
-                                                    <tr>
-                                                        <th>{{ $periodName }}</th>
-                                                        @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $day)
-                                                        {{-- {{ dd($days[$day]) }} --}}
-                                                        @if (isset($days[$day]))
-                                                            
-                                                            <td>
-                                                                @if(isset($days[$day]['event']))
-                                                                    <li>Event: {{ $days[$day]['event'] }}</li>
-                                                                    <li>Start: {{ $days[$day]['start'] }}</li>
-                                                                    <li>End: {{ $days[$day]['end'] }}</li>
-                                                                    <li>Room: {{ $days[$day]['room'] }}</li>
-                                                                @else
-                                                                    <li>Teacher: {{ $days[$day]['teacher'] }}</li>
-                                                                    <li>Subject: {{ $days[$day]['subject'] }}</li>
-                                                                    <li>Start: {{ $days[$day]['start'] }}</li>
-                                                                    <li>End: {{ $days[$day]['end'] }}</li>
-                                                                    <li>Room: {{ $days[$day]['room'] }}</li>
-                                                                @endif
-                                                                <li>
-                                                                    <button class="btn btn-primary btn-sm">Update</button>
-                                                                    <button class="btn btn-info btn-sm">View</button>
-                                                                </li>
-                                                            </td>
-                                                        @else
-                                                            <td>
-                                                                
-                                                                    <li>Teacher: --</li>
-                                                                    <li>Subject: --</li>
-                                                                    <li>Start:  --</li>
-                                                                    <li>End: --</li>
-                                                                    <li>Room: --</li>
-                                                                
-                                                            </td>
-                                                        @endif
-                                                        @endforeach
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                @foreach($timetables as $timetable)
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="sparkline13-list">
+                            <div class="sparkline13-hd">
+                                <div class="main-sparkline13-hd">
+                                    <h1>{{ $timetable['class_name'] }}</h1>
                                 </div>
                             </div>
-                            @endforeach
+                            <div class="sparkline13-graph">
+                                <div class="datatable-dashv1-list custom-datatable-overright">
+                                    <div id="toolbar-{{ $loop->index }}">
+                                        <select class="form-control dt-tb">
+                                            <option value="">Export Basic</option>
+                                            <option value="all">Export All</option>
+                                            <option value="selected">Export Selected</option>
+                                        </select>
+                                    </div>
+                                    <table id="timetable-table-{{ $loop->index }}" 
+                                        class="table hover-table timetable-datatable"
+                                        data-toggle="table" 
+                                        data-pagination="true" 
+                                        data-search="true"
+                                        data-show-columns="true" 
+                                        data-show-pagination-switch="true" 
+                                        data-show-refresh="true"
+                                        data-key-events="true" 
+                                        data-show-toggle="true" 
+                                        data-resizable="true"
+                                        data-cookie="true"
+                                        data-cookie-id-table="timetable-{{ $loop->index }}"
+                                        data-show-export="true" 
+                                        data-click-to-select="true"
+                                        data-toolbar="#toolbar-{{ $loop->index }}">
+                                        <thead>
+                                            <tr>
+                                                <th data-field="state" data-checkbox="true"></th>
+                                                <th data-field="period" data-sortable="true">Periods</th>
+                                                <th data-field="monday" data-sortable="false">Monday</th>
+                                                <th data-field="tuesday" data-sortable="false">Tuesday</th>
+                                                <th data-field="wednesday" data-sortable="false">Wednesday</th>
+                                                <th data-field="thursday" data-sortable="false">Thursday</th>
+                                                <th data-field="friday" data-sortable="false">Friday</th>
+                                                <th data-field="saturday" data-sortable="false">Saturday</th>
+                                                <th data-field="sunday" data-sortable="false">Sunday</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($timetable['periods'] as $periodName => $days)
+                                            <tr>
+                                                <td></td>
+                                                <td style="font-style: italic">{{ $periodName }}</td>
+                                                @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $day)
+                                                <td>
+                                                    @if(isset($days[$day]))
+                                                        @if(isset($days[$day]['event']))
+                                                            <div class="timetable-event">
+                                                                <div><strong>Event:</strong> {{ $days[$day]['event'] }}</div>
+                                                                <div><strong>Time:</strong> {{ $days[$day]['start'] }} - {{ $days[$day]['end'] }}</div>
+                                                                <div><strong>Room:</strong> {{ $days[$day]['room'] }}</div>
+                                                            </div>
+                                                        @else
+                                                            <div class="timetable-class">
+                                                                <div><strong>Teacher:</strong> {{ $days[$day]['teacher'] }}</div>
+                                                                <div><strong>Subject:</strong> {{ $days[$day]['subject'] }}</div>
+                                                                <div><strong>Time:</strong> {{ $days[$day]['start'] }} - {{ $days[$day]['end'] }}</div>
+                                                                <div><strong>Room:</strong> {{ $days[$day]['room'] }}</div>
+                                                            </div>
+                                                        @endif
+                                                        <div class="timetable-actions">
+                                                            <button class="btn btn-primary btn-sm update-btn" 
+                                                                    data-class="{{ $timetable['class_name'] }}"
+                                                                    data-period="{{ $periodName }}"
+                                                                    data-day="{{ $day }}"
+                                                                    data-teacher="{{ $days[$day]['teacher'] ?? '' }}"
+                                                                    data-subject="{{ $days[$day]['subject'] ?? '' }}"
+                                                                    data-start="{{ $days[$day]['start'] ?? '' }}"
+                                                                    data-end="{{ $days[$day]['end'] ?? '' }}"
+                                                                    data-room="{{ $days[$day]['room'] ?? '' }}"
+                                                                    data-event="{{ $days[$day]['event'] ?? '' }}">
+                                                                <i class="fa fa-pencil"></i> Update
+                                                            </button>
+                                                            <button class="btn btn-info btn-sm view-btn"
+                                                                    data-class="{{ $timetable['class_name'] }}"
+                                                                    data-period="{{ $periodName }}"
+                                                                    data-day="{{ $day }}"
+                                                                    data-teacher="{{ $days[$day]['teacher'] ?? '' }}"
+                                                                    data-subject="{{ $days[$day]['subject'] ?? '' }}"
+                                                                    data-start="{{ $days[$day]['start'] ?? '' }}"
+                                                                    data-end="{{ $days[$day]['end'] ?? '' }}"
+                                                                    data-room="{{ $days[$day]['room'] ?? '' }}"
+                                                                    data-event="{{ $days[$day]['event'] ?? '' }}">
+                                                                <i class="fa fa-eye"></i> View
+                                                            </button>
+                                                        </div>
+                                                    @else
+                                                        <div class="timetable-empty">
+                                                            <div><strong>Teacher:</strong> --</div>
+                                                            <div><strong>Subject:</strong> --</div>
+                                                            <div><strong>Time:</strong> --</div>
+                                                            <div><strong>Room:</strong> --</div>
+                                                        </div>
+                                                        <div class="timetable-actions">
+                                                            <button class="btn btn-success btn-sm add-btn"
+                                                                    data-class="{{ $timetable['class_name'] }}"
+                                                                    data-period="{{ $periodName }}"
+                                                                    data-day="{{ $day }}">
+                                                                <i class="fa fa-plus"></i> Add
+                                                            </button>
+                                                        </div>
+                                                    @endif
+                                                </td>
+                                                @endforeach
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    @endforeach
+
+
+
                 
             </div>
         </div>
     </div>
+
+
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="addModalLabel">Add Schedule</h4>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <input type="hidden" name="class" id="addClass">
+                    <input type="hidden" name="period" id="addPeriod">
+                    <input type="hidden" name="day" id="addDay">
+                    
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select class="form-control" name="type" id="addType">
+                            <option value="class">Class</option>
+                            <option value="event">Event</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group class-fields">
+                        <label>Teacher</label>
+                        <select class="form-control" name="teacher" id="addTeacher">
+                            <option value="">Select Teacher</option>
+                            <!-- Teachers will be loaded via AJAX -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group class-fields">
+                        <label>Subject</label>
+                        <select class="form-control" name="subject" id="addSubject">
+                            <option value="">Select Subject</option>
+                            <!-- Subjects will be loaded via AJAX -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group event-fields" style="display: none;">
+                        <label>Event</label>
+                        <input type="text" class="form-control" name="event" id="addEvent">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Start Time</label>
+                        <input type="time" class="form-control" name="start" id="addStart">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>End Time</label>
+                        <input type="time" class="form-control" name="end" id="addEnd">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Room</label>
+                        <input type="text" class="form-control" name="room" id="addRoom">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveAdd">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Update Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="updateModalLabel">Update Schedule</h4>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm">
+                    <input type="hidden" name="class" id="updateClass">
+                    <input type="hidden" name="period" id="updatePeriod">
+                    <input type="hidden" name="day" id="updateDay">
+                    
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select class="form-control" name="type" id="updateType">
+                            <option value="class">Class</option>
+                            <option value="event">Event</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group class-fields">
+                        <label>Teacher</label>
+                        <input type="text" class="form-control" name="teacher" id="updateTeacher">
+                    </div>
+                    
+                    <div class="form-group class-fields">
+                        <label>Subject</label>
+                        <input type="text" class="form-control" name="subject" id="updateSubject">
+                    </div>
+                    
+                    <div class="form-group event-fields" style="display: none;">
+                        <label>Event</label>
+                        <input type="text" class="form-control" name="event" id="updateEvent">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Start Time</label>
+                        <input type="time" class="form-control" name="start" id="updateStart">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>End Time</label>
+                        <input type="time" class="form-control" name="end" id="updateEnd">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Room</label>
+                        <input type="text" class="form-control" name="room" id="updateRoom">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveUpdate">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Modal -->
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="viewModalLabel">Schedule Details</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th width="30%">Class</th>
+                                <td id="viewClass"></td>
+                            </tr>
+                            <tr>
+                                <th>Period</th>
+                                <td id="viewPeriod"></td>
+                            </tr>
+                            <tr>
+                                <th>Day</th>
+                                <td id="viewDay"></td>
+                            </tr>
+                            <tr class="dynamic-display class-fields">
+                                <th>Teacher</th>
+                                <td id="viewTeacher"></td>
+                            </tr>
+                            <tr class="dynamic-display class-fields">
+                                <th>Subject</th>
+                                <td id="viewSubject"></td>
+                            </tr>
+                            <tr class="dynamic-display event-fields">
+                                <th>Event</th>
+                                <td id="viewEvent"></td>
+                            </tr>
+                            <tr>
+                                <th>Start Time</th>
+                                <td id="viewStart"></td>
+                            </tr>
+                            <tr>
+                                <th>End Time</th>
+                                <td id="viewEnd"></td>
+                            </tr>
+                            <tr>
+                                <th>Room</th>
+                                <td id="viewRoom"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     @push('js')
     <!-- jquery ============================================ -->
@@ -245,6 +485,182 @@
         <!-- main JS ============================================ -->
         <script src="{{ asset('backend/js/main.js') }}"></script>
         
+        <script>
+            $(document).ready(function() {
+                // Handle type change in add and update forms
+                $('select[name="type"]').change(function() {
+                    if ($(this).val() === 'event') {
+                        $(this).closest('.modal-content').find('.event-fields').show();
+                        $(this).closest('.modal-content').find('.class-fields').hide();
+                    } else {
+                        $(this).closest('.modal-content').find('.event-fields').hide();
+                        $(this).closest('.modal-content').find('.class-fields').show();
+                    }
+                });
+            
+                // Add button click handler
+                $('.add-btn').click(function() {
+                    $('#addClass').val($(this).data('class'));
+                    $('#addPeriod').val($(this).data('period'));
+                    $('#addDay').val($(this).data('day'));
+                    
+                    // Reset form
+                    $('#addForm')[0].reset();
+                    $('#addType').val('class').trigger('change');
+                    
+                    // Show loading state
+                    $('#addTeacher').html('<option value="">Loading teachers...</option>');
+                    $('#addSubject').html('<option value="">Loading subjects...</option>');
+                    
+                    // Fetch teachers and subjects via AJAX
+                    $.ajax({
+                        url: "{{ route('admin.timetable.add.schedule') }}",
+                        method: "GET",
+                        success: function(response) {
+                            // Populate teachers dropdown
+                            var teacherOptions = '<option value="">Select Teacher</option>';
+                            $.each(response.teachers, function(key, teacher) {
+                                // Check if teacher_profile exists and has employee_id
+                                var employeeId = (teacher.teacher_profile && teacher.teacher_profile.employee_id) 
+                                    ? teacher.teacher_profile.employee_id 
+                                    : 'N/A';
+                                
+                                teacherOptions += '<option value="' + teacher.id + '">' + 
+                                                teacher.name + ' (' + employeeId + ')</option>';
+                            });
+                            $('#addTeacher').html(teacherOptions);
+                            
+                            // Populate subjects dropdown
+                            var subjectOptions = '<option value="">Select Subject</option>';
+                            $.each(response.subjects, function(key, subject) {
+                                subjectOptions += '<option value="' + subject.id + '">' + subject.name + ' (' + subject.code + ') </option>';
+                            });
+                            $('#addSubject').html(subjectOptions);
+                            
+                            // Show the modal after data is loaded
+                            $('#addModal').modal('show');
+                        },
+                        error: function(xhr) {
+                            // Handle error case
+                            $('#addTeacher').html('<option value="">Error loading teachers</option>');
+                            $('#addSubject').html('<option value="">Error loading subjects</option>');
+                            $('#addModal').modal('show');
+                            console.error('Error fetching data:', xhr.responseText);
+                        }
+                    });
+                });
     
+            
+                // Update button click handler
+                $('.update-btn').click(function() {
+                    $('#updateClass').val($(this).data('class'));
+                    $('#updatePeriod').val($(this).data('period'));
+                    $('#updateDay').val($(this).data('day'));
+                    
+                    if ($(this).data('event')) {
+                        $('#updateType').val('event').trigger('change');
+                        $('#updateEvent').val($(this).data('event'));
+                    } else {
+                        $('#updateType').val('class').trigger('change');
+                        $('#updateTeacher').val($(this).data('teacher'));
+                        $('#updateSubject').val($(this).data('subject'));
+                    }
+                    
+                    $('#updateStart').val($(this).data('start'));
+                    $('#updateEnd').val($(this).data('end'));
+                    $('#updateRoom').val($(this).data('room'));
+                    
+                    $('#updateModal').modal('show');
+                });
+            
+                // View button click handler
+                $('.view-btn').click(function() {
+                    $('#viewClass').text($(this).data('class'));
+                    $('#viewPeriod').text($(this).data('period'));
+                    $('#viewDay').text($(this).data('day'));
+                    
+                    if ($(this).data('event')) {
+                        // Hide class fields and show event fields
+                        $('.dynamic-display.class-fields').hide();
+                        $('.dynamic-display.event-fields').show();
+                        $('#viewEvent').text($(this).data('event'));
+                        
+                        // Update time and room fields
+                        $('#viewStart').text($(this).data('start'));
+                        $('#viewEnd').text($(this).data('end'));
+                        $('#viewRoom').text($(this).data('room'));
+                    } else {
+                        // Show class fields and hide event fields
+                        $('.dynamic-display.class-fields').show();
+                        $('.dynamic-display.event-fields').hide();
+                        $('#viewTeacher').text($(this).data('teacher'));
+                        $('#viewSubject').text($(this).data('subject'));
+                        
+                        // Update time and room fields
+                        $('#viewStart').text($(this).data('start'));
+                        $('#viewEnd').text($(this).data('end'));
+                        $('#viewRoom').text($(this).data('room'));
+                    }
+                    $('#viewStart').text($(this).data('start'));
+                    $('#viewEnd').text($(this).data('end'));
+                    $('#viewRoom').text($(this).data('room'));
+                    
+                    $('#viewModal').modal('show');
+                });
+            
+                // Save Add button click handler
+                $('#saveAdd').click(function() {
+                    // Here you would typically make an AJAX call to save the data
+                    var formData = $('#addForm').serialize();
+                    
+                    console.log(formData);
+                    // Example AJAX call (you'll need to implement the server-side part)
+                    /*
+                    $.ajax({
+                        url: '/timetable/add',
+                        method: 'POST',
+                        data: formData,
+                        success: function(response) {
+                            $('#addModal').modal('hide');
+                            location.reload(); // Refresh the page to see changes
+                        },
+                        error: function(xhr) {
+                            alert('Error: ' + xhr.responseText);
+                        }
+                    });
+                    */
+                    
+                    // For demo purposes, just close the modal
+                    $('#addModal').modal('hide');
+                    alert('Add functionality would save here. Form data: ' + formData);
+                });
+            
+                // Save Update button click handler
+                $('#saveUpdate').click(function() {
+                    // Here you would typically make an AJAX call to update the data
+                    var formData = $('#updateForm').serialize();
+                    
+                    // Example AJAX call (you'll need to implement the server-side part)
+                    /*
+                    $.ajax({
+                        url: '/timetable/update',
+                        method: 'POST',
+                        data: formData,
+                        success: function(response) {
+                            $('#updateModal').modal('hide');
+                            location.reload(); // Refresh the page to see changes
+                        },
+                        error: function(xhr) {
+                            alert('Error: ' + xhr.responseText);
+                        }
+                    });
+                    */
+                    
+                    // For demo purposes, just close the modal
+                    $('#updateModal').modal('hide');
+                    alert('Update functionality would save here. Form data: ' + formData);
+                });
+            });
+            </script>
     @endpush
 </x-tenant-app-layout>
