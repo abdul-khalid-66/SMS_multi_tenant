@@ -14,7 +14,10 @@ use App\Http\Controllers\Admin\{
     ClassesController,
     SectionController,
     SubjectController,
-    SchoolProfileController
+    SchoolProfileController,
+};
+use App\Http\Controllers\Timetable\{
+    TimetableController
 };
 
 use Illuminate\Support\Facades\Route;
@@ -99,13 +102,6 @@ Route::middleware([
     Route::get('subject_assign/', [SubjectController::class, 'assign'])->name('admin.academic.subjects.assign');
     Route::post('subject_assign/', [SubjectController::class, 'assignTeacherStore'])->name('admin.academic.subjects.assign_teacher');
 
-
-    // Route::get('schoo_profile', [SchoolProfileController::class, 'index'])->middleware(['auth', 'verified'])->name('admin.school.profile');
-    // Route::get('schoo_edit', [SchoolProfileController::class, 'edit'])->middleware(['auth', 'verified'])->name('admin.school.profile.edit');
-    // Route::put('schoo_profile', [SchoolProfileController::class, 'update'])->middleware(['auth', 'verified'])->name('admin.school.profile.update');
-    // Route::get('setting', [SchoolProfileController::class, 'showSettings'])->middleware(['auth', 'verified'])->name('admin.school.setting');
-    // Route::put('setting', [SchoolProfileController::class, 'updateSettings'])->middleware(['auth', 'verified'])->name('admin.school.setting.update');
-
     // routes/web.php
 
     Route::middleware(['auth', 'verified'])->group(function () {
@@ -129,6 +125,32 @@ Route::middleware([
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::resource('user', UserController::class);
     });
+
+
+
+
+    // timetable routes
+    Route::prefix('timetable')->middleware(['auth', 'verified'])->name('admin.timetable.')->group(function () {
+        Route::get('/', [TimetableController::class, 'index'])->name('index');
+        Route::get('/create', [TimetableController::class, 'create'])->name('create');
+        Route::post('/', [TimetableController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [TimetableController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [TimetableController::class, 'update'])->name('update');
+        Route::delete('/{id}', [TimetableController::class, 'destroy'])->name('destroy');
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     require __DIR__ . '/tenant-auth.php';
 });

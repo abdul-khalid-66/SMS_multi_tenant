@@ -31,6 +31,7 @@
                             <li><a href="{{ route('admin.academic.classes.index') }}">Classes</a></li>
                             <li><a href="{{ route('admin.academic.sections.index') }}">Sections</a></li>
                             <li><a href="{{ route('admin.academic.subjects.index') }}">Subjects</a></li>
+                            <li><a href="{{ route('admin.timetable.index') }}">Time table</a></li>
                         </ul>
                     </li>
                     <li>

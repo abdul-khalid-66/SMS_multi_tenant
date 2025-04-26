@@ -16,9 +16,12 @@ class TimeTable extends Model
         'subject_id',
         'teacher_id',
         'day_of_week',
+        'period_name', // Make sure this is included
         'start_time',
         'end_time',
         'room_number',
+        'is_break',
+        'break_name',
         'is_recurring',
         'effective_from',
         'effective_to'
