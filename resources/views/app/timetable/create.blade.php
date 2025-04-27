@@ -144,11 +144,8 @@
                                                 <div class="row">
                                                     <div class="col-lg-4"><label class="login2">Section*</label></div>
                                                     <div class="col-lg-8">
-                                                        <select name="section_id" id="section_id" class="form-control @error('section_id') is-invalid @enderror" required>
-                                                            <option value="">Select Section</option>
-                                                            @foreach($sections as $section)
-                                                                <option value="{{ $section->id }}">{{ $section->name }}</option>
-                                                            @endforeach
+                                                        <select name="section_id" id="section_id" class="form-control @error('section_id') is-invalid @enderror" required disabled>
+                                                            <option value="">Select Class First</option>
                                                         </select>
                                                         @error('section_id') <small class="text-danger">{{ $message }}</small> @enderror
                                                     </div>
@@ -427,6 +424,48 @@
                 }
                 
                 return true;
+            });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('#class_id').change(function() {
+                    var classId = $(this).val();
+                    var sectionSelect = $('#section_id');
+                    
+                    if (classId) {
+                        // Disable section dropdown while loading
+                        sectionSelect.prop('disabled', true);
+                        sectionSelect.html('<option value="">Loading sections...</option>');
+                        
+                        // Fetch sections for selected class
+                        $.ajax({
+                            url: '/get-sections/' + classId, // Update this route to match your backend
+                            method: 'GET',
+                            success: function(response) {
+                                console.log(response);
+                                if (response && Object.keys(response).length > 0) {
+                                    var options = '<option value="">Select Section</option>';
+                                    // Handle object response format {id: name}
+                                    $.each(response, function(id, name) {
+                                        options += '<option value="' + id + '">' + name + '</option>';
+                                    });
+                                    sectionSelect.html(options);
+                                } else {
+                                    sectionSelect.html('<option value="">No sections available</option>');
+                                }
+                                sectionSelect.prop('disabled', false);
+                            },
+                            error: function() {
+                                sectionSelect.html('<option value="">Error loading sections</option>');
+                                sectionSelect.prop('disabled', false);
+                            }
+                        });
+                    } else {
+                        sectionSelect.html('<option value="">Select Class First</option>');
+                        sectionSelect.prop('disabled', true);
+                    }
+                });
             });
         </script>
     @endpush

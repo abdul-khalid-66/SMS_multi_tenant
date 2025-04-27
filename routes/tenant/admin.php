@@ -79,6 +79,7 @@ Route::middleware([
         Route::put('/{id}', [SectionController::class, 'update'])->name('update');
         Route::delete('/{id}', [SectionController::class, 'destroy'])->name('destroy');
     });
+    Route::get('/get-sections/{class_id}', [SectionController::class, 'getSectionsByClass']);
 
     // Subject Routes
     Route::prefix('subjects')->middleware(['auth', 'verified'])->name('admin.academic.subjects.')->group(function () {
@@ -124,7 +125,8 @@ Route::middleware([
         Route::put('/{id}', [TimetableController::class, 'update'])->name('update');
         Route::delete('/{id}', [TimetableController::class, 'destroy'])->name('destroy');
     });
-    Route::get('add_schedule', [TimetableController::class, 'add_schedule'])->name('admin.timetable.add.schedule');
+    Route::get('create_schedule', [TimetableController::class, 'create_schedule'])->name('admin.timetable.create.schedule');
+    Route::post('store_schedule', [TimetableController::class, 'store_schedule'])->name('admin.timetable.store.schedule');
 
     require __DIR__ . '/tenant-auth.php';
 });

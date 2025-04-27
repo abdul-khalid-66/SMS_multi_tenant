@@ -16,169 +16,6 @@ class TimetableController extends Controller
 
     public function index()
     {
-        // Static timetable data
-        // Static timetable data for multiple classes
-        // $staticTimetables = [
-        //     [
-        //         'class_id' => 3, // Class 1
-        //         'section_id' => 1, // Section A
-        //         'class_name' => 'Class 1 (Section A)',
-        //         'periods' => [
-        //             'First Period' => [
-        //                 'Monday' => [
-        //                     'teacher' => 'Michael Brown',
-        //                     'subject' => 'Mathematics',
-        //                     'start' => '09:00 AM',
-        //                     'end' => '10:00 AM',
-        //                     'room' => 'Room 101'
-        //                 ],
-        //                 'Tuesday' => [
-        //                     'teacher' => 'Emily Davis',
-        //                     'subject' => 'English',
-        //                     'start' => '09:00 AM',
-        //                     'end' => '10:00 AM',
-        //                     'room' => 'Room 102'
-        //                 ],
-        //                 'Wednesday' => [
-        //                     'teacher' => 'Robert Wilson',
-        //                     'subject' => 'Science',
-        //                     'start' => '09:00 AM',
-        //                     'end' => '10:00 AM',
-        //                     'room' => 'Lab 1'
-        //                 ],
-        //                 'Thursday' => [
-        //                     'teacher' => 'Jennifer Lee',
-        //                     'subject' => 'Social Studies',
-        //                     'start' => '09:00 AM',
-        //                     'end' => '10:00 AM',
-        //                     'room' => 'Room 103'
-        //                 ],
-        //                 'Friday' => [
-        //                     'teacher' => 'Sarah Johnson',
-        //                     'subject' => 'Computer Science',
-        //                     'start' => '09:00 AM',
-        //                     'end' => '10:00 AM',
-        //                     'room' => 'Computer Lab'
-        //                 ]
-        //             ],
-        //             'Second Period' => [
-        //                 'Monday' => [
-        //                     'event' => 'Full Break',
-        //                     'start' => '12:00 PM',
-        //                     'end' => '01:00 PM',
-        //                     'room' => 'Cafeteria'
-        //                 ],
-        //                 'Tuesday' => [
-        //                     'event' => 'Half Break',
-        //                     'start' => '01:30 PM',
-        //                     'end' => '02:00 PM',
-        //                     'room' => 'Cafeteria'
-        //                 ],
-        //                 'Wednesday' => [
-        //                     'teacher' => 'Michael Brown',
-        //                     'subject' => 'Mathematics',
-        //                     'start' => '10:30 AM',
-        //                     'end' => '11:30 AM',
-        //                     'room' => 'Room 101'
-        //                 ],
-        //                 'Thursday' => [
-        //                     'teacher' => 'Emily Davis',
-        //                     'subject' => 'English',
-        //                     'start' => '10:30 AM',
-        //                     'end' => '11:30 AM',
-        //                     'room' => 'Room 102'
-        //                 ],
-        //                 'Friday' => [
-        //                     'teacher' => 'Robert Wilson',
-        //                     'subject' => 'Science',
-        //                     'start' => '10:30 AM',
-        //                     'end' => '11:30 AM',
-        //                     'room' => 'Lab 1'
-        //                 ]
-        //             ]
-        //         ]
-        //     ],
-        //     [
-        //         'class_id' => 4, // Class 2
-        //         'section_id' => 3, // Section B
-        //         'class_name' => 'Class 2 (Section B)',
-        //         'periods' => [
-        //             'First Period' => [
-        //                 'Monday' => [
-        //                     'teacher' => 'Emily Davis',
-        //                     'subject' => 'English',
-        //                     'start' => '09:00 AM',
-        //                     'end' => '10:00 AM',
-        //                     'room' => 'Room 102'
-        //                 ],
-        //                 'Tuesday' => [
-        //                     'teacher' => 'Michael Brown',
-        //                     'subject' => 'Mathematics',
-        //                     'start' => '09:00 AM',
-        //                     'end' => '10:00 AM',
-        //                     'room' => 'Room 101'
-        //                 ],
-        //                 'Wednesday' => [
-        //                     'teacher' => 'Jennifer Lee',
-        //                     'subject' => 'Social Studies',
-        //                     'start' => '09:00 AM',
-        //                     'end' => '10:00 AM',
-        //                     'room' => 'Room 103'
-        //                 ],
-        //                 'Thursday' => [
-        //                     'teacher' => 'Robert Wilson',
-        //                     'subject' => 'Science',
-        //                     'start' => '09:00 AM',
-        //                     'end' => '10:00 AM',
-        //                     'room' => 'Lab 1'
-        //                 ],
-        //                 'Friday' => [
-        //                     'teacher' => 'Sarah Johnson',
-        //                     'subject' => 'Computer Science',
-        //                     'start' => '09:00 AM',
-        //                     'end' => '10:00 AM',
-        //                     'room' => 'Computer Lab'
-        //                 ]
-        //             ],
-        //             'Second Period' => [
-        //                 'Monday' => [
-        //                     'event' => 'Full Break',
-        //                     'start' => '12:00 PM',
-        //                     'end' => '01:00 PM',
-        //                     'room' => 'Cafeteria'
-        //                 ],
-        //                 'Tuesday' => [
-        //                     'event' => 'Half Break',
-        //                     'start' => '01:30 PM',
-        //                     'end' => '02:00 PM',
-        //                     'room' => 'Cafeteria'
-        //                 ],
-        //                 'Wednesday' => [
-        //                     'teacher' => 'Emily Davis',
-        //                     'subject' => 'English',
-        //                     'start' => '10:30 AM',
-        //                     'end' => '11:30 AM',
-        //                     'room' => 'Room 102'
-        //                 ],
-        //                 'Thursday' => [
-        //                     'teacher' => 'Michael Brown',
-        //                     'subject' => 'Mathematics',
-        //                     'start' => '10:30 AM',
-        //                     'end' => '11:30 AM',
-        //                     'room' => 'Room 101'
-        //                 ],
-        //                 'Friday' => [
-        //                     'teacher' => 'Jennifer Lee',
-        //                     'subject' => 'Social Studies',
-        //                     'start' => '10:30 AM',
-        //                     'end' => '11:30 AM',
-        //                     'room' => 'Room 103'
-        //                 ]
-        //             ]
-        //         ]
-        //     ]
-        // ];
-
         $timetables = [];
 
         // Get all classes with their sections for the current school
@@ -348,13 +185,38 @@ class TimetableController extends Controller
     public function destroy($id) {}
 
 
-    public function add_schedule()
+    public function create_schedule()
     {
         $teachers = User::with('teacherProfile')->role('teacher')->get();
         $subjects = Subject::get();
         return response()->json([
             'teachers' => $teachers,
             'subjects' => $subjects,
+        ]);
+    }
+    public function store_schedule(Request $request)
+    {
+        $isBreak = isset($request->is_break) ? 1 : 0;
+
+        $timetable = [
+            'school_id'     =>    "1",
+            'class_id'      =>    $request->class_id ?? "",
+            'section_id'    =>    $request->section_id ?? "",
+            'subject_id'    =>    $request->subject ?? "",
+            'teacher_id'    =>    $request->teacher ?? "",
+            'day_of_week'   =>    $request->day ?? "",
+            'period_name'   =>    $request->period ?? "",
+            'start_time'    =>    $request->start ?? "",
+            'end_time'      =>    $request->end ?? "",
+            'room_number'   =>    $request->room ?? "",
+            'is_break'      =>    $isBreak,
+            'break_name'    =>    null,
+            'is_recurring'  =>    false,
+        ];
+        $data = TimeTable::create($timetable);
+        return response()->json([
+            'message' => 'schedul added successfull',
+            'data' => $data,
         ]);
     }
 }

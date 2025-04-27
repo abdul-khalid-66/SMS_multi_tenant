@@ -126,4 +126,10 @@ class SectionController extends Controller
         return redirect()->route('admin.academic.sections.index')
             ->with('success', 'Section deleted successfully');
     }
+
+    public function getSectionsByClass($class_id)
+    {
+        $sections = Section::where('class_id', $class_id)->get();
+        return response()->json(['sections' => $sections]);
+    }
 }

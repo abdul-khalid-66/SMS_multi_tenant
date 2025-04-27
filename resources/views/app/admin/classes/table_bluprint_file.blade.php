@@ -102,13 +102,28 @@
                             <div class="datatable-dashv1-list custom-datatable-overright">
                                 <div id="toolbar">
                                     <select class="form-control dt-tb">
-                                        <option value="">Export Basic</option>
-                                        <option value="all">Export All</option>
-                                        <option value="selected">Export Selected</option>
+                                        <option value="">Excel</option>
+                                        <option value="">PDF</option>
+                                        <option value="">CSV</option>
                                     </select>
                                 </div>
-                                <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
-                                    data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                                <table id="timetable-table" 
+                                    class="table hover-table timetable-datatable"
+                                    data-toggle="table" 
+                                    data-pagination="true" 
+                                    data-search="true"
+                                    {{-- data-show-columns="true"  --}}
+                                    {{-- data-show-pagination-switch="true"  --}}
+                                    {{-- data-show-refresh="true" --}}
+                                    {{-- data-key-events="true"  --}}
+                                    {{-- data-show-toggle="true"  --}}
+                                    {{-- data-resizable="true" --}}
+                                    {{-- data-cookie="true" --}}
+                                    data-cookie-id-table="timetable"
+                                    {{-- data-show-export="true"  --}}
+                                    {{-- data-click-to-select="true" --}}
+                                     {{-- data-export-types="['csv', 'txt', 'excel']" --}}
+                                    data-toolbar="#toolbar">
                                     <thead>
                                         <tr>
                                             <th data-field="state" data-checkbox="true"></th>

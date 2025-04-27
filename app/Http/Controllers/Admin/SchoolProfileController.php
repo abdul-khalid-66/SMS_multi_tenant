@@ -32,7 +32,6 @@ class SchoolProfileController extends Controller
             ->get();
 
         $subjects = Subject::with(['teacherSubjects.class', 'teacherSubjects.teacher'])
-            ->where('school_id', $school->id)
             ->orderBy('name')
             ->get();
 

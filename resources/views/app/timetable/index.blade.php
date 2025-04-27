@@ -122,9 +122,9 @@
                                 <div class="datatable-dashv1-list custom-datatable-overright">
                                     <div id="toolbar-{{ $loop->index }}">
                                         <select class="form-control dt-tb">
-                                            <option value="">Export Basic</option>
-                                            <option value="all">Export All</option>
-                                            <option value="selected">Export Selected</option>
+                                            <option value="">Excel</option>
+                                            <option value="">PDF</option>
+                                            <option value="">CSV</option>
                                         </select>
                                     </div>
                                     <table id="timetable-table-{{ $loop->index }}" 
@@ -132,20 +132,21 @@
                                         data-toggle="table" 
                                         data-pagination="true" 
                                         data-search="true"
-                                        data-show-columns="true" 
-                                        data-show-pagination-switch="true" 
-                                        data-show-refresh="true"
-                                        data-key-events="true" 
-                                        data-show-toggle="true" 
-                                        data-resizable="true"
-                                        data-cookie="true"
+                                        {{-- data-show-columns="true"  --}}
+                                        {{-- data-show-pagination-switch="true"  --}}
+                                        {{-- data-show-refresh="true" --}}
+                                        {{-- data-key-events="true"  --}}
+                                        {{-- data-show-toggle="true"  --}}
+                                        {{-- data-resizable="true" --}}
+                                        {{-- data-cookie="true" --}}
                                         data-cookie-id-table="timetable-{{ $loop->index }}"
-                                        data-show-export="true" 
-                                        data-click-to-select="true"
+                                        {{-- data-show-export="true"  --}}
+                                        {{-- data-click-to-select="true" --}}
+                                         {{-- data-export-types="['csv', 'txt', 'excel']" --}}
                                         data-toolbar="#toolbar-{{ $loop->index }}">
                                         <thead>
                                             <tr>
-                                                <th data-field="state" data-checkbox="true"></th>
+                                                {{-- <th data-field="state" data-checkbox="true"></th> --}}
                                                 <th data-field="period" data-sortable="true">Periods</th>
                                                 <th data-field="monday" data-sortable="false">Monday</th>
                                                 <th data-field="tuesday" data-sortable="false">Tuesday</th>
@@ -159,7 +160,7 @@
                                         <tbody>
                                             @foreach($timetable['periods'] as $periodName => $days)
                                             <tr>
-                                                <td></td>
+                                                {{-- <td></td> --}}
                                                 <td style="font-style: italic">{{ $periodName }}</td>
                                                 @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $day)
                                                 <td>
@@ -213,8 +214,10 @@
                                                         </div>
                                                         <div class="timetable-actions">
                                                             <button class="btn btn-success btn-sm add-btn"
+                                                                    data-class_id="{{ $timetable['class_id'] }}"
                                                                     data-class="{{ $timetable['class_name'] }}"
                                                                     data-period="{{ $periodName }}"
+                                                                    data-section_id="{{ $timetable['section_id'] }}"
                                                                     data-day="{{ $day }}">
                                                                 <i class="fa fa-plus"></i> Add
                                                             </button>
@@ -252,16 +255,20 @@
                 <h4 class="modal-title" id="addModalLabel">Add Schedule</h4>
             </div>
             <div class="modal-body">
-                <form id="addForm">
+                <form id="addForm" method="post">
+                    @csrf
                     <input type="hidden" name="class" id="addClass">
+                    <input type="hidden" name="class_id" id="addClassId">
                     <input type="hidden" name="period" id="addPeriod">
+                    <input type="hidden" name="section_id" id="addPeriodId">
                     <input type="hidden" name="day" id="addDay">
+                    
                     
                     <div class="form-group">
                         <label>Type</label>
                         <select class="form-control" name="type" id="addType">
                             <option value="class">Class</option>
-                            <option value="event">Event</option>
+                            <option value="event">Event/Break Time</option>
                         </select>
                     </div>
                     
@@ -282,7 +289,7 @@
                     </div>
                     
                     <div class="form-group event-fields" style="display: none;">
-                        <label>Event</label>
+                        <label>Event Label</label>
                         <input type="text" class="form-control" name="event" id="addEvent">
                     </div>
                     
@@ -296,7 +303,7 @@
                         <input type="time" class="form-control" name="end" id="addEnd">
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group class-fields">
                         <label>Room</label>
                         <input type="text" class="form-control" name="room" id="addRoom">
                     </div>
@@ -331,7 +338,7 @@
                         <label>Type</label>
                         <select class="form-control" name="type" id="updateType">
                             <option value="class">Class</option>
-                            <option value="event">Event</option>
+                            <option value="event">Event/Break Time</option>
                         </select>
                     </div>
                     
@@ -346,7 +353,7 @@
                     </div>
                     
                     <div class="form-group event-fields" style="display: none;">
-                        <label>Event</label>
+                        <label>Event Label</label>
                         <input type="text" class="form-control" name="event" id="updateEvent">
                     </div>
                     
@@ -356,7 +363,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>End Time</label>
+                        <label>Event Label</label>
                         <input type="time" class="form-control" name="end" id="updateEnd">
                     </div>
                     
@@ -500,7 +507,9 @@
             
                 // Add button click handler
                 $('.add-btn').click(function() {
+                    $('#addClassId').val($(this).data('class_id'));
                     $('#addClass').val($(this).data('class'));
+                    $('#addPeriodId').val($(this).data('section_id'));
                     $('#addPeriod').val($(this).data('period'));
                     $('#addDay').val($(this).data('day'));
                     
@@ -514,7 +523,7 @@
                     
                     // Fetch teachers and subjects via AJAX
                     $.ajax({
-                        url: "{{ route('admin.timetable.add.schedule') }}",
+                        url: "{{ route('admin.timetable.create.schedule') }}",
                         method: "GET",
                         success: function(response) {
                             // Populate teachers dropdown
@@ -614,25 +623,22 @@
                     var formData = $('#addForm').serialize();
                     
                     console.log(formData);
-                    // Example AJAX call (you'll need to implement the server-side part)
-                    /*
+                    
                     $.ajax({
-                        url: '/timetable/add',
+                        url: "{{ route('admin.timetable.store.schedule') }}",
                         method: 'POST',
                         data: formData,
                         success: function(response) {
                             $('#addModal').modal('hide');
-                            location.reload(); // Refresh the page to see changes
+                            location.reload(); 
                         },
                         error: function(xhr) {
                             alert('Error: ' + xhr.responseText);
                         }
                     });
-                    */
                     
-                    // For demo purposes, just close the modal
                     $('#addModal').modal('hide');
-                    alert('Add functionality would save here. Form data: ' + formData);
+                    alert('Time table schedule added successfully');
                 });
             
                 // Save Update button click handler
