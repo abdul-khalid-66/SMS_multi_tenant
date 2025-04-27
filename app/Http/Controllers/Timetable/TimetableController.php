@@ -240,7 +240,7 @@ class TimetableController extends Controller
 
     public function create()
     {
-        $classes = Classes::where('school_id', auth()->user()->school_id)->get();
+        $classes = Classes::get();
         $sections = Section::where('school_id', auth()->user()->school_id)->get();
         $subjects = Subject::where('school_id', auth()->user()->school_id)->get();
         $teachers = User::role('teacher')->get();

@@ -17,10 +17,7 @@ class ClassesController extends Controller
     public function index()
     {
         // Get classes with their class teacher and sections count
-        $classes = Classes::with(['classTeacher', 'sections'])
-            ->where('school_id', auth()->user()->school_id)
-            ->orderBy('numeric_value')
-            ->get();
+        $classes = Classes::with(['classTeacher', 'sections'])->orderBy('numeric_value')->get();
         return view('app.admin.classes.index', compact('classes'));
     }
 
@@ -32,8 +29,7 @@ class ClassesController extends Controller
     public function create()
     {
         // Get teachers for dropdown
-        $teachers = User::where('school_id', auth()->user()->school_id)
-            ->where('role', 'teacher')
+        $teachers = User::role('teacher')
             ->orderBy('name')
             ->get();
 
@@ -70,11 +66,9 @@ class ClassesController extends Controller
      */
     public function edit($id)
     {
-        $class = Classes::where('school_id', auth()->user()->school_id)
-            ->findOrFail($id);
+        $class = Classes::findOrFail($id);
 
-        $teachers = User::where('school_id', auth()->user()->school_id)
-            ->where('role', 'teacher')
+        $teachers = User::role('teacher')
             ->orderBy('name')
             ->get();
 
@@ -90,8 +84,7 @@ class ClassesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $class = Classes::where('school_id', auth()->user()->school_id)
-            ->findOrFail($id);
+        $class = Classes::findOrFail($id);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -113,8 +106,7 @@ class ClassesController extends Controller
      */
     public function destroy($id)
     {
-        $class = Classes::where('school_id', auth()->user()->school_id)
-            ->findOrFail($id);
+        $class = Classes::findOrFail($id);
 
         // Check if class has sections before deleting
         if ($class->sections()->count() > 0) {

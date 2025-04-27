@@ -20,24 +20,19 @@ class SchoolProfileController extends Controller
      */
     public function index()
     {
-        $school = School::find(auth()->user()->school_id);
+        $school = School::first();
         $stats = [
-            'students' => User::where('school_id', auth()->user()->school_id)
-                ->where('role', 'student')
-                ->count(),
-            'teachers' => User::where('school_id', auth()->user()->school_id)
-                ->where('role', 'teacher')
-                ->count(),
-            'classes' => Classes::where('school_id', auth()->user()->school_id)->count(),
+            'students' => User::role('student')->count(),
+            'teachers' => User::role('teacher')->count(),
+            'classes' => Classes::count(),
         ];
 
         $classes = Classes::with(['sections', 'classTeacher'])
-            ->where('school_id', auth()->user()->school_id)
             ->orderBy('numeric_value')
             ->get();
 
         $subjects = Subject::with(['teacherSubjects.class', 'teacherSubjects.teacher'])
-            ->where('school_id', auth()->user()->school_id)
+            ->where('school_id', $school->id)
             ->orderBy('name')
             ->get();
 
@@ -49,32 +44,32 @@ class SchoolProfileController extends Controller
 
     public function edit(School $school)
     {
-        $school = School::find(auth()->user()->school_id);
+        $school = School::first();
         return view('app.admin.schoo_profile.edit_profile', compact('school'));
     }
 
     public function update(Request $request, School $school)
     {
-        $school = School::find(auth()->user()->school_id);
+        $school = School::first();
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'session_year' => 'required|string|max:20',
-            'address' => 'required|string',
-            'phone' => 'required|string|max:20',
-            'email' => 'required|email|unique:schools,email,' . $school->id,
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'website' => 'nullable|url',
-            'type' => 'nullable|string',
-            'affiliation' => 'nullable|string',
-            'principal' => 'nullable|string',
-            'about' => 'nullable|string',
-            'established_year' => 'nullable|integer|min:1900|max:' . date('Y'),
-            'working_hours' => 'nullable|string',
-            'social_links' => 'nullable|array',
-            'social_links.facebook' => 'nullable|url',
-            'social_links.twitter' => 'nullable|url',
+            'name'          => 'required|string|max:255',
+            'session_year'  => 'required|string|max:20',
+            'address'       => 'required|string',
+            'phone'         => 'required|string|max:20',
+            'email'         => 'required|email|unique:schools,email,' . $school->id,
+            'logo'          => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'website'       => 'nullable|url',
+            'type'          => 'nullable|string',
+            'affiliation'   => 'nullable|string',
+            'principal'     => 'nullable|string',
+            'about'         => 'nullable|string',
+            'established_year'       => 'nullable|integer|min:1900|max:' . date('Y'),
+            'working_hours'          => 'nullable|string',
+            'social_links'           => 'nullable|array',
+            'social_links.facebook'  => 'nullable|url',
+            'social_links.twitter'   => 'nullable|url',
             'social_links.instagram' => 'nullable|url',
-            'social_links.youtube' => 'nullable|url',
+            'social_links.youtube'   => 'nullable|url',
         ]);
 
         // Handle logo upload
@@ -105,13 +100,13 @@ class SchoolProfileController extends Controller
         // Update the school record
         $school->update($validated);
 
-        return redirect()->route('schools.show', $school->id)
+        return redirect()->route('schools.show')
             ->with('success', 'School profile updated successfully');
     }
 
     public function showSettings(School $school)
     {
-        $school = School::find(auth()->user()->school_id);
+        $school = School::first();
         $settings = SystemSetting::where('school_id', $school->id)
             ->pluck('setting_value', 'setting_key')
             ->toArray();
@@ -121,7 +116,7 @@ class SchoolProfileController extends Controller
 
     public function updateSettings(Request $request, School $school)
     {
-        $school = School::find(auth()->user()->school_id);
+        $school = School::first();
         $settings = $request->except(['_token', '_method']);
 
         foreach ($settings as $key => $value) {
@@ -138,7 +133,7 @@ class SchoolProfileController extends Controller
 
     public function updateAcademicSettings(Request $request, School $school)
     {
-        $school = School::find(auth()->user()->school_id);
+        $school = School::first();
         $validated = $request->validate([
             'working_hours_start' => 'required|date_format:H:i',
             'working_hours_end' => 'required|date_format:H:i|after:working_hours_start',
@@ -164,7 +159,7 @@ class SchoolProfileController extends Controller
 
     public function updateAttendanceSettings(Request $request, School $school)
     {
-        $school = School::find(auth()->user()->school_id);
+        $school = School::first();
         $validated = $request->validate([
             'attendance_method' => 'required|in:daily,session',
             'late_threshold' => 'required|integer|min:1|max:60',
