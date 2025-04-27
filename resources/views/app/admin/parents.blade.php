@@ -135,9 +135,9 @@
                                     {{-- data-show-refresh="true" --}}
                                     {{-- data-key-events="true"  --}}
                                     {{-- data-show-toggle="true"  --}}
-                                    {{-- data-resizable="true" --}}
+                                    data-resizable="true"
                                     {{-- data-cookie="true" --}}
-                                    data-cookie-id-table="timetable"
+                                    data-cookie-id-table="parent"
                                     {{-- data-show-export="true"  --}}
                                     {{-- data-click-to-select="true" --}}
                                      {{-- data-export-types="['csv', 'txt', 'excel']" --}}

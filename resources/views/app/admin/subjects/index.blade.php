@@ -98,7 +98,7 @@
                     <div class="sparkline13-list">
                         <div class="sparkline13-hd">
                             <div class="main-sparkline13-hd">
-                                <h1>Projects <span class="table-project-n">Data</span> Table</h1>
+                                <h1>All Subject In School</h1>
                             </div>
                         </div>
                         <div class="sparkline13-graph">
@@ -120,7 +120,7 @@
                                     {{-- data-show-refresh="true" --}}
                                     {{-- data-key-events="true"  --}}
                                     {{-- data-show-toggle="true"  --}}
-                                    {{-- data-resizable="true" --}}
+                                    data-resizable="true"
                                     {{-- data-cookie="true" --}}
                                     data-cookie-id-table="saveId"
                                     {{-- data-show-export="true"  --}}
@@ -129,8 +129,8 @@
                                     data-toolbar="#toolbar">
                                     <thead>
                                         <tr>
-                                            <th data-field="state" data-checkbox="true"></th>
-                                            <th data-field="id" data-sortable="true">S#</th>
+                                            {{-- <th data-field="state" data-checkbox="true"></th> --}}
+                                            <th data-field="id" data-sortable="true">S.no#</th>
                                             <th data-field="name" data-sortable="true">Subject Name</th>
                                             <th data-field="code" data-sortable="true">Code</th>
                                             <th data-field="classes">Assigned Teacher $ Classes</th>
@@ -141,7 +141,7 @@
                                     <tbody>
                                         @foreach($subjects as $key => $subject)
                                         <tr>
-                                            <td></td>
+                                            {{-- <td></td> --}}
                                             <td>{{ $key+1 }}</td>
                                             <td>{{ $subject->name }}</td>
                                             <td>{{ $subject->code }}</td>

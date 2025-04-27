@@ -96,7 +96,7 @@
                     <div class="sparkline13-list">
                         <div class="sparkline13-hd">
                             <div class="main-sparkline13-hd">
-                                <h1>Projects <span class="table-project-n">Data</span> Table</h1>
+                                <h1>Classes Information</h1>
                             </div>
                         </div>
                         <div class="sparkline13-graph">
@@ -118,7 +118,7 @@
                                     {{-- data-show-refresh="true" --}}
                                     {{-- data-key-events="true"  --}}
                                     {{-- data-show-toggle="true"  --}}
-                                    {{-- data-resizable="true" --}}
+                                    data-resizable="true"
                                     {{-- data-cookie="true" --}}
                                     data-cookie-id-table="timetable"
                                     {{-- data-show-export="true"  --}}

@@ -95,7 +95,7 @@
                     <div class="sparkline13-list">
                         <div class="sparkline13-hd">
                             <div class="main-sparkline13-hd">
-                                <h1>Projects <span class="table-project-n">Data</span> Table</h1>
+                                <h1>All Classes Sections</h1>
                             </div>
                         </div>
                         <div class="sparkline13-graph">
@@ -117,7 +117,7 @@
                                     {{-- data-show-refresh="true" --}}
                                     {{-- data-key-events="true"  --}}
                                     {{-- data-show-toggle="true"  --}}
-                                    {{-- data-resizable="true" --}}
+                                    data-resizable="true"
                                     {{-- data-cookie="true" --}}
                                     data-cookie-id-table="timetable"
                                     {{-- data-show-export="true"  --}}
@@ -126,10 +126,10 @@
                                     data-toolbar="#toolbar">
                                     <thead>
                                         <tr>
-                                            <th data-field="state" data-checkbox="true"></th>
-                                            <th data-field="id" data-sortable="true">ID</th>
-                                            <th data-field="name" data-sortable="true">Section Name</th>
+                                            {{-- <th data-field="state" data-checkbox="true"></th> --}}
+                                            <th data-field="id" data-sortable="true">S.no#</th>
                                             <th data-field="class" data-sortable="true">Class</th>
+                                            <th data-field="name" data-sortable="true">Section Name</th>
                                             <th data-field="capacity" data-sortable="true">Capacity</th>
                                             <th data-field="students" data-sortable="true">Students</th>
                                             <th data-field="action">Actions</th>
@@ -138,10 +138,10 @@
                                     <tbody>
                                         @foreach($sections as $section)
                                         <tr>
-                                            <td></td>
+                                            {{-- <td></td> --}}
                                             <td>{{ $section->id }}</td>
-                                            <td>{{ $section->name }}</td>
                                             <td>{{ $section->class->name ?? 'N/A' }}</td>
+                                            <td>{{ $section->name }}</td>
                                             <td>{{ $section->capacity }}</td>
                                             <td>{{ $section->students_count }}</td>
                                             <td>

@@ -137,7 +137,7 @@
                                         {{-- data-show-refresh="true" --}}
                                         {{-- data-key-events="true"  --}}
                                         {{-- data-show-toggle="true"  --}}
-                                        {{-- data-resizable="true" --}}
+                                        data-resizable="true"
                                         {{-- data-cookie="true" --}}
                                         data-cookie-id-table="timetable-{{ $loop->index }}"
                                         {{-- data-show-export="true"  --}}
