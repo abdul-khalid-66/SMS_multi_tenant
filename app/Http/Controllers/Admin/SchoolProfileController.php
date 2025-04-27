@@ -135,13 +135,13 @@ class SchoolProfileController extends Controller
     {
         $school = School::first();
         $validated = $request->validate([
-            'working_hours_start' => 'required|date_format:H:i',
-            'working_hours_end' => 'required|date_format:H:i|after:working_hours_start',
-            'working_days_start' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
-            'working_days_end' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
-            'grading_system' => 'required|in:percentage,letter,gpa',
+            'working_hours_start'    => 'required|date_format:H:i',
+            'working_hours_end'      => 'required|date_format:H:i|after:working_hours_start',
+            'working_days_start'     => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+            'working_days_end'       => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+            'grading_system'         => 'required|in:percentage,letter,gpa',
             'default_class_capacity' => 'required|integer|min:10|max:60',
-            'auto_promotion' => 'nullable|boolean',
+            'auto_promotion'         => 'nullable|boolean',
         ]);
 
         // Convert checkbox value to boolean
@@ -161,10 +161,10 @@ class SchoolProfileController extends Controller
     {
         $school = School::first();
         $validated = $request->validate([
-            'attendance_method' => 'required|in:daily,session',
-            'late_threshold' => 'required|integer|min:1|max:60',
-            'send_absence_notifications' => 'nullable',
-            'absence_notification_method' => 'required|in:email,sms,both',
+            'attendance_method'             => 'required|in:daily,session',
+            'late_threshold'                => 'required|integer|min:1|max:60',
+            'send_absence_notifications'    => 'nullable',
+            'absence_notification_method'   => 'required|in:email,sms,both',
         ]);
 
         foreach ($validated as $key => $value) {
