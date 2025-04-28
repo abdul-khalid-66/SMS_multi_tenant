@@ -140,7 +140,7 @@ class SchoolProfileController extends Controller
             'working_days_end'       => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
             'grading_system'         => 'required|in:percentage,letter,gpa',
             'default_class_capacity' => 'required|integer|min:10|max:60',
-            'auto_promotion'         => 'nullable|boolean',
+            'auto_promotion'         => 'nullable',
         ]);
 
         // Convert checkbox value to boolean

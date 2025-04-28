@@ -210,14 +210,14 @@
                                                                 <label class="small">From Time</label>
                                                                 <input type="time" name="working_hours_start" class="form-control @error('working_hours_start') is-invalid @enderror" value="{{ old('working_hours_start', $settings['working_hours_start'] ?? '08:00') }}">
                                                                 @error('working_hours_start')
-                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                <div class="invalid-feedback" style="color: red">{{ $message }}</div>
                                                                 @enderror
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label class="small">To Time</label>
                                                                 <input type="time" name="working_hours_end" class="form-control @error('working_hours_end') is-invalid @enderror" value="{{ old('working_hours_end', $settings['working_hours_end'] ?? '15:00') }}">
                                                                 @error('working_hours_end')
-                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                <div class="invalid-feedback" style="color: red">{{ $message }}</div>
                                                                 @enderror
                                                             </div>
                                                         </div>
@@ -245,7 +245,7 @@
                                                                         Sunday</option>
                                                                 </select>
                                                                 @error('working_days_start')
-                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                <div class="invalid-feedback" style="color: red">{{ $message }}</div>
                                                                 @enderror
                                                             </div>
                                                             <div class="col-md-6">
@@ -267,7 +267,7 @@
                                                                         Sunday</option>
                                                                 </select>
                                                                 @error('working_days_end')
-                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                <div class="invalid-feedback" style="color: red">{{ $message }}</div>
                                                                 @enderror
                                                             </div>
                                                         </div>
