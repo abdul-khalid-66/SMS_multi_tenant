@@ -17,7 +17,7 @@
                     <!-- School Admin Panel -->
                     <li><h6 style="color: rgb(95, 95, 95);padding-left:20px" class="mini-click-non">School Admin Panel</h6></li>
                     <li>
-                        <a title="Dashboard" href="{{ route(admin.dashboard) }}" aria-expanded="false">
+                        <a title="Dashboard" href="{{ route('admin.dashboard') }}" aria-expanded="false">
                             <span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span>
                             <span class="mini-click-non">Dashboard</span>
                         </a>

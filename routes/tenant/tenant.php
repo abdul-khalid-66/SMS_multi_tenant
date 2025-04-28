@@ -9,6 +9,9 @@ use App\Http\Controllers\App\{
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use App\Http\Controllers\Admin\{
+    DashboardController,
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -31,9 +34,10 @@ Route::middleware([
         return view('App.welcome');
     });
 
-    Route::get('/tenant_dashboard', function () {
-        return view('app.admin.dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+    // Route::get('/tenant_dashboard', function () {
+    //     return view('app.admin.dashboard');
+    // })->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
     // Route::middleware('auth')->group(function () {
     //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;;
+use App\Http\Controllers\Controller;
+use App\Models\Classes;
+use App\Models\Section;
+use App\Models\User;;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +19,10 @@ class DashboardController extends Controller
      */
     public function index(Request $request): View
     {
-        return view('app.admin.dashboard');
+        $numberOfTeachers   = User::role('teacher')->count();
+        $numberOfStudent    = User::role('student')->count();
+        $section            = Section::sum('capacity');
+
+        return view('app.admin.dashboard', compact('numberOfTeachers', 'numberOfStudent', 'section'));
     }
 }
