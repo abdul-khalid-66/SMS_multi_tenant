@@ -158,37 +158,52 @@
                                     </thead>
                                     <tbody>
                                         @foreach($parents as $parent)
-                                        <tr>
-                                            <td></td>
-                                            <td>{{ $parent->id }}</td>
-                                            <td>{{ $parent->name }}</td>
-                                            <td>{{ $parent->email }}</td>
-                                            <td>{{ $parent->phone }}</td>
-                                            <td>{{ $parent->parentProfile->occupation ?? 'N/A' }}</td>
-                                            <td>
-                                                @foreach($parent->children as $child)
-                                                {{ $child->name }} ({{ $child->studentProfile->class->name ?? 'N/A' }})<br>
-                                                @endforeach
-                                            </td>
-                                            <td>
-                                                @foreach($parent->studentParentRelationships as $relationship)
-                                                {{ ucfirst($relationship->relationship) }}<br>
-                                                @endforeach
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-xs btn-primary" data-toggle="modal" 
-                                                            data-target="#editParentModal" style="margin-right: 2px" data-parent-id="{{ $parent->id }}">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <a href="{{ route('admin.destroy.parent', $parent->id ) }}" class="btn btn-xs btn-danger delete-parent" style="margin-left: 2px"
-                                                            data-parent-id="{{ $parent->id }}">
-                                                        <i class="fa fa-trash"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>{{ $parent->id }}</td>
+                                                <td>{{ $parent->name }}</td>
+                                                <td>{{ $parent->email }}</td>
+                                                <td>{{ $parent->phone }}</td>
+                                                <td>{{ $parent->parentProfile->occupation ?? 'N/A' }}</td>
+                                                <td>
+                                                    @foreach($parent->children as $child)
+                                                    {{ $child->name }} ({{ $child->studentProfile->class->name ?? 'N/A' }})<br>
+                                                    @endforeach
+                                                </td>
+                                                <td>
+                                                    @foreach($parent->studentParentRelationships as $relationship)
+                                                    {{ ucfirst($relationship->relationship) }}<br>
+                                                    @endforeach
+                                                </td>                                                
+
+                                                <td>
+                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                        <a href="" 
+                                                        class="btn btn-xs btn-success" 
+                                                        title="Edit">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
+                                                        <a href="" 
+                                                        class="btn btn-xs btn-primary" 
+                                                        title="Edit">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                
+                                                        <form action="{{ route('admin.destroy.parent', $parent->id ) }}" 
+                                                            method="POST" 
+                                                            class="delete-form">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" 
+                                                                    class="btn btn-xs btn-danger" 
+                                                                    title="Delete"
+                                                                    onclick="return confirm('Are you sure you want to delete this Parent?')">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>

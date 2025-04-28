@@ -168,22 +168,26 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <div class="btn-group d-flex">
-                                                        <a href="{{ route('admin.edit.student', $student->id) }}" 
-                                                        class="btn btn-sm btn-primary m-1" 
-                                                        title="Edit" style="margin: 5px; color: white">
-                                                            Edit
+                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                        <a href="" class="btn btn-xs btn-success" title="Edit">
+                                                            <i class="fa fa-eye"></i>
                                                         </a>
+                                                        <a href="{{ route('admin.edit.student', $student->id) }}" 
+                                                           class="btn btn-xs btn-primary" 
+                                                           title="Edit">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                
                                                         <form action="{{ route('admin.destroy.student', $student->id) }}" 
-                                                            method="POST" 
-                                                            class="d-inline ">
+                                                              method="POST" 
+                                                              class="delete-form">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" 
-                                                                    class="btn btn-sm btn-danger m-1"  style="margin: 5px; color: white"
+                                                                    class="btn btn-xs btn-danger" 
                                                                     title="Delete"
                                                                     onclick="return confirm('Are you sure you want to delete this student?')">
-                                                                Delete
+                                                                <i class="fa fa-trash"></i>
                                                             </button>
                                                         </form>
                                                     </div>
