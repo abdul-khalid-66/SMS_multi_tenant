@@ -1,8 +1,14 @@
 @if (Auth::user()->Role('admin'))
     <nav id="sidebar" class="">
         <div class="sidebar-header">
-            <a href="index.html"><img class="main-logo" src="{{ asset('backend/img/logo/logo.png') }}" alt="" /></a>
-            <strong><a href="index.html"><img src="{{ asset('backend/img/logo/logosn.png') }}" alt="" /></a></strong>
+            <a href="{{ route('admin.dashboard') }}">
+                <img class="main-logo" src="{{ isset($invormentdata->logo) ? asset($invormentdata->logo) : asset('backend/img/logo/logo.png') }}" alt="" style="width: 180px; height:50px; margin-top:10px;margin-bottom:20px;"/>
+            </a>
+            <strong>
+                <a href="{{ route('admin.dashboard') }}">
+                    <img src="{{ isset($invormentdata->logo) ? asset($invormentdata->logo) : asset('backend/img/logo/logo.png') }}" alt="" style="width: 60px; height:50px; margin-left:5px;margin-right:5px;"/>
+                </a>
+            </strong>
         </div>
         <div class="left-custom-menu-adp-wrap comment-scrollbar" style="height: calc(100vh - 100px); overflow-y: auto;">
             <nav class="sidebar-nav left-sidebar-menu-pro">
