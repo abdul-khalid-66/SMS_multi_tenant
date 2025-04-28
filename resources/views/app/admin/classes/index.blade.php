@@ -127,19 +127,18 @@
                                     data-toolbar="#toolbar">
                                     <thead>
                                         <tr>
-                                            <th data-field="state" data-checkbox="true"></th>
                                             <th data-field="id" data-sortable="true">ID</th>
                                             <th data-field="name" data-sortable="true">Class Name</th>
                                             <th data-field="numeric_value" data-sortable="true">Numeric Value</th>
                                             <th data-field="teacher" data-sortable="true">Class Teacher</th>
-                                            <th data-field="sections">Sections</th>
+                                            <th data-field="sections">No Of Sections</th>
+                                            <th data-field="total_students">Total Students</th>
                                             <th data-field="action">Actions</th>
                                         </tr>
                                      </thead>
                                      <tbody>
                                          @foreach ($classes as $class)
                                              <tr>
-                                                <td></td>
                                                 <td>{{ $class->id??"" }}</td>
                                                 <td>{{ $class->name??"" }}</td>
                                                 <td>{{ $class->numeric_value??"" }}</td>
@@ -150,12 +149,18 @@
                                                         <span class="text-muted">Not assigned</span>
                                                     @endif
                                                 </td>
-                                                <td>
+                                                {{-- <td>
                                                     @forelse($class->sections as $section)
                                                         <span class="badge badge-primary">{{ $section->name }}</span>
                                                     @empty
                                                         <span class="text-muted">No sections</span>
                                                     @endforelse
+                                                </td> --}}
+                                                <td>
+                                                    {{ $class->sections->count() }}
+                                                </td>
+                                                <td>
+                                                    {{ $class->classStudents->count() }}
                                                 </td>
                                                 <td>
                                                     <div style="display: flex; align-items: center; gap: 4px;">

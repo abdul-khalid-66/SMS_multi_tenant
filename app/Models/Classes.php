@@ -26,6 +26,10 @@ class Classes extends Model
     {
         return $this->belongsTo(User::class, 'teacher_id');
     }
+    public function classStudents()
+    {
+        return $this->hasMany(StudentProfile::class, 'class_id');
+    }
 
     public function sections()
     {

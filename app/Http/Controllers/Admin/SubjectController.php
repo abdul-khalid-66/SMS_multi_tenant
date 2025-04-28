@@ -58,7 +58,7 @@ class SubjectController extends Controller
             'class_id' => 'nullable|exists:classes,id'
         ]);
 
-        $validated['school_id'] = auth()->user()->school_id;
+        $validated['school_id'] = auth()->user()->school_id ?? 1;
 
         Subject::create($validated);
 
