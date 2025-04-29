@@ -122,7 +122,6 @@
                                 data-toolbar="#toolbar">
                                 <thead>
                                     <tr>
-                                        <th data-field="state" data-checkbox="true"></th>
                                         <th data-field="id" data-sortable="true">ID</th>
                                         <th data-field="name" data-sortable="true">Name</th>
                                         <th data-field="employee_id" data-sortable="true">Employee ID</th>
@@ -136,7 +135,6 @@
                                 <tbody>
                                     @foreach($teachers as $teacher)
                                     <tr>
-                                        <td></td>
                                         <td>{{ $teacher->id }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
