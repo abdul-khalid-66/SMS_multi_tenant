@@ -9,6 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use SoftDeletes, HasRoles;
+    protected $guard_name = 'web';
 
     protected $fillable = [
         'school_id',
