@@ -52,7 +52,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a title="Attendance" href="#" aria-expanded="false">
+                        <a title="Attendance" href="{{ route('admin.attendance.index') }}" aria-expanded="false">
                             <span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span>
                             <span class="mini-click-non">Attendance</span>
                         </a>

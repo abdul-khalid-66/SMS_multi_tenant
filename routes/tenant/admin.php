@@ -19,6 +19,9 @@ use App\Http\Controllers\Admin\{
 use App\Http\Controllers\Timetable\{
     TimetableController
 };
+use App\Http\Controllers\Attendance\{
+    AttendanceController
+};
 
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
@@ -130,6 +133,9 @@ Route::middleware([
         });
         Route::get('create_schedule', [TimetableController::class, 'create_schedule'])->name('admin.timetable.create.schedule');
         Route::post('store_schedule', [TimetableController::class, 'store_schedule'])->name('admin.timetable.store.schedule');
+
+        // Attendance
+        Route::get('/attendance', [AttendanceController::class, 'index'])->name('admin.attendance.index');   
     });
     require __DIR__ . '/tenant-auth.php';
 });

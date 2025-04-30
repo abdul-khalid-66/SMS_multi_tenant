@@ -496,7 +496,7 @@ Here's the concise format for all tables as requested:
 10. teacher_subjects  => `id | teacher_id | subject_id | class_id | is_class_teacher | created_at | updated_at`
 11. time_tables  => `id | school_id | class_id | section_id | subject_id | teacher_id | day_of_week | start_time | end_time | room_number | is_recurring | effective_from | effective_to | deleted_at | created_at | updated_at`
 12. attendance_sessions  => `id | school_id | time_table_id | date | recorded_by | notes | created_at | updated_at`
-13. student_attendances  => `id | session_id | student_id | status | remarks | deleted_at | created_at | updated_at`
+13. attendances  => `id | session_id | user_id | status | remarks | deleted_at | created_at | updated_at`
 14. fee_categories  => `id | school_id | name | description | deleted_at | created_at | updated_at`
 15. fee_structures  => `id | school_id | category_id | class_id | name | amount | frequency | due_date | deleted_at | created_at | updated_at`
 16. fees  => `id | school_id | student_id | structure_id | invoice_number | amount | discount | due_date | status | payment_date | payment_method | transaction_reference | notes | deleted_at | created_at | updated_at`
@@ -571,8 +571,8 @@ Here's the concise relationship summary for all existing models:
     - school() → belongsTo(School::class)
     - timeTable() → belongsTo(TimeTable::class)
     - recordedBy() → belongsTo(User::class)
-    - attendances() → hasMany(StudentAttendance::class)
-    =>11. **StudentAttendance**:
+    - attendances() → hasMany(Attendance::class)
+    =>11. **Attendance**:
     - session() → belongsTo(AttendanceSession::class)
     - student() → belongsTo(User::class)
     =>12. **FeeCategory**:

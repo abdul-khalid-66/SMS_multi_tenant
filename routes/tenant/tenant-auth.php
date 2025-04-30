@@ -36,9 +36,6 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('login', function () {
-        return redirect()->route('admin.dashboard');
-    });
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 

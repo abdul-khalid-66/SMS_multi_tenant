@@ -68,12 +68,33 @@
                             <h5>Total Students</h5>
                             <h2><span class="counter">{{ $numberOfStudent }}</span> <span class="tuition-fees">Current Inrolled</span>
                             </h2>
-                            <span class="text-success">{{ number_format(($numberOfStudent / $section) * 100, 2) }}%</span>
-                            <div class="progress m-b-0">
-                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50"
-                                    aria-valuemin="0" aria-valuemax="100" style="width:{{ ($numberOfStudent / $section) * 100 }}%"> <span
-                                        class="sr-only">20% Complete</span> </div>
-                            </div>
+                            <span class="text-success">
+                                @if($section != 0)
+                                    {{ number_format(($numberOfStudent / $section) * 100, 2) }}%
+                                @else
+                                    0%
+                                @endif
+                            </span>
+                            
+                            @if ($numberOfStudent == 0)
+                                <div class="progress m-b-0">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50"
+                                        aria-valuemin="0" aria-valuemax="100" style="width:0%"> 
+                                        <span
+                                            class="sr-only">20% Complete
+                                        </span> 
+                                    </div>
+                                </div>
+                            @else
+                                <div class="progress m-b-0">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50"
+                                        aria-valuemin="0" aria-valuemax="100" style="width:{{ ($numberOfStudent / $section) * 100 }}%"> 
+                                        <span
+                                            class="sr-only">20% Complete
+                                        </span> 
+                                    </div>
+                                </div>                                
+                            @endif
                         </div>
                     </div>
                 </div>
