@@ -1,7 +1,7 @@
 <x-tenant-app-layout>
     @push('css')
         <!-- favicon
-    ============================================ -->
+        ============================================ -->
         <link rel="shortcut icon" type="image/x-icon" href="tenancy/assets/backend/img/favicon.ico">
         <!-- Google Fonts
             ============================================ -->
@@ -182,7 +182,7 @@
                     <div class="white-box analytics-info-cs">
                         <h3 class="box-title">Quick Actions</h3>
                         <div class="quick-action-buttons">
-                            <a href="#" class="btn btn-primary btn-block mg-b-10">
+                            <a href="{{ route('admin.attendance.create') }}" class="btn btn-primary btn-block mg-b-10">
                                 <i class="fa fa-calendar-check-o fa-lg"></i> Take Today's Attendance
                             </a>
                             <a href="#" class="btn btn-success btn-block mg-b-10">

@@ -135,7 +135,23 @@ Route::middleware([
         Route::post('store_schedule', [TimetableController::class, 'store_schedule'])->name('admin.timetable.store.schedule');
 
         // Attendance
-        Route::get('/attendance', [AttendanceController::class, 'index'])->name('admin.attendance.index');   
+        // Route::get('/attendance', [AttendanceController::class, 'index'])->name('admin.attendance.index');
+        // Route::get('/today_attendance', [AttendanceController::class, 'today_attendance'])->name('admin.today_attendance.index');
+
+
+        Route::middleware(['auth', 'verified'])->group(function () {
+            // Attendance Routes
+            Route::prefix('attendance')->group(function () {
+                Route::get('/', [AttendanceController::class, 'index'])->name('admin.attendance.index');
+                Route::get('/take', [AttendanceController::class, 'create'])->name('admin.attendance.create');
+
+                // AJAX endpoints
+                Route::get('/get-sections', [AttendanceController::class, 'getSections'])->name('attendance.get-sections');
+                Route::get('/get-subjects', [AttendanceController::class, 'getSubjects'])->name('attendance.get-subjects');
+                Route::get('/get-students', [AttendanceController::class, 'getStudents'])->name('attendance.get-students');
+                Route::post('/save', [AttendanceController::class, 'store'])->name('attendance.store');
+            });
+        });
     });
     require __DIR__ . '/tenant-auth.php';
 });
