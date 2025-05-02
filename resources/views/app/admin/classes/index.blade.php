@@ -130,7 +130,7 @@
                                             <th data-field="id" data-sortable="true">ID</th>
                                             <th data-field="name" data-sortable="true">Class Name</th>
                                             <th data-field="numeric_value" data-sortable="true">Numeric Value</th>
-                                            <th data-field="teacher" data-sortable="true">Class Teacher</th>
+                                            {{-- <th data-field="teacher" data-sortable="true">Class Teacher</th> --}}
                                             <th data-field="sections">No Of Sections</th>
                                             <th data-field="total_students">Total Students</th>
                                             <th data-field="action">Actions</th>
@@ -142,19 +142,12 @@
                                                 <td>{{ $class->id??"" }}</td>
                                                 <td>{{ $class->name??"" }}</td>
                                                 <td>{{ $class->numeric_value??"" }}</td>
-                                                <td>
-                                                    @if($class->classTeacher)
-                                                        {{ $class->classTeacher->name }}
-                                                    @else
-                                                        <span class="text-muted">Not assigned</span>
-                                                    @endif
-                                                </td>
                                                 {{-- <td>
-                                                    @forelse($class->sections as $section)
-                                                        <span class="badge badge-primary">{{ $section->name }}</span>
-                                                    @empty
-                                                        <span class="text-muted">No sections</span>
-                                                    @endforelse
+                                                    @foreach ($class->classTeachersSubjects as $subject)
+                                                        @if ($subject->class_id == $class->id)
+                                                            <span class="badge badge-primary">{{ $subject->teacher->name }}</span>
+                                                        @endif  
+                                                    @endforeach
                                                 </td> --}}
                                                 <td>
                                                     {{ $class->sections->count() }}

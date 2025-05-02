@@ -144,7 +144,7 @@
                                                 <td>{{ $student->id }}</td>
                                                 <td>
                                                     @if(isset($student->studentProfile->student_photo))
-                                                        <img src="{{ asset('storage/'.$student->studentProfile->student_photo) }}" 
+                                                        <img src="{{ asset($student->studentProfile->student_photo) }}" 
                                                             alt="{{ $student->name }}" 
                                                             class="rounded-circle" 
                                                             width="30" 

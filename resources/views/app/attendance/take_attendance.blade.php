@@ -68,71 +68,8 @@
     @endpush
 
     @push('css')
-        <!-- Your existing CSS includes -->
-        {{-- <style>
-            .attendance-status-btn {
-                min-width: 80px;
-            }
-            .student-photo {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-            .status-present {
-                background-color: #d4edda;
-            }
-            .status-absent {
-                background-color: #f8d7da;
-            }
-            .status-late {
-                background-color: #fff3cd;
-            }
-            .status-undefined {
-                background-color: #e2e3e5;
-            }
-            .attendance-actions {
-                position: sticky;
-                bottom: 0;
-                background: white;
-                padding: 15px;
-                border-top: 1px solid #eee;
-                box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-            }
-            .form-section {
-                margin-bottom: 30px;
-                padding-bottom: 20px;
-                border-bottom: 1px solid #eee;
-            }
-            .form-section h3 {
-                margin-bottom: 20px;
-                color: #333;
-            }
-            .bulk-actions .btn-group {
-                flex-wrap: wrap;
-                gap: 5px;
-            }
-            @media (max-width: 768px) {
-                .attendance-status-btn {
-                    min-width: 60px;
-                    padding: 0.25rem 0.5rem;
-                    font-size: 0.8rem;
-                }
-                .attendance-actions {
-                    flex-direction: column;
-                    gap: 10px;
-                }
-                .attendance-stats {
-                    margin-bottom: 10px;
-                }
-            }
-        </style> --}}
-    @endpush
-
-    @push('css')
-    <!-- Include your existing CSS files -->
-    <link rel="stylesheet" href="{{ asset('backend/css/select2/select2.min.css') }}">
     <!-- Add select2 for better dropdowns -->
+    <link rel="stylesheet" href="{{ asset('backend/css/select2/select2.min.css') }}">
     <style>
         .alert-notification {
             position: fixed;
@@ -234,9 +171,13 @@
                                             <div class="form-group">
                                                 <label>Date *</label>
                                                 <input type="date" class="form-control" id="attendance_date" name="date" 
-                                                    value="{{ date('Y-m-d') }}" max="{{ date('Y-m-d') }}" required>
+                                                    value="" max="{{ date('Y-m-d') }}" required>
+                                                <div id="class_check_result" class="mt-2"></div>
                                             </div>
                                         </div>
+                                        {{-- 
+                                        
+                                        system setting if attendace by session type
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Session Type *</label>
@@ -246,9 +187,11 @@
                                                     <option value="full_day">Full Day</option>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     
+                                    {{-- 
+                                    system setting if attendace by subject wise
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -258,7 +201,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     
                                     <div class="text-right">
                                         <button type="button" id="loadStudentsBtn" class="btn btn-primary" disabled>
@@ -505,7 +448,7 @@
                     $('#class_id').change(function() {
                         const classId = $(this).val();
                         $('#section_id').empty().append('<option value="">Select Section</option>');
-                        $('#subject_id').empty().append('<option value="">General Attendance</option>');
+                        // $('#subject_id').empty().append('<option value="">General Attendance</option>');
                         
                         if (classId) {
                             $('#section_id').prop('disabled', false);
@@ -520,7 +463,7 @@
                                         $.each(response.sections, function(index, section) {
                                             $('#section_id').append(`<option value="${section.id}">${section.name}</option>`);
                                         });
-                                        $('#loadStudentsBtn').prop('disabled', false);
+                                        // $('#loadStudentsBtn').prop('disabled', false);
                                     } else {
                                         $('#section_id').prop('disabled', true);
                                         $('#loadStudentsBtn').prop('disabled', true);
@@ -530,21 +473,21 @@
                             });
                             
                             // Load subjects for selected class
-                            $.ajax({
-                                url: '/attendance/get-subjects',
-                                type: 'GET',
-                                data: { class_id: classId },
-                                success: function(response) {
-                                    if (response.subjects.length > 0) {
-                                        $.each(response.subjects, function(index, subject) {
-                                            $('#subject_id').append(`<option value="${subject.id}">${subject.name} (${subject.code})</option>`);
-                                        });
-                                    }
-                                }
-                            });
+                            // $.ajax({
+                            //     url: '/attendance/get-subjects',
+                            //     type: 'GET',
+                            //     data: { class_id: classId },
+                            //     success: function(response) {
+                            //         if (response.subjects.length > 0) {
+                            //             $.each(response.subjects, function(index, subject) {
+                            //                 $('#subject_id').append(`<option value="${subject.id}">${subject.name} (${subject.code})</option>`);
+                            //             });
+                            //         }
+                            //     }
+                            // });
                         } else {
                             $('#section_id').prop('disabled', true);
-                            $('#subject_id').empty().append('<option value="">General Attendance</option>');
+                            // $('#subject_id').empty().append('<option value="">General Attendance</option>');
                             $('#loadStudentsBtn').prop('disabled', true);
                         }
                     });
@@ -571,7 +514,7 @@
                                 date: date
                             },
                             success: function(response) {
-                                $('#loadStudentsBtn').html('<i class="fa fa-users"></i> Load Students').prop('disabled', false);
+                                $('#loadStudentsBtn').html('<i class="fa fa-users"></i> Load Students').prop('disabled', true);
                                 
                                 if (response.students.length > 0) {
                                     $('#studentsList').empty();
@@ -724,7 +667,7 @@
                         const sectionId = $('#section_id').val();
                         const date = $('#attendance_date').val();
                         const subjectId = $('#subject_id').val();
-                        const sessionType = $('#session_type').val();
+                        // const sessionType = $('#session_type').val();
                         
                         if (!classId || !sectionId || !date) {
                             showAlert('danger', 'Please select class, section and date');
@@ -757,7 +700,7 @@
                                 section_id: sectionId,
                                 date: date,
                                 subject_id: subjectId,
-                                session_type: sessionType,
+                                // session_type: sessionType,
                                 status: status,
                                 attendance: attendanceData
                             },
@@ -775,6 +718,46 @@
                             }
                         });
                     }
+                });
+
+
+
+                // check is there any class on this day
+                $(document).ready(function() {
+                    $('#attendance_date').change(function() {
+                        var selectedDate = $(this).val();
+                        
+                        // Clear previous result
+                        $('#class_check_result').html('');
+                        $('#loadStudentsBtn').prop('disabled', true);
+
+                        
+                        // Make Ajax request
+                        $.ajax({
+                            url: '/check-classes', // Replace with your actual endpoint
+                            type: 'GET',
+                            data: {
+                                date: selectedDate
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                if(response.has_classes) {
+                                    $('#loadStudentsBtn').prop('disabled', false);
+
+                                    $('#class_check_result').html('<div class="alert alert-success">Classes are scheduled for this date.</div>');
+                                } else {
+                                    $('#loadStudentsBtn').prop('disabled', true);
+
+                                    $('#class_check_result').html('<div class="alert alert-warning">No classes found for this date.</div>');
+                                }
+                            },
+                            error: function(xhr) {
+                                $('#loadStudentsBtn').prop('disabled', true);
+
+                                $('#class_check_result').html('<div class="alert alert-danger">Error checking classes.</div>');
+                            }
+                        });
+                    });
                 });
             </script>
         @endpush

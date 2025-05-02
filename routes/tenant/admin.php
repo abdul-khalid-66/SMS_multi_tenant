@@ -151,6 +151,8 @@ Route::middleware([
                 Route::get('/get-students', [AttendanceController::class, 'getStudents'])->name('attendance.get-students');
                 Route::post('/save', [AttendanceController::class, 'store'])->name('attendance.store');
             });
+            // In your routes/web.php
+            Route::get('/check-classes', [AttendanceController::class, 'checkClasses']);
         });
     });
     require __DIR__ . '/tenant-auth.php';

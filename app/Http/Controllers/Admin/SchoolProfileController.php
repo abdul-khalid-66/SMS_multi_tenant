@@ -27,7 +27,7 @@ class SchoolProfileController extends Controller
             'classes' => Classes::count(),
         ];
 
-        $classes = Classes::with(['sections', 'classTeacher'])
+        $classes = Classes::with(['sections', 'classTeachersSubjects.subject'])
             ->orderBy('numeric_value')
             ->get();
 

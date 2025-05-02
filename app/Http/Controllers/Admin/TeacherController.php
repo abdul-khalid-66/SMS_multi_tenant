@@ -18,9 +18,8 @@ class TeacherController extends Controller
      */
     public function index(Request $request): View
     {
-        $teachers = User::with('teacherProfile')
+        $teachers = User::role('teacher')->with('teacherProfile')
             ->where('school_id', auth()->user()->school_id)
-            ->where('role', 'teacher')
             ->orderBy('name')
             ->get();
 

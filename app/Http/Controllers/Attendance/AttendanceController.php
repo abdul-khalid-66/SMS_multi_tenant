@@ -27,6 +27,7 @@ class AttendanceController extends Controller
 
     public function create()
     {
+        // if subject wise attendance the update data for system_setting 
         $classes = Classes::orderBy('numeric_value')->get();
         return view('app.attendance.take_attendance', compact('classes'));
     }
@@ -157,7 +158,7 @@ class AttendanceController extends Controller
 
             // Find timetable entry if this is subject-wise attendance
             $timetableId = null;
-            // if ($subjectId) {
+            
             $dayOfWeek = strtolower(date('l', strtotime($date)));
             $timetable = TimeTable::where('class_id', $classId)
                 ->where('section_id', $sectionId)
@@ -169,7 +170,7 @@ class AttendanceController extends Controller
             $timetableId = $timetable ? $timetable->id : null;
             // }
 
-            dd([$request->all(), $dayOfWeek]);
+            dd([$request->all(), $dayOfWeek,$timetableId]);
             // Create or update attendance session
             $session = AttendanceSession::updateOrCreate(
                 [
@@ -228,13 +229,25 @@ class AttendanceController extends Controller
             ->where('section_id', $sectionId)
             ->where('subject_id', $subjectId)
             ->where('day_of_week', $dayOfWeek)
-            ->where('school_id', auth()->user()->school_id)
+            // ->where('school_id', auth()->user()->school_id)
             ->first();
 
         return $timetable ? $timetable->id : null;
     }
 
+    public function checkClasses(Request $request){
+        $date = $request->input('date');
 
+        $dayOfWeek = strtolower(date('l', strtotime($date)));
+    
+        // Query your timetable to check for classes on this date
+        $hasClasses = Timetable::where('day_of_week', $dayOfWeek)->exists();
+        
+        return response()->json([
+            'has_classes' => $hasClasses,
+            'date' => $date
+        ]);
+    }
 
 
     public function edit($id) {}

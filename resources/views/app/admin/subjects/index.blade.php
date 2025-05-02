@@ -115,25 +115,15 @@
                                     data-toggle="table" 
                                     data-pagination="true" 
                                     data-search="true"
-                                    {{-- data-show-columns="true"  --}}
-                                    {{-- data-show-pagination-switch="true"  --}}
-                                    {{-- data-show-refresh="true" --}}
-                                    {{-- data-key-events="true"  --}}
-                                    {{-- data-show-toggle="true"  --}}
                                     data-resizable="true"
-                                    {{-- data-cookie="true" --}}
                                     data-cookie-id-table="saveId"
-                                    {{-- data-show-export="true"  --}}
-                                    {{-- data-click-to-select="true" --}}
-                                     {{-- data-export-types="['csv', 'txt', 'excel']" --}}
                                     data-toolbar="#toolbar">
                                     <thead>
                                         <tr>
-                                            {{-- <th data-field="state" data-checkbox="true"></th> --}}
                                             <th data-field="id" data-sortable="true">S.no#</th>
                                             <th data-field="name" data-sortable="true">Subject Name</th>
                                             <th data-field="code" data-sortable="true">Code</th>
-                                            <th data-field="classes">Assigned Teacher $ Classes</th>
+                                            {{-- <th data-field="classes">Assigned Teacher & Classes</th> --}}
                                             {{-- <th data-field="teachers">Assigned Teachers</th> --}}
                                             <th data-field="action">Actions</th>
                                         </tr>
@@ -141,11 +131,10 @@
                                     <tbody>
                                         @foreach($subjects as $key => $subject)
                                         <tr>
-                                            {{-- <td></td> --}}
                                             <td>{{ $key+1 }}</td>
                                             <td>{{ $subject->name }}</td>
                                             <td>{{ $subject->code }}</td>
-                                            <td>
+                                            {{-- <td>
                                                 @if($subject->subjectTeacherClass && $subject->subjectTeacherClass->count())
                                                     @foreach($subject->subjectTeacherClass as $classAssignment)
                                                         <span class="badge badge-info">
@@ -156,13 +145,19 @@
                                                 @else
                                                     Not assigned
                                                 @endif
-                                            </td>
+                                            </td> --}}
                                            
                                             <td>
                                                 <div style="display: flex; align-items: center; gap: 4px;">
                                                     <a href="{{ route('admin.academic.subjects.edit', $subject->id) }}" 
+                                                       class="btn btn-xs btn-success" 
+                                                       style="margin-right: 2px;color: white"
+                                                       title="Edit">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ route('admin.academic.subjects.edit', $subject->id) }}" 
                                                        class="btn btn-xs btn-primary" 
-                                                       style="margin-right: 2px"
+                                                       style="margin-right: 2px;color: white"
                                                        title="Edit">
                                                         <i class="fa fa-edit"></i>
                                                     </a>

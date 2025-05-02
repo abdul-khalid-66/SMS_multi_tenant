@@ -263,9 +263,9 @@
                                         </table>
                                     </div>
                                     
-                                    <div class="tab-pane" id="academic">
+                                    <div class="tab-pane " id="academic">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" style="margin-top: 20px">
                                                 <h4>Classes & Sections</h4>
                                                 <div class="table-responsive">
                                                     <table class="table table-striped">
@@ -273,7 +273,7 @@
                                                             <tr>
                                                                 <th>Class</th>
                                                                 <th>Sections</th>
-                                                                <th>Class Teacher</th>
+                                                                {{-- <th>Class Teacher</th> --}}
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -285,13 +285,13 @@
                                                                         <span class="badge badge-primary">{{ $section->name??"" }}</span>
                                                                     @endforeach
                                                                 </td>
-                                                                <td>
-                                                                    @if($class->classTeacher)
-                                                                        {{ $class->classTeacher->name??"" }}
-                                                                    @else
-                                                                        Not assigned
-                                                                    @endif
-                                                                </td>
+                                                                {{-- <td>
+                                                                    @foreach ($class->classTeachersSubjects as $subject)
+                                                                        @if ($subject->class_id == $class->id)
+                                                                            <span class="badge badge-primary">{{ $subject->teacher->name }}</span>
+                                                                        @endif  
+                                                                    @endforeach
+                                                                </td> --}}
                                                             </tr>
                                                             @endforeach
                                                             
@@ -308,7 +308,7 @@
                                                             <tr>
                                                                 <th>Subject</th>
                                                                 <th>Code</th>
-                                                                <th>Classes</th>
+                                                                {{-- <th>Classes</th> --}}
                                                                 {{-- <th>Teacher</th> --}}
                                                             </tr>
                                                         </thead>
@@ -317,7 +317,7 @@
                                                             <tr>
                                                                 <td>{{ $subject->name??"" }}</td>
                                                                 <td>{{ $subject->code ?? '-' }}</td>
-                                                                <td>
+                                                                {{-- <td>
                                                                     @if($subject->teacherSubjects && $subject->teacherSubjects->count())
                                                                         @foreach($subject->teacherSubjects as $class)
                                                                             <span class="badge badge-info">{{ $class->class->name??"" }}</span>
@@ -325,7 +325,7 @@
                                                                     @else
                                                                         Not assigned
                                                                     @endif
-                                                                </td>
+                                                                </td> --}}
                                                             </tr>
                                                             @endforeach
                                                         </tbody>

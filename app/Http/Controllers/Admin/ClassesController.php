@@ -17,7 +17,8 @@ class ClassesController extends Controller
     public function index()
     {
         // Get classes with their class teacher and sections count
-        $classes = Classes::with(['classTeacher', 'sections', 'classStudents'])->orderBy('numeric_value')->get();
+        // $classes = Classes::with(['classTeacher', 'sections', 'classStudents'])->orderBy('numeric_value')->get();
+        $classes = Classes::with(['classTeachersSubjects.teacher','classTeachersSubjects.subject'])->orderBy('numeric_value')->get();
 
         return view('app.admin.classes.index', compact('classes'));
     }
