@@ -37,7 +37,10 @@ Route::middleware([
     // Route::get('/tenant_dashboard', function () {
     //     return view('app.admin.dashboard');
     // })->middleware(['auth', 'verified'])->name('dashboard');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+    // Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+    // Route::get('/dashboard', function () {
+    //     return 'tenant dashboard';
+    // })->middleware(['auth', 'verified'])->name('dashboard');
 
     // Route::middleware('auth')->group(function () {
     //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

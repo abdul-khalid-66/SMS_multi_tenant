@@ -23,7 +23,7 @@ class AttendanceController extends Controller
     {
         return view('app.attendance.index');
     }
-    public function today_attendance() {}
+
 
     public function create()
     {

@@ -1,11 +1,11 @@
 @if (Auth::user()->Role('admin'))
     <nav id="sidebar" class="">
         <div class="sidebar-header">
-            <a href="{{ route('admin.dashboard') }}">
+            <a href="{{ route('dashboard') }}">
                 <img class="main-logo" src="{{ isset($invormentdata->logo) ? asset($invormentdata->logo) : asset('backend/img/logo/logo.png') }}" alt="" style="width: 180px; height:50px; margin-top:10px;margin-bottom:20px;"/>
             </a>
             <strong>
-                <a href="{{ route('admin.dashboard') }}">
+                <a href="{{ route('dashboard') }}">
                     <img src="{{ isset($invormentdata->logo) ? asset($invormentdata->logo) : asset('backend/img/logo/logo.png') }}" alt="" style="width: 60px; height:50px; margin-left:5px;margin-right:5px;"/>
                 </a>
             </strong>
@@ -17,7 +17,7 @@
                     <!-- School Admin Panel -->
                     <li><h6 style="color: rgb(95, 95, 95);padding-left:20px" class="mini-click-non">School Admin Panel</h6></li>
                     <li>
-                        <a title="Dashboard" href="{{ route('admin.dashboard') }}" aria-expanded="false">
+                        <a title="Dashboard" href="{{ route('dashboard') }}" aria-expanded="false">
                             <span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span>
                             <span class="mini-click-non">Dashboard</span>
                         </a>

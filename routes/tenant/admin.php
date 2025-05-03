@@ -39,7 +39,7 @@ Route::middleware([
 
 
     Route::group(['middleware' => ['role:admin']], function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('admin.dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
         // Parent
         Route::get('/parents', [ParentController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.parents');
@@ -135,10 +135,6 @@ Route::middleware([
         Route::post('store_schedule', [TimetableController::class, 'store_schedule'])->name('admin.timetable.store.schedule');
 
         // Attendance
-        // Route::get('/attendance', [AttendanceController::class, 'index'])->name('admin.attendance.index');
-        // Route::get('/today_attendance', [AttendanceController::class, 'today_attendance'])->name('admin.today_attendance.index');
-
-
         Route::middleware(['auth', 'verified'])->group(function () {
             // Attendance Routes
             Route::prefix('attendance')->group(function () {
@@ -151,9 +147,9 @@ Route::middleware([
                 Route::get('/get-students', [AttendanceController::class, 'getStudents'])->name('attendance.get-students');
                 Route::post('/save', [AttendanceController::class, 'store'])->name('attendance.store');
             });
-            // In your routes/web.php
             Route::get('/check-classes', [AttendanceController::class, 'checkClasses']);
         });
     });
+
     require __DIR__ . '/tenant-auth.php';
 });
