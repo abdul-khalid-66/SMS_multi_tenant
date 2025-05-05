@@ -12,16 +12,166 @@ use Illuminate\Http\Request;
 use App\Models\StudentProfile;
 use App\Models\AttendanceSession;
 use App\Models\Attendance;
+use App\Models\School;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
 class AttendanceController extends Controller
 {
-
     public function index()
     {
-        return view('app.attendance.index');
+        $today = now()->format('Y-m-d');
+        $schoolId = auth()->user()->school_id ?? School::first()->id;
+
+        // Get today's attendance sessions
+        $todaySessions = AttendanceSession::where('school_id', $schoolId)
+            ->whereDate('date', $today)
+            ->with(['attendances' => function ($query) {
+                $query->with('user');
+            }])
+            ->get();
+
+        // Calculate statistics
+        $stats = [
+            'today' => [
+                'total_students' => 0,
+                'present' => 0,
+                'absent' => 0,
+                'late' => 0,
+                'percentage' => 0,
+            ],
+            'monthly' => [
+                'total_students' => 0,
+                'present' => 0,
+                'percentage' => 0,
+                'change' => 0,
+            ],
+            'teachers' => [
+                'total' => 0,
+                'present' => 0,
+                'percentage' => 0,
+                'absent' => 0,
+            ],
+            'classes' => []
+        ];
+
+        // Process today's attendance
+        foreach ($todaySessions as $session) {
+            foreach ($session->attendances as $attendance) {
+                if ($attendance->user->hasRole('student')) {
+                    $stats['today']['total_students']++;
+                    if ($attendance->status === 'present') {
+                        $stats['today']['present']++;
+                    } elseif ($attendance->status === 'absent') {
+                        $stats['today']['absent']++;
+                    } elseif ($attendance->status === 'late') {
+                        $stats['today']['late']++;
+                    }
+                } elseif ($attendance->user->hasRole('teacher')) {
+                    $stats['teachers']['total']++;
+                    if ($attendance->status === 'present') {
+                        $stats['teachers']['present']++;
+                    }
+                }
+            }
+        }
+
+        // Calculate percentages
+        if ($stats['today']['total_students'] > 0) {
+            $stats['today']['percentage'] = round(($stats['today']['present'] / $stats['today']['total_students']) * 100, 1);
+        }
+
+        if ($stats['teachers']['total'] > 0) {
+            $stats['teachers']['percentage'] = round(($stats['teachers']['present'] / $stats['teachers']['total']) * 100, 1);
+            $stats['teachers']['absent'] = $stats['teachers']['total'] - $stats['teachers']['present'];
+        }
+
+        // Get monthly data (last 30 days)
+        $monthStart = now()->subDays(30)->format('Y-m-d');
+        $monthlyAttendances = Attendance::whereHas('session', function ($query) use ($schoolId, $monthStart) {
+            $query->where('school_id', $schoolId)
+                ->whereDate('date', '>=', $monthStart);
+        })->whereHas('user', function ($query) {
+            $query->role('student');
+        })->get();
+
+        if ($monthlyAttendances->count() > 0) {
+            $stats['monthly']['present'] = $monthlyAttendances->where('status', 'present')->count();
+            $stats['monthly']['total_students'] = $monthlyAttendances->count();
+            $stats['monthly']['percentage'] = round(($stats['monthly']['present'] / $stats['monthly']['total_students']) * 100, 1);
+        }
+
+        // Get classes with lowest attendance
+        $lowestClasses = AttendanceSession::where('school_id', $schoolId)
+            ->whereDate('date', $today)
+            ->with(['attendances', 'timeTable.class', 'timeTable.section'])
+            ->get()
+            ->map(function ($session) {
+                $total = $session->attendances->count();
+                $present = $session->attendances->where('status', 'present')->count();
+                $percentage = $total > 0 ? round(($present / $total) * 100, 1) : 0;
+
+                return [
+                    'class' => $session->timeTable->class->name ?? 'N/A',
+                    'section' => $session->timeTable->section->name ?? 'N/A',
+                    'present' => $present,
+                    'absent' => $total - $present,
+                    'percentage' => $percentage
+                ];
+            })
+            ->sortBy('percentage')
+            ->take(3)
+            ->values()
+            ->all();
+
+        // Recent attendance records
+        $recentRecords = AttendanceSession::where('school_id', $schoolId)
+            ->with(['timeTable.class', 'timeTable.section', 'attendances'])
+            ->orderBy('date', 'desc')
+            ->limit(5)
+            ->get()
+            ->map(function ($session) {
+                $total = $session->attendances->count();
+                $present = $session->attendances->where('status', 'present')->count();
+                $absent = $session->attendances->where('status', 'absent')->count();
+                $late = $session->attendances->where('status', 'late')->count();
+                $percentage = $total > 0 ? round(($present / $total) * 100, 1) : 0;
+
+                return [
+                    'date' => $session->date,
+                    'class' => $session->timeTable->class->name ?? 'N/A',
+                    'section' => $session->timeTable->section->name ?? 'N/A',
+                    'present' => $present,
+                    'absent' => $absent,
+                    'late' => $late,
+                    'percentage' => $percentage
+                ];
+            });
+
+        // Calendar events
+        $calendarEvents = AttendanceSession::where('school_id', $schoolId)
+            ->whereDate('date', '>=', now()->subMonth())
+            ->with(['timeTable.class', 'timeTable.section', 'attendances'])
+            ->get()
+            ->map(function ($session) {
+                $total = $session->attendances->count();
+                $present = $session->attendances->where('status', 'present')->count();
+                $percentage = $total > 0 ? round(($present / $total) * 100, 1) : 0;
+
+                return [
+                    'title' => ($session->timeTable->class->name ?? 'Class') . ' - ' . $percentage . '%',
+                    'start' => $session->date,
+                    'className' => $percentage >= 90 ? 'bg-success' : ($percentage >= 75 ? 'bg-warning' : 'bg-danger')
+                ];
+            });
+
+        return view('app.attendance.index', [
+            'stats' => $stats,
+            'lowestClasses' => $lowestClasses,
+            'recentRecords' => $recentRecords,
+            'calendarEvents' => $calendarEvents
+        ]);
     }
 
 
@@ -148,40 +298,39 @@ class AttendanceController extends Controller
         DB::beginTransaction();
 
         try {
+
+            $school_id = School::first();
             $classId = $request->input('class_id');
             $sectionId = $request->input('section_id');
             $date = $request->input('date');
             $subjectId = $request->input('subject_id');
-            $sessionType = $request->input('session_type');
+            // $sessionType = $request->input('session_type');
             $status = $request->input('status');
             $attendanceData = $request->input('attendance');
 
             // Find timetable entry if this is subject-wise attendance
             $timetableId = null;
-            
+
             $dayOfWeek = strtolower(date('l', strtotime($date)));
             $timetable = TimeTable::where('class_id', $classId)
                 ->where('section_id', $sectionId)
                 // ->where('subject_id', $subjectId)
                 ->where('day_of_week', $dayOfWeek)
-                // ->where('school_id', auth()->user()->school_id)
+                ->where('school_id', auth()->user()->school_id ?? $school_id->id)
                 ->first();
 
             $timetableId = $timetable ? $timetable->id : null;
-            // }
-
-            dd([$request->all(), $dayOfWeek,$timetableId]);
             // Create or update attendance session
             $session = AttendanceSession::updateOrCreate(
                 [
-                    // 'school_id' => auth()->user()->school_id,
+                    'school_id' => auth()->user()->school_id ?? $school_id->id,
                     'time_table_id' => $timetableId,
-                    'date' => $date
+                    'date' => $date,
                 ],
                 [
-                    'recorded_by' => auth()->id(),
-                    'notes' => $sessionType ? "Session Type: $sessionType" : null,
-                    'status' => $status === 'submitted' ? 'submitted' : 'draft'
+                    'recorded_by'   => auth()->id(),
+                    'notes'         => "Full day",
+                    'status'        => $status === 'submitted' ? 'submitted' : 'draft'
                 ]
             );
 
@@ -235,14 +384,18 @@ class AttendanceController extends Controller
         return $timetable ? $timetable->id : null;
     }
 
-    public function checkClasses(Request $request){
+    public function checkClasses(Request $request)
+    {
         $date = $request->input('date');
+        $classId = $request->input('class_id');
+        $sectionId = $request->input('section_id');
 
         $dayOfWeek = strtolower(date('l', strtotime($date)));
-    
+
         // Query your timetable to check for classes on this date
-        $hasClasses = Timetable::where('day_of_week', $dayOfWeek)->exists();
-        
+        $hasClasses = Timetable::where('day_of_week', $dayOfWeek)
+            ->where('class_id', $classId)->where('section_id', $sectionId)->exists();
+
         return response()->json([
             'has_classes' => $hasClasses,
             'date' => $date

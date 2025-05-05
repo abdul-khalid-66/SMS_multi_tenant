@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Classes;
 use App\Models\Section;
 use App\Models\Subject;
+use App\Models\TeacherSubject;
 use App\Models\TimeTable;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class TimetableController extends Controller
 
         // Get all classes with their sections for the current school
         $classes = Classes::with('sections')
-            ->where('school_id', auth()->user()->school_id)
+            // ->where('school_id', auth()->user()->school_id)
             ->get();
 
         foreach ($classes as $class) {
@@ -52,7 +53,9 @@ class TimetableController extends Controller
                     } else {
                         $periods[$periodName][$day] = [
                             'teacher' => $entry->teacher->name ?? 'N/A',
+                            'teacher_id' => $entry->teacher->id ?? 'N/A',
                             'subject' => $entry->subject->name ?? 'N/A',
+                            'subject_id' => $entry->subject->id ?? 'N/A',
                             'start' => \Carbon\Carbon::parse($entry->start_time)->format('h:i A'),
                             'end' => \Carbon\Carbon::parse($entry->end_time)->format('h:i A'),
 
@@ -60,6 +63,7 @@ class TimetableController extends Controller
                         ];
                     }
                 }
+
 
                 $timetables[] = [
                     'class_id' => $class->id,
@@ -70,8 +74,10 @@ class TimetableController extends Controller
             }
         }
 
+        $teachers = User::role('teacher')->get();
+        $subjects = Subject::get();
 
-        return view('app.timetable.index', compact('timetables'));
+        return view('app.timetable.index', compact('timetables', 'teachers', 'subjects'));
     }
 
 
@@ -217,6 +223,34 @@ class TimetableController extends Controller
         return response()->json([
             'message' => 'schedul added successfull',
             'data' => $data,
+        ]);
+    }
+
+
+    public function getTeachersBySubject(Request $request)
+    {
+        $subjectId  = $request->input('subject_id');
+        $classId    = $request->input('class_id');
+
+        // Get assigned teachers for this subject and class
+        $assignedTeachers = TeacherSubject::where('subject_id', $subjectId)
+            ->where('class_id', $classId)
+            ->with('teacher.teacherProfile')
+            ->get();
+
+
+
+        // Extract teacher details
+        $teachers = $assignedTeachers->map(function ($assign) {
+            return $assign->teacher;
+        });
+
+        // Get the first assigned teacher ID (if any)
+        $assignedTeacherId = $assignedTeachers->first() ? $assignedTeachers->first()->teacher_id : null;
+
+        return response()->json([
+            'teachers' => $teachers,
+            'assigned_teacher_id' => $assignedTeacherId
         ]);
     }
 }

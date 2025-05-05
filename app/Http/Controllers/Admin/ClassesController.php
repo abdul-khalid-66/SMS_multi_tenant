@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Classes;
+use App\Models\School;
+use App\Models\Section;
+use App\Models\SystemSetting;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -16,9 +19,10 @@ class ClassesController extends Controller
      */
     public function index()
     {
+
         // Get classes with their class teacher and sections count
         // $classes = Classes::with(['classTeacher', 'sections', 'classStudents'])->orderBy('numeric_value')->get();
-        $classes = Classes::with(['classTeachersSubjects.teacher','classTeachersSubjects.subject'])->orderBy('numeric_value')->get();
+        $classes = Classes::with(['classTeachersSubjects.teacher', 'classTeachersSubjects.subject'])->orderBy('numeric_value')->get();
 
         return view('app.admin.classes.index', compact('classes'));
     }
@@ -52,9 +56,20 @@ class ClassesController extends Controller
             'teacher_id' => 'nullable|exists:users,id'
         ]);
 
-        $validated['school_id'] = auth()->user()->school_id;
+        $school = School::first();
+        $validated['school_id'] = auth()->user()->school_id ?? $school->id;
 
-        Classes::create($validated);
+        $class          = Classes::create($validated);
+        $systemSetting  =  SystemSetting::where('setting_key', 'default_class_capacity')->first();
+        $capacity       = $systemSetting->setting_value ?? 20;
+
+        Section::create([
+            'schoo_id' => $school->id,
+            'class_id' => $class->id,
+            'name'     => 'A',
+            'capacity' => $capacity,
+
+        ]);
 
         return redirect()->route('admin.academic.classes.index')
             ->with('success', 'Class created successfully');

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->json('hobbies')->nullable();
             $table->json('awards')->nullable();
             $table->json('documents')->nullable();
-            $table->string('student_photo')->nullable();
+            $table->string('signature')->nullable();
             $table->boolean('id_card_issued')->default(false);
             $table->string('id_card_number', 20)->nullable();
             $table->string('blood_group', 5)->nullable();

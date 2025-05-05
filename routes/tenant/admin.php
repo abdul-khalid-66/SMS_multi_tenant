@@ -133,6 +133,7 @@ Route::middleware([
         });
         Route::get('create_schedule', [TimetableController::class, 'create_schedule'])->name('admin.timetable.create.schedule');
         Route::post('store_schedule', [TimetableController::class, 'store_schedule'])->name('admin.timetable.store.schedule');
+        Route::get('/admin/get-teachers-by-subject', [TimetableController::class, 'getTeachersBySubject'])->name('admin.getTeachersBySubject');
 
         // Attendance
         Route::middleware(['auth', 'verified'])->group(function () {

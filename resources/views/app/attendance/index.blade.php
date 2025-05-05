@@ -68,6 +68,7 @@
         </h2>
     </x-slot>
 
+
     <div class="analytics-sparkle-area" style="margin-top: 20px">
         <div class="container-fluid">
             <div class="row">
@@ -76,11 +77,11 @@
                     <div class="analytics-sparkle-line reso-mg-b-30">
                         <div class="analytics-content">
                             <h5>Today's Attendance</h5>
-                            <h2><span class="counter">85</span>% <span class="tuition-fees">Present Today</span></h2>
-                            <span class="text-success">+2.5% from yesterday</span>
+                            <h2><span class="counter">{{ $stats['today']['percentage'] }}</span>% <span class="tuition-fees">Present Today</span></h2>
+                            <span class="text-success">{{ $stats['today']['present'] }} present, {{ $stats['today']['absent'] }} absent</span>
                             <div class="progress m-b-0">
-                                <div class="progress-bar progress-bar-success" role="progressbar" style="width:85%">
-                                    <span class="sr-only">85% Complete</span>
+                                <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ $stats['today']['percentage'] }}%">
+                                    <span class="sr-only">{{ $stats['today']['percentage'] }}% Complete</span>
                                 </div>
                             </div>
                         </div>
@@ -92,11 +93,11 @@
                     <div class="analytics-sparkle-line reso-mg-b-30">
                         <div class="analytics-content">
                             <h5>Monthly Average</h5>
-                            <h2><span class="counter">88</span>% <span class="tuition-fees">This Month</span></h2>
-                            <span class="text-info">+1.2% from last month</span>
+                            <h2><span class="counter">{{ $stats['monthly']['percentage'] }}</span>% <span class="tuition-fees">This Month</span></h2>
+                            <span class="text-info">{{ $stats['monthly']['present'] }} present out of {{ $stats['monthly']['total_students'] }}</span>
                             <div class="progress m-b-0">
-                                <div class="progress-bar progress-bar-info" role="progressbar" style="width:88%">
-                                    <span class="sr-only">88% Complete</span>
+                                <div class="progress-bar progress-bar-info" role="progressbar" style="width:{{ $stats['monthly']['percentage'] }}%">
+                                    <span class="sr-only">{{ $stats['monthly']['percentage'] }}% Complete</span>
                                 </div>
                             </div>
                         </div>
@@ -108,11 +109,13 @@
                     <div class="analytics-sparkle-line table-mg-t-pro dk-res-t-pro-30">
                         <div class="analytics-content">
                             <h5>Absent Today</h5>
-                            <h2><span class="counter">24</span> <span class="tuition-fees">Students</span></h2>
-                            <span class="text-danger">3 Chronic Absentees</span>
+                            <h2><span class="counter">{{ $stats['today']['absent'] }}</span> <span class="tuition-fees">Students</span></h2>
+                            <span class="text-danger">{{ $stats['today']['late'] }} late arrivals</span>
                             <div class="progress m-b-0">
-                                <div class="progress-bar progress-bar-danger" role="progressbar" style="width:15%">
-                                    <span class="sr-only">15% Absent</span>
+                                <div class="progress-bar progress-bar-danger" 
+                                role="progressbar" 
+                                style="width:{{ $stats['today']['total_students'] > 0 ? round(($stats['today']['absent'] / $stats['today']['total_students']) * 100) : 0 }}%">
+                                    <span class="sr-only">{{ $stats['today']['total_students'] > 0 ? round(($stats['today']['absent'] / $stats['today']['total_students']) * 100) : 0 }}% Absent</span>
                                 </div>
                             </div>
                         </div>
@@ -124,11 +127,11 @@
                     <div class="analytics-sparkle-line table-mg-t-pro dk-res-t-pro-30">
                         <div class="analytics-content">
                             <h5>Teacher Attendance</h5>
-                            <h2><span class="counter">92</span>% <span class="tuition-fees">Present Today</span></h2>
-                            <span class="text-warning">2 Teachers Absent</span>
+                            <h2><span class="counter">{{ $stats['teachers']['percentage'] }}</span>% <span class="tuition-fees">Present Today</span></h2>
+                            <span class="text-warning">{{ $stats['teachers']['absent'] }} Teachers Absent</span>
                             <div class="progress m-b-0">
-                                <div class="progress-bar progress-bar-warning" role="progressbar" style="width:92%">
-                                    <span class="sr-only">92% Complete</span>
+                                <div class="progress-bar progress-bar-warning" role="progressbar" style="width:{{ $stats['teachers']['percentage'] }}%">
+                                    <span class="sr-only">{{ $stats['teachers']['percentage'] }}% Complete</span>
                                 </div>
                             </div>
                         </div>

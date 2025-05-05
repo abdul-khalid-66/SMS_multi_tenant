@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('student_attendances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('session_id')->constrained('attendance_sessions');
-            $table->foreignId('student_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users');
             $table->enum('status', ['present', 'absent', 'late', 'half_day']);
             $table->text('remarks')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
 
-            $table->unique(['session_id', 'student_id']);
+            $table->unique(['session_id', 'user_id']);
         });
     }
 

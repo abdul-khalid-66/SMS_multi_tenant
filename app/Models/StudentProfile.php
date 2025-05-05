@@ -20,7 +20,7 @@ class StudentProfile extends Model
         'id_card_number',
         'blood_group',
         'documents',
-        'student_photo',
+        'signature',
     ];
 
     protected $casts = [

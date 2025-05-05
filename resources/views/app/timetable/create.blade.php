@@ -330,12 +330,12 @@
                             </div>
                         </div>
                         
-                        <div class="subject-fields">
+                        <div class="subject-fields mb-2">
                             <div class="form-group-inner">
                                 <div class="row">
                                     <div class="col-lg-4"><label class="login2">Subject</label></div>
                                     <div class="col-lg-8">
-                                        <select name="periods[${periodCount}][subject_id]" class="form-control">
+                                        <select name="periods[${periodCount}][subject_id]" class="form-control subject-select" onchange="fetchTeachers(this, ${periodCount})">
                                             <option value="">Select Subject</option>
                                             @foreach($subjects as $subject)
                                                 <option value="{{ $subject->id }}">{{ $subject->name }}</option>
@@ -349,7 +349,7 @@
                                 <div class="row">
                                     <div class="col-lg-4"><label class="login2">Teacher</label></div>
                                     <div class="col-lg-8">
-                                        <select name="periods[${periodCount}][teacher_id]" class="form-control">
+                                        <select name="periods[${periodCount}][teacher_id]" class="form-control teacher-select" id="teacher-select-${periodCount}">
                                             <option value="">Select Teacher</option>
                                             @foreach($teachers as $teacher)
                                                 <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
@@ -464,6 +464,61 @@
                     } else {
                         sectionSelect.html('<option value="">Select Class First</option>');
                         sectionSelect.prop('disabled', true);
+                    }
+                });
+            });
+        </script>
+        <script>
+            function fetchTeachers(selectElement, periodCount) {
+                const subjectId = selectElement.value;
+                const classId = $('#class_id').val();
+                const teacherSelect = $(`#teacher-select-${periodCount}`);
+                
+                if (!subjectId || !classId) {
+                    teacherSelect.html('<option value="">Select Class and SubjectFirst</option>');
+                    return;
+                }
+                
+                $.ajax({
+                    url: '{{ route("admin.getTeachersBySubject") }}',
+                    type: 'GET',
+                    data: {
+                        subject_id: subjectId,
+                        class_id: classId
+                    },
+                    success: function(response) {
+                        let options = '<option value="">Select Teacher</option>';
+                        
+                        if (response.teachers && response.teachers.length > 0) {
+                            response.teachers.forEach(function(teacher) {
+                                // Mark the assigned teacher as selected if available
+                                const selected = (response.assigned_teacher_id && teacher.id == response.assigned_teacher_id) ? 'selected' : '';
+                                options += `<option value="${teacher.id}" ${selected}>${teacher.name}</option>`;
+                            });
+                        }
+                        
+                        // Also include all teachers as options
+                        @foreach($teachers as $teacher)
+                            if (!options.includes(`value="{{ $teacher->id }}"`)) {
+                                options += `<option value="{{ $teacher->id }}">{{ $teacher->name }}</option>`;
+                            }
+                        @endforeach
+                        
+                        teacherSelect.html(options);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                        teacherSelect.html('<option value="">Error loading teachers</option>');
+                    }
+                });
+            }
+
+            // Add this to your document.ready function
+            $('#class_id').change(function() {
+                $('.subject-select').each(function() {
+                    const periodCount = $(this).closest('.period-group').index() + 1;
+                    if ($(this).val()) {
+                        fetchTeachers(this, periodCount);
                     }
                 });
             });

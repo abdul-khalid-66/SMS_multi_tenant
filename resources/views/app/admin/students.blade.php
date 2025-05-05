@@ -112,7 +112,7 @@
                                 data-toggle="table" 
                                 data-pagination="true" 
                                 data-search="true"
-                                {{-- data-show-columns="true"  --}}
+                                data-show-columns="true" 
                                 {{-- data-show-pagination-switch="true"  --}}
                                 {{-- data-show-refresh="true" --}}
                                 {{-- data-key-events="true"  --}}
@@ -143,12 +143,18 @@
                                             <tr>
                                                 <td>{{ $student->id }}</td>
                                                 <td>
-                                                    @if(isset($student->studentProfile->student_photo))
-                                                        <img src="{{ asset($student->studentProfile->student_photo) }}" 
+                                                    @if(isset($student->profile_pic))
+                                                        <img src="{{ asset($student->profile_pic) }}" 
                                                             alt="{{ $student->name }}" 
                                                             class="rounded-circle" 
                                                             width="30" 
                                                             height="30">
+                                                        @else
+                                                            <img src="{{ asset('backend/img/profile/1.jpg') }}" 
+                                                                alt="{{ $student->name }}" 
+                                                                class="rounded-circle" 
+                                                                width="30" 
+                                                                height="30">
                                                     @endif
                                                     {{ $student->name }}
                                                 </td>

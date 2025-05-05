@@ -108,17 +108,8 @@
                                 data-toggle="table" 
                                 data-pagination="true" 
                                 data-search="true"
-                                {{-- data-show-columns="true"  --}}
-                                {{-- data-show-pagination-switch="true"  --}}
-                                {{-- data-show-refresh="true" --}}
-                                {{-- data-key-events="true"  --}}
-                                {{-- data-show-toggle="true"  --}}
                                 data-resizable="true"
-                                {{-- data-cookie="true" --}}
                                 data-cookie-id-table="teacher"
-                                {{-- data-show-export="true"  --}}
-                                {{-- data-click-to-select="true" --}}
-                                 {{-- data-export-types="['csv', 'txt', 'excel']" --}}
                                 data-toolbar="#toolbar">
                                 <thead>
                                     <tr>
@@ -138,8 +129,8 @@
                                         <td>{{ $teacher->id }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                @if($teacher->teacherProfile && $teacher->teacherProfile->signature)
-                                                    <img src="{{ asset($teacher->teacherProfile->signature) }}" 
+                                                @if($teacher->profile_pic  && $teacher->profile_pic)
+                                                    <img src="{{ asset($teacher->profile_pic) }}" 
                                                         class="rounded-circle avatar-xs me-2" alt="signature" width="70px" height="150px">
                                                 @else
                                                     <div class="avatar-xs me-2">

@@ -1,72 +1,49 @@
 <x-tenant-app-layout>
     @push('css')
-        <!-- favicon
-		============================================ -->
-        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-        <!-- Google Fonts
-            ============================================ -->
-        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
-        <!-- Bootstrap CSS
-            ============================================ -->
+        <!-- Bootstrap CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/bootstrap.min.css') }}">
-        <!-- Bootstrap CSS
-            ============================================ -->
+        <!-- Bootstrap CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/font-awesome.min.css') }}">
-        <!-- owl.carousel CSS
-            ============================================ -->
+        <!-- owl.carousel CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/owl.carousel.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/css/owl.theme.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/css/owl.transitions.css') }}">
-        <!-- animate CSS
-            ============================================ -->
+        <!-- animate CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/animate.css') }}">
-        <!-- normalize CSS
-            ============================================ -->
+        <!-- normalize CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/normalize.css') }}">
-        <!-- meanmenu icon CSS
-            ============================================ -->
+        <!-- meanmenu icon CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/meanmenu.min.css') }}">
-        <!-- main CSS
-            ============================================ -->
+        <!-- main CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/main.css') }}">
-        <!-- educate icon CSS
-            ============================================ -->
+        <!-- educate icon CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/educate-custon-icon.css') }}">
-        <!-- morrisjs CSS
-            ============================================ -->
+        <!-- morrisjs CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/morrisjs/morris.css') }}">
-        <!-- mCustomScrollbar CSS
-            ============================================ -->
+        <!-- mCustomScrollbar CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/scrollbar/jquery.mCustomScrollbar.min.css') }}">
-        <!-- metisMenu CSS
-            ============================================ -->
+        <!-- metisMenu CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/metisMenu/metisMenu.min.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/css/metisMenu/metisMenu-vertical.css') }}">
-        <!-- calendar CSS
-            ============================================ -->
+        <!-- calendar CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/calendar/fullcalendar.min.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/css/calendar/fullcalendar.print.min.css') }}">
-        <!-- x-editor CSS
-            ============================================ -->
+        <!-- x-editor CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/editor/select2.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/css/editor/datetimepicker.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/css/editor/bootstrap-editable.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/css/editor/x-editor-style.css') }}">
-        <!-- normalize CSS
-            ============================================ -->
+        <!-- normalize CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/data-table/bootstrap-table.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/css/data-table/bootstrap-editable.css') }}">
-        <!-- style CSS
-            ============================================ -->
+        <!-- style CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/style.css') }}">
-        <!-- responsive CSS
-            ============================================ -->
+        <!-- responsive CSS ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/responsive.css') }}">
-        <!-- modernizr JS
-            ============================================ -->
+        <!-- modernizr JS ============================================ -->
         <script src="{{ asset('backend/js/vendor/modernizr-2.8.3.min.js') }}"></script>
     @endpush
-
+    
     @push('css')
     <!-- Add select2 for better dropdowns -->
     <link rel="stylesheet" href="{{ asset('backend/css/select2/select2.min.css') }}">
@@ -109,8 +86,8 @@
         }
     </style>
 
+    @endpush
     <x-slot name="header"></x-slot>
-    
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -133,17 +110,14 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="sparkline12-list">
                     <div class="sparkline12-graph">
                         <div class="basic-login-form-ad">
                             <form id="attendanceForm" method="POST">
                                 @csrf
-                                
                                 <div class="form-section">
                                     <h3>Attendance Selection</h3>
-                                    
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -165,7 +139,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -174,35 +147,8 @@
                                                     value="" max="{{ date('Y-m-d') }}" required>
                                                 <div id="class_check_result" class="mt-2"></div>
                                             </div>
-                                        </div>
-                                        {{-- 
-                                        
-                                        system setting if attendace by session type
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Session Type *</label>
-                                                <select class="form-control select2" id="session_type" name="session_type">
-                                                    <option value="morning">Morning</option>
-                                                    <option value="afternoon">Afternoon</option>
-                                                    <option value="full_day">Full Day</option>
-                                                </select>
-                                            </div>
-                                        </div> --}}
+                                        </div>                                       
                                     </div>
-                                    
-                                    {{-- 
-                                    system setting if attendace by subject wise
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Subject (Optional)</label>
-                                                <select class="form-control select2" id="subject_id" name="subject_id">
-                                                    <option value="">General Attendance</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    
                                     <div class="text-right">
                                         <button type="button" id="loadStudentsBtn" class="btn btn-primary" disabled>
                                             <i class="fa fa-users"></i> Load Students
@@ -214,7 +160,6 @@
                     </div>
                 </div>
             </div>
-            
             <!-- Attendance Table Section (hidden initially) -->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="attendanceSection" style="display: none;">
                 <div class="sparkline13-list">
@@ -237,7 +182,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover" id="attendanceTable">
                                         <thead class="thead-light">
@@ -256,7 +200,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                
                                 <div class="attendance-actions">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="attendance-stats">
@@ -317,9 +260,6 @@
             </div>
         </div>
     </div>
-
-
-
    @push('js')
        <!-- jquery ============================================ -->
     <script src="{{ asset('backend/js/vendor/jquery-1.12.4.min.js') }}"></script>
@@ -374,6 +314,7 @@
     @push('js')
         <!-- Add select2 for better dropdowns -->
         <script src="{{ asset('backend/js/select2/select2.full.min.js') }}"></script>
+        
             
             <script>
                 // Notification system using Bootstrap alerts
@@ -448,7 +389,6 @@
                     $('#class_id').change(function() {
                         const classId = $(this).val();
                         $('#section_id').empty().append('<option value="">Select Section</option>');
-                        // $('#subject_id').empty().append('<option value="">General Attendance</option>');
                         
                         if (classId) {
                             $('#section_id').prop('disabled', false);
@@ -472,22 +412,8 @@
                                 }
                             });
                             
-                            // Load subjects for selected class
-                            // $.ajax({
-                            //     url: '/attendance/get-subjects',
-                            //     type: 'GET',
-                            //     data: { class_id: classId },
-                            //     success: function(response) {
-                            //         if (response.subjects.length > 0) {
-                            //             $.each(response.subjects, function(index, subject) {
-                            //                 $('#subject_id').append(`<option value="${subject.id}">${subject.name} (${subject.code})</option>`);
-                            //             });
-                            //         }
-                            //     }
-                            // });
                         } else {
                             $('#section_id').prop('disabled', true);
-                            // $('#subject_id').empty().append('<option value="">General Attendance</option>');
                             $('#loadStudentsBtn').prop('disabled', true);
                         }
                     });
@@ -709,7 +635,7 @@
                                 showAlert('success', response.message);
                                 
                                 if (status === 'submitted') {
-                                    window.location.href = '/attendance/dashboard';
+                                    window.location.href = '/attendance';
                                 }
                             },
                             error: function(xhr) {
@@ -719,12 +645,12 @@
                         });
                     }
                 });
-
-
-
                 // check is there any class on this day
                 $(document).ready(function() {
                     $('#attendance_date').change(function() {
+
+                        var classId = $('#class_id').val();
+                        var sectionId = $('#section_id').val();
                         var selectedDate = $(this).val();
                         
                         // Clear previous result
@@ -737,7 +663,9 @@
                             url: '/check-classes', // Replace with your actual endpoint
                             type: 'GET',
                             data: {
-                                date: selectedDate
+                                class_id     : classId,
+                                section_id   : sectionId,
+                                date        : selectedDate
                             },
                             dataType: 'json',
                             success: function(response) {
@@ -748,7 +676,7 @@
                                 } else {
                                     $('#loadStudentsBtn').prop('disabled', true);
 
-                                    $('#class_check_result').html('<div class="alert alert-warning">No classes found for this date.</div>');
+                                    $('#class_check_result').html('<div class="alert alert-warning">No classes found for this date or class.</div>');
                                 }
                             },
                             error: function(xhr) {

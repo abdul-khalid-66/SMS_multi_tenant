@@ -180,7 +180,7 @@
                                                             </div>
                                                         @endif
                                                         <div class="timetable-actions">
-                                                            <button class="btn btn-primary btn-sm update-btn" 
+                                                            {{-- <button class="btn btn-primary btn-sm update-btn" 
                                                                     data-class="{{ $timetable['class_name'] }}"
                                                                     data-period="{{ $periodName }}"
                                                                     data-day="{{ $day }}"
@@ -191,7 +191,24 @@
                                                                     data-room="{{ $days[$day]['room'] ?? '' }}"
                                                                     data-event="{{ $days[$day]['event'] ?? '' }}">
                                                                 <i class="fa fa-pencil"></i> Update
-                                                            </button>
+                                                            </button> --}}
+
+                                                            <button class="btn btn-primary btn-sm update-btn" 
+                                                                data-class="{{ $timetable['class_name'] }}"
+                                                                data-class_id="{{ $timetable['class_id'] }}"
+                                                                data-period="{{ $periodName }}"
+                                                                data-day="{{ $day }}"
+                                                                data-section_id="{{ $timetable['section_id'] }}"
+                                                                data-teacher="{{ $days[$day]['teacher'] ?? '' }}"
+                                                                data-teacher_id="{{ $days[$day]['teacher_id'] ?? '' }}"
+                                                                data-subject="{{ $days[$day]['subject'] ?? '' }}"
+                                                                data-subject_id="{{ $days[$day]['subject_id'] ?? '' }}"
+                                                                data-start="{{ $days[$day]['start'] ?? '' }}"
+                                                                data-end="{{ $days[$day]['end'] ?? '' }}"
+                                                                data-room="{{ $days[$day]['room'] ?? '' }}"
+                                                                data-event="{{ $days[$day]['event'] ?? '' }}">
+                                                            <i class="fa fa-pencil"></i> Update
+                                                        </button>
                                                             <button class="btn btn-info btn-sm view-btn"
                                                                     data-class="{{ $timetable['class_name'] }}"
                                                                     data-period="{{ $periodName }}"
@@ -233,14 +250,12 @@
                             </div>
                         </div>
                     </div>
-                    @endforeach
-
-
-
-                
+                @endforeach
             </div>
         </div>
     </div>
+
+
 
 
 
@@ -273,18 +288,18 @@
                     </div>
                     
                     <div class="form-group class-fields">
-                        <label>Teacher</label>
-                        <select class="form-control" name="teacher" id="addTeacher">
-                            <option value="">Select Teacher</option>
-                            <!-- Teachers will be loaded via AJAX -->
+                        <label>Subject</label>
+                        <select class="form-control" name="subject" id="addSubject" onchange="fetchModalTeachers(this)">
+                            <option value="">Select Subject</option>
+                            <!-- Subjects will be loaded via AJAX -->
                         </select>
                     </div>
                     
                     <div class="form-group class-fields">
-                        <label>Subject</label>
-                        <select class="form-control" name="subject" id="addSubject">
-                            <option value="">Select Subject</option>
-                            <!-- Subjects will be loaded via AJAX -->
+                        <label>Teacher</label>
+                        <select class="form-control" name="teacher" id="addTeacher">
+                            <option value="">Select Teacher</option>
+                            <!-- Teachers will be loaded via AJAX -->
                         </select>
                     </div>
                     
@@ -317,7 +332,6 @@
     </div>
 </div>
 
-
 <!-- Update Modal -->
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel">
     <div class="modal-dialog" role="document">
@@ -333,6 +347,8 @@
                     <input type="hidden" name="class" id="updateClass">
                     <input type="hidden" name="period" id="updatePeriod">
                     <input type="hidden" name="day" id="updateDay">
+                    <input type="hidden" name="class_id" id="updateClassId">
+                    <input type="hidden" name="section_id" id="updateSectionId">
                     
                     <div class="form-group">
                         <label>Type</label>
@@ -343,13 +359,28 @@
                     </div>
                     
                     <div class="form-group class-fields">
-                        <label>Teacher</label>
-                        <input type="text" class="form-control" name="teacher" id="updateTeacher">
+                        <label>Subject</label>
+                        <select class="form-control" name="subject" id="updateSubject" onchange="fetchUpdateTeachers(this)">
+                            <option value="">Select Subject</option>
+                            @foreach($subjects as $subject)
+                                <option value="{{ $subject->id }}">{{ $subject->name }} ({{ $subject->code }})</option>
+                            @endforeach
+                        </select>
                     </div>
                     
                     <div class="form-group class-fields">
-                        <label>Subject</label>
-                        <input type="text" class="form-control" name="subject" id="updateSubject">
+                        <label>Teacher</label>
+                        <select class="form-control" name="teacher" id="updateTeacher">
+                            <option value="">Select Teacher</option>
+                            @foreach($teachers as $teacher)
+                                @php
+                                    $employeeId = $teacher->teacherProfile && $teacher->teacherProfile->employee_id 
+                                        ? $teacher->teacherProfile->employee_id 
+                                        : 'N/A';
+                                @endphp
+                                <option value="{{ $teacher->id }}">{{ $teacher->name }} ({{ $employeeId }})</option>
+                            @endforeach
+                        </select>
                     </div>
                     
                     <div class="form-group event-fields" style="display: none;">
@@ -363,7 +394,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>Event Label</label>
+                        <label>End Time</label>
                         <input type="time" class="form-control" name="end" id="updateEnd">
                     </div>
                     
@@ -505,7 +536,8 @@
                     }
                 });
             
-                // Add button click handler
+               
+                // Add button and to load subjects start
                 $('.add-btn').click(function() {
                     $('#addClassId').val($(this).data('class_id'));
                     $('#addClass').val($(this).data('class'));
@@ -518,31 +550,18 @@
                     $('#addType').val('class').trigger('change');
                     
                     // Show loading state
-                    $('#addTeacher').html('<option value="">Loading teachers...</option>');
+                    $('#addTeacher').html('<option value="">Select Subject First</option>');
                     $('#addSubject').html('<option value="">Loading subjects...</option>');
                     
-                    // Fetch teachers and subjects via AJAX
+                    // Fetch subjects via AJAX
                     $.ajax({
                         url: "{{ route('admin.timetable.create.schedule') }}",
                         method: "GET",
                         success: function(response) {
-                            // Populate teachers dropdown
-                            var teacherOptions = '<option value="">Select Teacher</option>';
-                            $.each(response.teachers, function(key, teacher) {
-                                // Check if teacher_profile exists and has employee_id
-                                var employeeId = (teacher.teacher_profile && teacher.teacher_profile.employee_id) 
-                                    ? teacher.teacher_profile.employee_id 
-                                    : 'N/A';
-                                
-                                teacherOptions += '<option value="' + teacher.id + '">' + 
-                                                teacher.name + ' (' + employeeId + ')</option>';
-                            });
-                            $('#addTeacher').html(teacherOptions);
-                            
                             // Populate subjects dropdown
                             var subjectOptions = '<option value="">Select Subject</option>';
                             $.each(response.subjects, function(key, subject) {
-                                subjectOptions += '<option value="' + subject.id + '">' + subject.name + ' (' + subject.code + ') </option>';
+                                subjectOptions += '<option value="' + subject.id + '">' + subject.name + ' (' + subject.code + ')</option>';
                             });
                             $('#addSubject').html(subjectOptions);
                             
@@ -551,36 +570,15 @@
                         },
                         error: function(xhr) {
                             // Handle error case
-                            $('#addTeacher').html('<option value="">Error loading teachers</option>');
                             $('#addSubject').html('<option value="">Error loading subjects</option>');
                             $('#addModal').modal('show');
                             console.error('Error fetching data:', xhr.responseText);
                         }
                     });
-                });
+                });      // Add button and to load subjects end
     
             
-                // Update button click handler
-                $('.update-btn').click(function() {
-                    $('#updateClass').val($(this).data('class'));
-                    $('#updatePeriod').val($(this).data('period'));
-                    $('#updateDay').val($(this).data('day'));
-                    
-                    if ($(this).data('event')) {
-                        $('#updateType').val('event').trigger('change');
-                        $('#updateEvent').val($(this).data('event'));
-                    } else {
-                        $('#updateType').val('class').trigger('change');
-                        $('#updateTeacher').val($(this).data('teacher'));
-                        $('#updateSubject').val($(this).data('subject'));
-                    }
-                    
-                    $('#updateStart').val($(this).data('start'));
-                    $('#updateEnd').val($(this).data('end'));
-                    $('#updateRoom').val($(this).data('room'));
-                    
-                    $('#updateModal').modal('show');
-                });
+                
             
                 // View button click handler
                 $('.view-btn').click(function() {
@@ -666,7 +664,188 @@
                     $('#updateModal').modal('hide');
                     alert('Update functionality would save here. Form data: ' + formData);
                 });
+
+
+                
             });
+            // Function to fetch teachers based on selected subject in modal
+            function fetchModalTeachers(selectElement) {
+                 const subjectId = selectElement.value;
+                 const classId = $('#addClassId').val();
+                 const teacherSelect = $('#addTeacher');
+                 
+                 if (!subjectId || !classId) {
+                     teacherSelect.html('<option value="">Select Subject First</option>');
+                     return;
+                 }
+                 
+                 $.ajax({
+                     url: '{{ route("admin.getTeachersBySubject") }}',
+                     type: 'GET',
+                     data: {
+                         subject_id: subjectId,
+                         class_id: classId
+                     },
+                     success: function(response) {
+                         let options = '<option value="">Select Teacher</option>';
+                         
+                         if (response.teachers && response.teachers.length > 0) {
+                             // Add assigned teachers first
+ 
+                             response.teachers.forEach(function(teacher) {
+                                 // Mark the assigned teacher as selected if available
+                                 
+                                 const selected = (response.assigned_teacher_id && teacher.id == response.assigned_teacher_id) ? 'selected' : '';
+                                 const employeeId = (teacher.teacher_profile && teacher.teacher_profile.employee_id) 
+                                     ? teacher.teacher_profile.employee_id 
+                                     : 'N/A';
+                                 
+                                 options += `<option value="${teacher.id}" ${selected}>${teacher.name} (${employeeId})</option>`;
+                             });
+                         }
+                         
+                         // Also include all teachers as options
+                         @foreach($teachers as $teacher)
+                             if (!options.includes(`value="{{ $teacher->id }}"`)) {
+                                 const employeeId = "{{ $teacher->teacherProfile && $teacher->teacherProfile->employee_id ? $teacher->teacherProfile->employee_id : 'N/A' }}";
+                                 options += `<option value="{{ $teacher->id }}">{{ $teacher->name }} (${employeeId})</option>`;
+                             }
+                         @endforeach
+                         
+                         teacherSelect.html(options);
+                     },
+                     error: function(xhr) {
+                         console.error(xhr);
+                         teacherSelect.html('<option value="">Error loading teachers</option>');
+                     }
+                 });
+             }
+
+             // Function to fetch teachers for update modal
+                function fetchUpdateTeachers(selectElement) {
+                    const subjectId = selectElement.value;
+                    const classId = $('#updateClassId').val();
+                    const teacherSelect = $('#updateTeacher');
+                    
+                    if (!subjectId || !classId) {
+                        teacherSelect.html('<option value="">Select Subject First</option>');
+                        return;
+                    }
+                    
+                    $.ajax({
+                        url: '{{ route("admin.getTeachersBySubject") }}',
+                        type: 'GET',
+                        data: {
+                            subject_id: subjectId,
+                            class_id: classId
+                        },
+                        success: function(response) {
+                            let options = '<option value="">Select Teacher</option>';
+                            
+                            if (response.teachers && response.teachers.length > 0) {
+                                // Add assigned teachers first
+                                response.teachers.forEach(function(teacher) {
+                                    // Mark the assigned teacher as selected if available
+                                    const selected = (response.assigned_teacher_id && teacher.id == response.assigned_teacher_id) ? 'selected' : '';
+                                    const employeeId = (teacher.teacher_profile && teacher.teacher_profile.employee_id) 
+                                        ? teacher.teacher_profile.employee_id 
+                                        : 'N/A';
+                                    
+                                    options += `<option value="${teacher.id}" ${selected}>${teacher.name} (${employeeId})</option>`;
+                                });
+                            }
+                            
+                            // Also include all teachers as options
+                            @foreach($teachers as $teacher)
+                                if (!options.includes(`value="{{ $teacher->id }}"`)) {
+                                    const employeeId = "{{ $teacher->teacherProfile && $teacher->teacherProfile->employee_id ? $teacher->teacherProfile->employee_id : 'N/A' }}";
+                                    options += `<option value="{{ $teacher->id }}">{{ $teacher->name }} (${employeeId})</option>`;
+                                }
+                            @endforeach
+                            
+                            teacherSelect.html(options);
+                            
+                            // If there was a previously selected teacher, try to maintain that selection
+                            const currentTeacherId = $('#updateTeacher').data('current-teacher-id');
+                            if (currentTeacherId) {
+                                $('#updateTeacher').val(currentTeacherId);
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error(xhr);
+                            teacherSelect.html('<option value="">Error loading teachers</option>');
+                        }
+                    });
+                }
+
+                $(document).ready(function(){
+
+                    // Update button click handler
+                    $('.update-btn').click(function() {
+                        $('#updateClass').val($(this).data('class'));
+                        $('#updateClassId').val($(this).data('class_id'));
+                        $('#updatePeriod').val($(this).data('period'));
+                        $('#updateDay').val($(this).data('day'));
+                        $('#updateSectionId').val($(this).data('section_id'));
+                        
+                        if ($(this).data('event')) {
+                            $('#updateType').val('event').trigger('change');
+                            $('#updateEvent').val($(this).data('event'));
+                        } else {
+                            $('#updateType').val('class').trigger('change');
+                            
+                            // Set subject and store the current teacher ID
+                            $('#updateSubject').val($(this).data('subject_id'));
+                            $('#updateTeacher').data('current-teacher-id', $(this).data('teacher_id'));
+                           
+                            
+                            // Trigger teacher fetch based on selected subject
+                            fetchUpdateTeachers(document.getElementById('updateSubject'));
+                            
+                            // Set other values
+                            $('#updateStart').val($(this).data('start'));
+                            $('#updateEnd').val($(this).data('end'));
+                            $('#updateRoom').val($(this).data('room'));
+                        }
+                        
+                        $('#updateModal').modal('show');
+                    });
+    
+
+                      // Update button click handler
+                // $('.update-btn').click(function() {
+                //     $('#updateClass').val($(this).data('class'));
+                //     $('#updatePeriod').val($(this).data('period'));
+                //     $('#updateDay').val($(this).data('day'));
+                    
+                //     if ($(this).data('event')) {
+                //         $('#updateType').val('event').trigger('change');
+                //         $('#updateEvent').val($(this).data('event'));
+                //     } else {
+                //         $('#updateType').val('class').trigger('change');
+                //         $('#updateTeacher').val($(this).data('teacher'));
+                //         $('#updateSubject').val($(this).data('subject'));
+                //     }
+                    
+                //     $('#updateStart').val($(this).data('start'));
+                //     $('#updateEnd').val($(this).data('end'));
+                //     $('#updateRoom').val($(this).data('room'));
+                    
+                //     $('#updateModal').modal('show');
+                // });
+            
+                    // Handle type change in update modal
+                    $('#updateType').change(function() {
+                        if ($(this).val() === 'event') {
+                            $('.event-fields').show();
+                            $('.class-fields').hide();
+                        } else {
+                            $('.event-fields').hide();
+                            $('.class-fields').show();
+                        }
+                    });
+                });
+
             </script>
     @endpush
 </x-tenant-app-layout>

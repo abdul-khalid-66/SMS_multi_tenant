@@ -73,6 +73,21 @@
                                                     <div class="section-headline">
                                                         <h3>Personal Information</h3>
                                                     </div>
+
+                                                    <div class="form-group-inner {{ $errors->has('profile_pic') ? 'has-error' : '' }}">
+                                                        <div class="row">
+                                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                <label class="login2">Profile Image</label>
+                                                            </div>
+                                                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                <input type="file" class="form-control" name="profile_pic" />
+                                                                @if($errors->has('profile_pic'))
+                                                                    <span class="help-block text-danger">{{ $errors->first('profile_pic') }}</span>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                     <div class="form-group-inner {{ $errors->has('name') ? 'has-error' : '' }}">
                                                         <div class="row">
                                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">

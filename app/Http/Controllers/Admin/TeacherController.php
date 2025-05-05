@@ -60,6 +60,7 @@ class TeacherController extends Controller
             // File uploads
             'qualification_documents' => 'nullable|file|max:5120',
             'signature'     => 'nullable|image|max:2048',
+            'profile_pic'   => 'nullable|image|max:2048',
             'documents'     => 'nullable|array',
             'documents.*'   => 'file|max:5120',
         ]);
@@ -67,19 +68,28 @@ class TeacherController extends Controller
         try {
             DB::beginTransaction();
 
+            $profilePicPath = null;
+            if ($request->hasFile('profile_pic')) {
+                $profilePicPath = $request->file('profile_pic')
+                    ->store("tenants/" . tenant('id') . "/teachers/profile_pics", 'website');
+            }
+
+
             // Create user account
             $user = User::create([
-                'school_id' => auth()->user()->school_id,
-                'name'      => $validated['name'],
-                'email'     => $validated['email'],
-                'phone'     => $validated['phone'],
-                'address'   => $validated['address'],
-                'gender'    => $validated['gender'],
-                'dob'       => $validated['dob'],
-                'password'  => bcrypt('12345678'), // Default password
-                'role'      => in_array('admin', $validated['roles']) ? 'admin' : 'teacher',
+                'school_id'   => auth()->user()->school_id,
+                'name'        => $validated['name'],
+                'email'       => $validated['email'],
+                'profile_pic' => $profilePicPath,
+                'phone'       => $validated['phone'],
+                'address'     => $validated['address'],
+                'gender'      => $validated['gender'],
+                'dob'         => $validated['dob'],
+                'password'    => bcrypt('12345678'), // Default password
+                'role'        => in_array('admin', $validated['roles']) ? 'admin' : 'teacher',
             ]);
 
+            // dd($profilePicPath);
             // Assign roles
             foreach ($validated['roles'] as $role) {
                 $user->assignRole($role);

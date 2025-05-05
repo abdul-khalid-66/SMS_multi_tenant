@@ -15,6 +15,7 @@ class User extends Authenticatable
         'school_id',
         'name',
         'email',
+        'profile_pic',
         'password',
         'phone',
         'address',

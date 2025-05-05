@@ -315,6 +315,16 @@
                                         <div class="all-form-element-inner">
                                             <div class="section-headline"><h3>Documents</h3></div>
                                 
+                                            <!-- Student Signature -->
+                                            <div class="form-group-inner">
+                                                <div class="row">
+                                                    <div class="col-lg-4"><label class="login2">Signature Photo*</label></div>
+                                                    <div class="col-lg-8">
+                                                        <input type="file" name="signature" class="form-control @error('signature') is-invalid @enderror" required>
+                                                        @error('signature') <small class="text-danger">{{ $message }}</small> @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <!-- Student Photo -->
                                             <div class="form-group-inner">
                                                 <div class="row">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Classes;
+use App\Models\School;
 use App\Models\Section;
 use App\Models\StudentProfile;
 use App\Models\User;;
@@ -22,8 +23,7 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         // Get students with their profiles and related data
-        $students = User::with(['studentProfile.class', 'studentProfile.section'])
-            ->where('role', 'student')
+        $students = User::role('student')->with(['studentProfile.class', 'studentProfile.section'])
             ->when($request->has('class_id'), function ($query) use ($request) {
                 $query->whereHas('studentProfile', function ($q) use ($request) {
                     $q->where('class_id', $request->class_id);
@@ -34,7 +34,7 @@ class StudentController extends Controller
                     $q->where('section_id', $request->section_id);
                 });
             })
-            ->where('school_id', auth()->user()->school_id)
+            // ->where('school_id', auth()->user()->school_id)
             ->orderBy('name')
             ->get();
 
@@ -70,6 +70,7 @@ class StudentController extends Controller
             'id_card_issued'    => 'boolean',
             'id_card_number'    => 'nullable|string',
             'student_photo'     => 'nullable|image|max:2048',
+            'signature'         => 'nullable|image',
             'documents'         => 'nullable|array',
             'documents.*'       => 'file|max:5120',
         ]);
@@ -77,24 +78,34 @@ class StudentController extends Controller
         try {
             DB::beginTransaction();
 
+            $school = School::first();
+
+            $studentPhotoPath = null;
+            if ($request->hasFile('student_photo')) {
+                $studentPhotoPath = $request->file('student_photo')
+                    ->store("tenants/" . tenant('id') . "/students/profile", 'website');
+            }
+
             // Create user account
             $user = User::create([
-                'school_id' => auth()->user()->school_id,
-                'name'      => $validated['name'],
-                'email'     => $validated['email'],
-                'phone'     => $validated['phone'],
-                'address'   => $validated['address'],
-                'gender'    => $validated['gender'],
-                'dob'       => $validated['dob'],
-                'password'  => '12345678',
-                'role'      => 'student',
+                'school_id'     => auth()->user()->school_id ?? $school->id,
+                'name'          => $validated['name'],
+                'email'         => $validated['email'],
+                'profile_pic'   => $studentPhotoPath,
+                'phone'         => $validated['phone'],
+                'address'       => $validated['address'],
+                'gender'        => $validated['gender'],
+                'dob'           => $validated['dob'],
+                'password'      => '12345678',
+                'role'          => 'student',
             ]);
 
             $user->assignRole('student');
             // Handle file uploads
-            $studentPhotoPath = null;
-            if ($request->hasFile('student_photo')) {
-                $studentPhotoPath = $request->file('student_photo')
+
+            $signaturePath = null;
+            if ($request->hasFile('signature')) {
+                $signaturePath = $request->file('signature')
                     ->store("tenants/" . tenant('id') . "/students/profile", 'website');
             }
 
@@ -122,7 +133,7 @@ class StudentController extends Controller
                 'blood_group'       => $validated['blood_group'],
                 'id_card_issued'    => $validated['id_card_issued'] ?? false,
                 'id_card_number'    => $validated['id_card_number'],
-                'student_photo'     => $studentPhotoPath,
+                'signature'         => $signaturePath,
                 'documents'         => json_encode($documentPaths),
             ]);
 
