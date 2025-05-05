@@ -250,7 +250,7 @@
                                             @foreach($recentRecords as $record)
                                                 <tr>
                                                     <td>{{ $record['date'] }}</td>
-                                                    <td>Grade {{ $record['class'] }}</td>
+                                                    <td>{{ $record['class'] }}</td>
                                                     <td>{{ $record['section'] }}</td>
                                                     <td>{{ $record['present'] }}</td>
                                                     <td>{{ $record['absent'] }}</td>

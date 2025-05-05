@@ -178,35 +178,10 @@ class AttendanceController extends Controller
             'recentRecords' => $recentRecords,
             'calendarEvents' => $calendarEvents,
             'attendanceTrends' => $this->getAttendanceTrendData($schoolId)
-            // 'attendanceTrends' => [
-            //     'days' => $this->getLast7Days(),
-            //     'present' => $this->getAttendanceCountByStatus('present', 7),
-            //     'absent' => $this->getAttendanceCountByStatus('absent', 7),
-            //     'late' => $this->getAttendanceCountByStatus('late', 7)
-            // ]
+
         ]);
     }
 
-    // private function getLast7Days()
-    // {
-    //     return collect(range(6, 0))->map(function ($day) {
-    //         return now()->subDays($day)->format('D');
-    //     })->toArray();
-    // }
-
-    // private function getAttendanceCountByStatus($status, $days)
-    // {
-    //     $counts = [];
-    //     for ($i = $days; $i >= 0; $i--) {
-    //         $date = now()->subDays($i)->format('Y-m-d');
-    //         $counts[] = Attendance::whereHas('session', function ($q) use ($date) {
-    //             $q->whereDate('date', $date);
-    //         })
-    //             ->where('status', $status)
-    //             ->count();
-    //     }
-    //     return $counts;
-    // }
 
 
 
