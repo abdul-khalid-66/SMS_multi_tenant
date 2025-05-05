@@ -87,6 +87,11 @@ class AttendanceController extends Controller
             $stats['teachers']['absent'] = $stats['teachers']['total'] - $stats['teachers']['present'];
         }
 
+        // In your controller, modify the stats calculation:
+        $stats['today']['absent_percentage'] = $stats['today']['total_students'] > 0
+            ? round(($stats['today']['absent'] / $stats['today']['total_students']) * 100)
+            : 0;
+
         // Get monthly data (last 30 days)
         $monthStart = now()->subDays(30)->format('Y-m-d');
         $monthlyAttendances = Attendance::whereHas('session', function ($query) use ($schoolId, $monthStart) {
@@ -145,7 +150,8 @@ class AttendanceController extends Controller
                     'present' => $present,
                     'absent' => $absent,
                     'late' => $late,
-                    'percentage' => $percentage
+                    'percentage' => $percentage,
+
                 ];
             });
 
@@ -170,7 +176,116 @@ class AttendanceController extends Controller
             'stats' => $stats,
             'lowestClasses' => $lowestClasses,
             'recentRecords' => $recentRecords,
-            'calendarEvents' => $calendarEvents
+            'calendarEvents' => $calendarEvents,
+            'attendanceTrends' => $this->getAttendanceTrendData($schoolId)
+            // 'attendanceTrends' => [
+            //     'days' => $this->getLast7Days(),
+            //     'present' => $this->getAttendanceCountByStatus('present', 7),
+            //     'absent' => $this->getAttendanceCountByStatus('absent', 7),
+            //     'late' => $this->getAttendanceCountByStatus('late', 7)
+            // ]
+        ]);
+    }
+
+    // private function getLast7Days()
+    // {
+    //     return collect(range(6, 0))->map(function ($day) {
+    //         return now()->subDays($day)->format('D');
+    //     })->toArray();
+    // }
+
+    // private function getAttendanceCountByStatus($status, $days)
+    // {
+    //     $counts = [];
+    //     for ($i = $days; $i >= 0; $i--) {
+    //         $date = now()->subDays($i)->format('Y-m-d');
+    //         $counts[] = Attendance::whereHas('session', function ($q) use ($date) {
+    //             $q->whereDate('date', $date);
+    //         })
+    //             ->where('status', $status)
+    //             ->count();
+    //     }
+    //     return $counts;
+    // }
+
+
+
+    protected function getAttendanceTrendData($schoolId, $days = 7)
+    {
+        $trendData = [
+            'days' => [],
+            'present' => [],
+            'absent' => [],
+            'late' => []
+        ];
+
+        for ($i = $days - 1; $i >= 0; $i--) {
+            $date = now()->subDays($i);
+            $trendData['days'][] = $date->format('D');
+
+            $counts = Attendance::whereHas('session', function ($q) use ($date, $schoolId) {
+                $q->whereDate('date', $date->format('Y-m-d'))
+                    ->where('school_id', $schoolId);
+            })
+                ->selectRaw('status, count(*) as count')
+                ->groupBy('status')
+                ->pluck('count', 'status');
+
+            $trendData['present'][] = $counts['present'] ?? 0;
+            $trendData['absent'][] = $counts['absent'] ?? 0;
+            $trendData['late'][] = $counts['late'] ?? 0;
+        }
+
+        return $trendData;
+    }
+
+
+    public function getAttendanceTrends(Request $request)
+    {
+        $period = $request->input('period', 'daily');
+        $schoolId = auth()->user()->school_id ?? School::first()->id;
+
+        $days = [];
+        $present = [];
+        $absent = [];
+        $late = [];
+
+        switch ($period) {
+            case 'weekly':
+                $range = 6; // Last 7 days
+                $format = 'D'; // Day name
+                break;
+            case 'monthly':
+                $range = 29; // Last 30 days
+                $format = 'M d'; // Month day
+                break;
+            default: // daily
+                $range = 6; // Last 7 days
+                $format = 'D'; // Day name
+        }
+
+        for ($i = $range; $i >= 0; $i--) {
+            $date = now()->subDays($i);
+            $days[] = $date->format($format);
+
+            $counts = Attendance::whereHas('session', function ($q) use ($date, $schoolId) {
+                $q->whereDate('date', $date->format('Y-m-d'))
+                    ->where('school_id', $schoolId);
+            })
+                ->selectRaw('status, count(*) as count')
+                ->groupBy('status')
+                ->pluck('count', 'status');
+
+            $present[] = $counts['present'] ?? 0;
+            $absent[] = $counts['absent'] ?? 0;
+            $late[] = $counts['late'] ?? 0;
+        }
+
+        return response()->json([
+            'days' => $days,
+            'present' => $present,
+            'absent' => $absent,
+            'late' => $late
         ]);
     }
 

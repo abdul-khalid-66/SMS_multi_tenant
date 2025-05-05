@@ -55,6 +55,8 @@
         <!-- modernizr JS
             ============================================ -->
         <script src=" {{ asset('backend/js/vendor/modernizr-2.8.3.min.js') }}"></script>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.css">
     @endpush
     @push('css')
 
@@ -112,10 +114,9 @@
                             <h2><span class="counter">{{ $stats['today']['absent'] }}</span> <span class="tuition-fees">Students</span></h2>
                             <span class="text-danger">{{ $stats['today']['late'] }} late arrivals</span>
                             <div class="progress m-b-0">
-                                <div class="progress-bar progress-bar-danger" 
-                                role="progressbar" 
-                                style="width:{{ $stats['today']['total_students'] > 0 ? round(($stats['today']['absent'] / $stats['today']['total_students']) * 100) : 0 }}%">
-                                    <span class="sr-only">{{ $stats['today']['total_students'] > 0 ? round(($stats['today']['absent'] / $stats['today']['total_students']) * 100) : 0 }}% Absent</span>
+
+                                <div class="progress-bar progress-bar-danger" role="progressbar" style="width:{{ $stats['today']['absent_percentage'] }}%">
+                                    <span class="sr-only">{{ $stats['today']['absent_percentage'] }}% Absent</span>
                                 </div>
                             </div>
                         </div>
@@ -201,27 +202,15 @@
                         
                         <h3 class="box-title mg-t-20">Lowest Attendance Classes</h3>
                         <div class="list-group">
+                            @foreach($lowestClasses as $class)
                             <a href="#" class="list-group-item list-group-item-action">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Grade 9 - Section B</h5>
-                                    <small class="text-danger">72%</small>
+                                    <h5 class="mb-1">{{ $class['class'] }} - Section {{ $class['section'] }}</h5>
+                                    <small class="{{ $class['percentage'] < 75 ? 'text-danger' : ($class['percentage'] < 85 ? 'text-warning' : 'text-success') }}">{{ $class['percentage'] }}%</small>
                                 </div>
-                                <p class="mb-1">5 absent today</p>
+                                <p class="mb-1">{{ $class['absent'] }} absent today</p>
                             </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Grade 7 - Section A</h5>
-                                    <small class="text-warning">78%</small>
-                                </div>
-                                <p class="mb-1">3 chronic absentees</p>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Grade 10 - Section C</h5>
-                                    <small>80%</small>
-                                </div>
-                                <p class="mb-1">4 absent today</p>
-                            </a>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -230,6 +219,7 @@
     </div>
 
     <!-- Recent Attendance Records -->
+
     <div class="data-table-area mg-tb-15">
         <div class="container-fluid">
             <div class="row">
@@ -257,71 +247,21 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>2023-06-15</td>
-                                                <td>Grade 9</td>
-                                                <td>A</td>
-                                                <td>32</td>
-                                                <td>3</td>
-                                                <td>2</td>
-                                                <td>86.5%</td>
-                                                <td>
-                                                    <button class="btn btn-primary btn-xs">View</button>
-                                                    <button class="btn btn-warning btn-xs">Edit</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2023-06-15</td>
-                                                <td>Grade 8</td>
-                                                <td>B</td>
-                                                <td>28</td>
-                                                <td>5</td>
-                                                <td>1</td>
-                                                <td>82.4%</td>
-                                                <td>
-                                                    <button class="btn btn-primary btn-xs">View</button>
-                                                    <button class="btn btn-warning btn-xs">Edit</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2023-06-14</td>
-                                                <td>Grade 9</td>
-                                                <td>A</td>
-                                                <td>30</td>
-                                                <td>5</td>
-                                                <td>2</td>
-                                                <td>81.1%</td>
-                                                <td>
-                                                    <button class="btn btn-primary btn-xs">View</button>
-                                                    <button class="btn btn-warning btn-xs">Edit</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2023-06-14</td>
-                                                <td>Grade 7</td>
-                                                <td>C</td>
-                                                <td>35</td>
-                                                <td>2</td>
-                                                <td>0</td>
-                                                <td>94.6%</td>
-                                                <td>
-                                                    <button class="btn btn-primary btn-xs">View</button>
-                                                    <button class="btn btn-warning btn-xs">Edit</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2023-06-13</td>
-                                                <td>Grade 10</td>
-                                                <td>A</td>
-                                                <td>40</td>
-                                                <td>1</td>
-                                                <td>3</td>
-                                                <td>90.9%</td>
-                                                <td>
-                                                    <button class="btn btn-primary btn-xs">View</button>
-                                                    <button class="btn btn-warning btn-xs">Edit</button>
-                                                </td>
-                                            </tr>
+                                            @foreach($recentRecords as $record)
+                                                <tr>
+                                                    <td>{{ $record['date'] }}</td>
+                                                    <td>Grade {{ $record['class'] }}</td>
+                                                    <td>{{ $record['section'] }}</td>
+                                                    <td>{{ $record['present'] }}</td>
+                                                    <td>{{ $record['absent'] }}</td>
+                                                    <td>{{ $record['late'] }}</td>
+                                                    <td class="{{ $record['percentage'] < 75 ? 'text-danger' : ($record['percentage'] < 85 ? 'text-warning' : 'text-success') }}">{{ $record['percentage'] }}%</td>
+                                                    <td>
+                                                        <button class="btn btn-primary btn-xs">View</button>
+                                                        <button class="btn btn-warning btn-xs">Edit</button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -332,6 +272,7 @@
             </div>
         </div>
     </div>
+    
 
     <!-- Calendar Section -->
     <div class="calendar-area mg-tb-15">
@@ -392,8 +333,6 @@
         <!-- morrisjs JS
             ============================================ -->
         <script src=" {{ asset('backend/js/morrisjs/raphael-min.js') }}"></script>
-        {{-- <script src=" {{ asset('backend/js/morrisjs/morris.js') }}"></script> --}}
-        {{-- <script src=" {{ asset('backend/js/morrisjs/morris-active.js') }}"></script> --}}
         <!-- morrisjs JS
             ============================================ -->
         <script src=" {{ asset('backend/js/sparkline/jquery.sparkline.min.js') }}"></script>
@@ -410,19 +349,10 @@
         <!-- main JS
             ============================================ -->
         <script src=" {{ asset('backend/js/main.js') }}"></script>
-        <!-- tawk chat JS
-            ============================================ -->
-        {{-- <!-- <script src=" {{ asset('backend/js/tawk-chat.js') }}"></script> --> --}}
-        <!-- ---------------------------------------- -->
+        <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     @endpush
     @push('js')
-        <!-- Your existing JS imports -->
-        
-        <!-- Additional JS for attendance -->
-        {{-- <script src="{{ asset('backend/js/moment.min.js') }}"></script>
-        <script src="{{ asset('backend/js/daterangepicker.js') }}"></script>
-        <script src="{{ asset('backend/js/fullcalendar.min.js') }}"></script> --}}
-        
+
         <script>
             $(document).ready(function() {
                 // Initialize attendance calendar
@@ -435,24 +365,8 @@
                     defaultDate: moment().format('YYYY-MM-DD'),
                     editable: false,
                     eventLimit: true,
-                    events: [
-                        {
-                            title: 'Grade 9 - 85%',
-                            start: moment().format('YYYY-MM-DD'),
-                            className: 'bg-success'
-                        },
-                        {
-                            title: 'Grade 8 - 78%',
-                            start: moment().subtract(1, 'days').format('YYYY-MM-DD'),
-                            className: 'bg-warning'
-                        },
-                        {
-                            title: 'Holiday',
-                            start: moment().add(5, 'days').format('YYYY-MM-DD'),
-                            className: 'bg-danger',
-                            allDay: true
-                        }
-                    ],
+
+                    events: @json($calendarEvents),
                     dayRender: function(date, cell) {
                         // Highlight weekends
                         if (date.day() === 0 || date.day() === 6) {
@@ -467,7 +381,147 @@
                     pageLength: 5,
                     ordering: false
                 });
+
+                $('input[name="options"]').change(function() {
+                    let period = $(this).attr('id').replace('option', '');
+                    updateChart(period);
+                });
+
+                function updateChart(period) {
+                    // AJAX call to get data for selected period
+                    $.get('/attendance/trends?period=' + period, function(data) {
+                        // Update the chart with new data
+                        attendanceChart.setOption({
+                            xAxis: { data: data.days },
+                            series: [
+                                { data: data.present },
+                                { data: data.absent },
+                                { data: data.late }
+                            ]
+                        });
+                    });
+                }
             });
+
+            // Initialize the attendance trends chart
+            var attendanceChart = echarts.init(document.getElementById('attendance-trend-chart'));
+
+            // Default options
+            var option = {
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function(params) {
+                        var result = params[0].axisValue + '<br/>';
+                        params.forEach(function(item) {
+                            result += item.marker + ' ' + item.seriesName + ': ' + item.value + '<br/>';
+                        });
+                        return result;
+                    }
+                },
+                legend: {
+                    data: ['Present', 'Absent', 'Late']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: @json($attendanceTrends['days'])
+                },
+                yAxis: {
+                    type: 'value',
+                    min: 0,
+                    axisLabel: {
+                        formatter: '{value}'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Present',
+                        type: 'line',
+                        smooth: true,
+                        data: @json($attendanceTrends['present']),
+                        itemStyle: { color: '#006DF0' },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(0, 109, 240, 0.3)' },
+                                { offset: 1, color: 'rgba(0, 109, 240, 0.1)' }
+                            ])
+                        }
+                    },
+                    {
+                        name: 'Absent',
+                        type: 'line',
+                        smooth: true,
+                        data: @json($attendanceTrends['absent']),
+                        itemStyle: { color: '#933EC5' },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(147, 62, 197, 0.3)' },
+                                { offset: 1, color: 'rgba(147, 62, 197, 0.1)' }
+                            ])
+                        }
+                    },
+                    {
+                        name: 'Late',
+                        type: 'line',
+                        smooth: true,
+                        data: @json($attendanceTrends['late']),
+                        itemStyle: { color: '#65b12d' },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(101, 177, 45, 0.3)' },
+                                { offset: 1, color: 'rgba(101, 177, 45, 0.1)' }
+                            ])
+                        }
+                    }
+                ]
+            };
+
+            // Apply the chart options
+            attendanceChart.setOption(option);
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                attendanceChart.resize();
+            });
+
+            // Period toggle functionality
+            $('input[name="options"]').change(function() {
+                let period = $(this).attr('id').replace('option', '');
+                let periodText = $(this).parent().text().trim().toLowerCase();
+                
+                updateChart(periodText);
+            });
+
+            function updateChart(period) {
+                // Show loading effect
+                attendanceChart.showLoading();
+                
+                // AJAX call to get data for selected period
+                $.get('/attendance/trends?period=' + period, function(data) {
+                    // Update the chart with new data
+                    attendanceChart.setOption({
+                        xAxis: { data: data.days },
+                        series: [
+                            { data: data.present },
+                            { data: data.absent },
+                            { data: data.late }
+                        ]
+                    });
+                    
+                    // Hide loading effect
+                    attendanceChart.hideLoading();
+                }).fail(function() {
+                    attendanceChart.hideLoading();
+                    console.error('Failed to load attendance trends data');
+                });
+            }
+            attendanceChart.setOption(option);
         </script>
     @endpush
 </x-tenant-app-layout>

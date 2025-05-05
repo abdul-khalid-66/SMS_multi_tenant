@@ -136,20 +136,19 @@ Route::middleware([
         Route::get('/admin/get-teachers-by-subject', [TimetableController::class, 'getTeachersBySubject'])->name('admin.getTeachersBySubject');
 
         // Attendance
-        Route::middleware(['auth', 'verified'])->group(function () {
-            // Attendance Routes
-            Route::prefix('attendance')->group(function () {
-                Route::get('/', [AttendanceController::class, 'index'])->name('admin.attendance.index');
-                Route::get('/take', [AttendanceController::class, 'create'])->name('admin.attendance.create');
+        // Attendance Routes
+        Route::prefix('attendance')->group(function () {
+            Route::get('/', [AttendanceController::class, 'index'])->name('admin.attendance.index');
+            Route::get('/take', [AttendanceController::class, 'create'])->name('admin.attendance.create');
 
-                // AJAX endpoints
-                Route::get('/get-sections', [AttendanceController::class, 'getSections'])->name('attendance.get-sections');
-                Route::get('/get-subjects', [AttendanceController::class, 'getSubjects'])->name('attendance.get-subjects');
-                Route::get('/get-students', [AttendanceController::class, 'getStudents'])->name('attendance.get-students');
-                Route::post('/save', [AttendanceController::class, 'store'])->name('attendance.store');
-            });
-            Route::get('/check-classes', [AttendanceController::class, 'checkClasses']);
+            // AJAX endpoints
+            Route::get('/get-sections', [AttendanceController::class, 'getSections'])->name('attendance.get-sections');
+            Route::get('/get-subjects', [AttendanceController::class, 'getSubjects'])->name('attendance.get-subjects');
+            Route::get('/get-students', [AttendanceController::class, 'getStudents'])->name('attendance.get-students');
+            Route::post('/save', [AttendanceController::class, 'store'])->name('attendance.store');
         });
+        Route::get('/check-classes', [AttendanceController::class, 'checkClasses']);
+        Route::get('/attendance/trends', [AttendanceController::class, 'getAttendanceTrends']);
     });
 
     require __DIR__ . '/tenant-auth.php';
