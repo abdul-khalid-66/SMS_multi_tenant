@@ -1,72 +1,37 @@
 <x-tenant-app-layout>
     @push('css')
-        <!-- favicon
-		============================================ -->
+        {{-- ============================================ --> --}}
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-        <!-- Google Fonts
-            ============================================ -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
-        <!-- Bootstrap CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/bootstrap.min.css') }}">
-        <!-- Bootstrap CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/font-awesome.min.css') }}">
-        <!-- owl.carousel CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/owl.carousel.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/css/owl.theme.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/css/owl.transitions.css') }}">
-        <!-- animate CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/animate.css') }}">
-        <!-- normalize CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/normalize.css') }}">
-        <!-- meanmenu icon CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/meanmenu.min.css') }}">
-        <!-- main CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/main.css') }}">
-        <!-- educate icon CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/educate-custon-icon.css') }}">
-        <!-- morrisjs CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/morrisjs/morris.css') }}">
-        <!-- mCustomScrollbar CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/scrollbar/jquery.mCustomScrollbar.min.css') }}">
-        <!-- metisMenu CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/metisMenu/metisMenu.min.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/css/metisMenu/metisMenu-vertical.css') }}">
-        <!-- calendar CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/calendar/fullcalendar.min.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/css/calendar/fullcalendar.print.min.css') }}">
-        <!-- x-editor CSS
-            ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/editor/select2.css') }}">
-        <link rel="stylesheet" href="{{ asset('backend/css/editor/datetimepicker.css') }}">
-        <link rel="stylesheet" href="{{ asset('backend/css/editor/bootstrap-editable.css') }}">
-        <link rel="stylesheet" href="{{ asset('backend/css/editor/x-editor-style.css') }}">
-        <!-- normalize CSS
-            ============================================ -->
-        <link rel="stylesheet" href="{{ asset('backend/css/data-table/bootstrap-table.css') }}">
-        <link rel="stylesheet" href="{{ asset('backend/css/data-table/bootstrap-editable.css') }}">
-        <!-- style CSS
-            ============================================ -->
+        <link rel="stylesheet" href="{{ asset('backend/css/touchspin/jquery.bootstrap-touchspin.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('backend/css/datapicker/datepicker3.css') }}">
+        <link rel="stylesheet" href="{{ asset('backend/css/form/themesaller-forms.css') }}">
+        <link rel="stylesheet" href="{{ asset('backend/css/colorpicker/colorpicker.css') }}">
+        <link rel="stylesheet" href="{{ asset('backend/css/select2/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('backend/css/chosen/bootstrap-chosen.css') }}">
+        <link rel="stylesheet" href="{{ asset('backend/css/ionRangeSlider/ion.rangeSlider.css') }}">
+        <link rel="stylesheet" href="{{ asset('backend/css/ionRangeSlider/ion.rangeSlider.skinFlat.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/style.css') }}">
-        <!-- responsive CSS
-            ============================================ -->
         <link rel="stylesheet" href="{{ asset('backend/css/responsive.css') }}">
-        <!-- modernizr JS
-            ============================================ -->
         <script src="{{ asset('backend/js/vendor/modernizr-2.8.3.min.js') }}"></script>
+
     @endpush
-    
     <x-slot name="header"></x-slot>
     
     <div class="advanced-form-area mg-b-15">
@@ -98,6 +63,15 @@
                         <div class="sparkline12-graph">
                             <div class="basic-login-form-ad">
                                 <div class="row">
+                                    @if($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                                     <form id="teacherForm" method="POST" action="{{ route("admin.update.teacher", $teacher->id) }}" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
@@ -233,7 +207,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group-inner @error('role') has-error @enderror">
+                                                {{-- <div class="form-group-inner @error('role') has-error @enderror">
                                                     <div class="row">
                                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                             <label class="login2">Role*</label>
@@ -247,6 +221,21 @@
                                                             @error('role')
                                                                 <span class="help-block text-danger">{{ $message }}</span>
                                                             @enderror
+                                                        </div>
+                                                    </div>
+                                                </div> --}}
+
+                                                <div class="form-group-inner">
+                                                    <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                            <label class="login2">Select Role*</label>
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                            <select name="roles[]" data-placeholder="Choose a Country..." class="chosen-select" multiple="" tabindex="-1">
+                                                                <option value="">Select Role</option>
+                                                                <option value="admin" {{ old('role', $teacher->role) == 'admin' ? 'selected' : '' }}>Admin</option>
+                                                                <option value="teacher" {{ old('role', $teacher->role) == 'teacher' ? 'selected' : '' }}>Teacher</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -573,67 +562,68 @@
         </div>
         
         @push('js')
-               <!-- jquery ============================================ -->
-                <script src="{{ asset('backend/js/vendor/jquery-1.12.4.min.js') }}"></script>
-                <!-- bootstrap JS ============================================ -->
-                <script src="{{ asset('backend/js/bootstrap.min.js') }}"></script>
-                <!-- wow JS ============================================ -->
-                <script src="{{ asset('backend/js/wow.min.js') }}"></script>
-                <!-- price-slider JS ============================================ -->
-                <script src="{{ asset('backend/js/jquery-price-slider.js') }}"></script>
-                <!-- meanmenu JS ============================================ -->
-                <script src="{{ asset('backend/js/jquery.meanmenu.js') }}"></script>
-                <!-- owl.carousel JS ============================================ -->
-                <script src="{{ asset('backend/js/owl.carousel.min.js') }}"></script>
-                <!-- sticky JS ============================================ -->
-                <script src="{{ asset('backend/js/jquery.sticky.js') }}"></script>
-                <!-- scrollUp JS ============================================ -->
-                <script src="{{ asset('backend/js/jquery.scrollUp.min.js') }}"></script>
-                <!-- mCustomScrollbar JS ============================================ -->
-                <script src="{{ asset('backend/js/scrollbar/jquery.mCustomScrollbar.concat.min.js') }}"></script>
-                <script src="{{ asset('backend/js/scrollbar/mCustomScrollbar-active.js') }}"></script>
-                <!-- metisMenu JS ============================================ -->
-                <script src="{{ asset('backend/js/metisMenu/metisMenu.min.js') }}"></script>
-                <script src="{{ asset('backend/js/metisMenu/metisMenu-active.js') }}"></script>
-                <!-- data table JS ============================================ -->
-                <script src="{{ asset('backend/js/data-table/bootstrap-table.js') }}"></script>
-                <script src="{{ asset('backend/js/data-table/tableExport.js') }}"></script>
-                <script src="{{ asset('backend/js/data-table/data-table-active.js') }}"></script>
-                <script src="{{ asset('backend/js/data-table/bootstrap-table-editable.js') }}"></script>
-                <script src="{{ asset('backend/js/data-table/bootstrap-editable.js') }}"></script>
-                <script src="{{ asset('backend/js/data-table/bootstrap-table-resizable.js') }}"></script>
-                <script src="{{ asset('backend/js/data-table/colResizable-1.5.source.js') }}"></script>
-                <script src="{{ asset('backend/js/data-table/bootstrap-table-export.js') }}"></script>
-                <!--  editable JS ============================================ -->
-                <script src="{{ asset('backend/js/editable/jquery.mockjax.js') }}"></script>
-                <script src="{{ asset('backend/js/editable/mock-active.js') }}"></script>
-                <script src="{{ asset('backend/js/editable/select2.js') }}"></script>
-                <script src="{{ asset('backend/js/editable/moment.min.js') }}"></script>
-                <script src="{{ asset('backend/js/editable/bootstrap-datetimepicker.js') }}"></script>
-                <script src="{{ asset('backend/js/editable/bootstrap-editable.js') }}"></script>
-                <script src="{{ asset('backend/js/editable/xediable-active.js') }}"></script>
-                <!-- Chart JS ============================================ -->
-                <script src="{{ asset('backend/js/chart/jquery.peity.min.js') }}"></script>
-                <script src="{{ asset('backend/js/peity/peity-active.js') }}"></script>
-                <!-- tab JS ============================================ -->
-                <script src="{{ asset('backend/js/tab.js') }}"></script>
-                <!-- plugins JS ============================================ -->
-                <script src="{{ asset('backend/js/plugins.js') }}"></script>
-                <!-- main JS ============================================ -->
-                <script src="{{ asset('backend/js/main.js') }}"></script>
-            
-            {{-- <script>
-                // Show/hide class teacher field based on checkbox
-                $('#isClassTeacher').change(function() {
-                    if(this.checked) {
-                        $('#classTeacherOfContainer').show();
-                    } else {
-                        $('#classTeacherOfContainer').hide();
-                    }
-                });
 
-                
-            </script> --}}
+        <!-- jquery============================================ -->
+        <script src="{{ asset('backend/js/vendor/jquery-1.12.4.min.js') }}"></script>
+        <!-- bootstrap JS============================================ -->
+        <script src="{{ asset('backend/js/bootstrap.min.js') }}"></script>
+        <!-- wow JS============================================ -->
+        <script src="{{ asset('backend/js/wow.min.js') }}"></script>
+        <!-- price-slider JS============================================ -->
+        <script src="{{ asset('backend/js/jquery-price-slider.js') }}"></script>
+        <!-- meanmenu JS============================================ -->
+        <script src="{{ asset('backend/js/jquery.meanmenu.js') }}"></script>
+        <!-- owl.carousel JS============================================ -->
+        <script src="{{ asset('backend/js/owl.carousel.min.js') }}"></script>
+        <!-- sticky JS============================================ -->
+        <script src="{{ asset('backend/js/jquery.sticky.js') }}"></script>
+        <!-- scrollUp JS============================================ -->
+        <script src="{{ asset('backend/js/jquery.scrollUp.min.js') }}"></script>
+        <!-- mCustomScrollbar JS============================================ -->
+        <script src="{{ asset('backend/js/scrollbar/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+        <script src="{{ asset('backend/js/scrollbar/mCustomScrollbar-active.js') }}"></script>
+        <!-- metisMenu JS============================================ -->
+        <script src="{{ asset('backend/js/metisMenu/metisMenu.min.js') }}"></script>
+        <script src="{{ asset('backend/js/metisMenu/metisMenu-active.js') }}"></script>
+        <!-- touchspin JS============================================ -->
+        <script src="{{ asset('backend/js/touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
+        <script src="{{ asset('backend/js/touchspin/touchspin-active.js') }}"></script>
+        <!-- colorpicker JS============================================ -->
+        <script src="{{ asset('backend/js/colorpicker/jquery.spectrum.min.js') }}"></script>
+        <script src="{{ asset('backend/js/colorpicker/color-picker-active.js') }}"></script>
+        <!-- datapicker JS============================================ -->
+        <script src="{{ asset('backend/js/datapicker/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('backend/js/datapicker/datepicker-active.js') }}"></script>
+        <!-- input-mask JS============================================ -->
+        <script src="{{ asset('backend/js/input-mask/jasny-bootstrap.min.js') }}"></script>
+        <!-- chosen JS============================================ -->
+        <script src="{{ asset('backend/js/chosen/chosen.jquery.js') }}"></script>
+        <script src="{{ asset('backend/js/chosen/chosen-active.js') }}"></script>
+        <!-- select2 JS============================================ -->
+        <script src="{{ asset('backend/js/select2/select2.full.min.js') }}"></script>
+        <script src="{{ asset('backend/js/select2/select2-active.js') }}"></script>
+        <!-- ionRangeSlider JS============================================ -->
+        <script src="{{ asset('backend/js/ionRangeSlider/ion.rangeSlider.min.js') }}"></script>
+        <script src="{{ asset('backend/js/ionRangeSlider/ion.rangeSlider.active.js') }}"></script>
+        <!-- rangle-slider JS============================================ -->
+        <script src="{{ asset('backend/js/rangle-slider/jquery-ui-1.10.4.custom.min.js') }}"></script>
+        <script src="{{ asset('backend/js/rangle-slider/jquery-ui-touch-punch.min.js') }}"></script>
+        <script src="{{ asset('backend/js/rangle-slider/rangle-active.js') }}"></script>
+        <!-- knob JS============================================ -->
+        <script src="{{ asset('backend/js/knob/jquery.knob.js') }}"></script>
+        <script src="{{ asset('backend/js/knob/knob-active.js') }}"></script>
+        <!-- tab JS============================================ -->
+        <script src="{{ asset('backend/js/tab.js') }}"></script>
+        <!-- plugins JS============================================ -->
+        <script src="{{ asset('backend/js/plugins.js') }}"></script>
+        <!-- main JS============================================ -->
+        <script src="{{ asset('backend/js/main.js') }}"></script>
+
+
+    
+    @endpush
+ 
+        @push('js')
              <script>
                 // Show/hide class teacher field based on checkbox
                 $('#isClassTeacher').change(function() {

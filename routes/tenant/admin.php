@@ -63,7 +63,7 @@ Route::middleware([
         Route::get('/add_teacher', [TeacherController::class, 'create'])->middleware(['auth', 'verified'])->name('dashboard.add.teacher');
         Route::post('/add_teacher', [TeacherController::class, 'store'])->middleware(['auth', 'verified'])->name('admin.store.teacher');
         Route::get('/edit_teacher/{id?}', [TeacherController::class, 'edit'])->middleware(['auth', 'verified'])->name('admin.edit.teacher');
-        Route::put('/edit_teacher', [TeacherController::class, 'update'])->middleware(['auth', 'verified'])->name('admin.update.teacher');
+        Route::put('/edit_teacher/{id?}', [TeacherController::class, 'update'])->middleware(['auth', 'verified'])->name('admin.update.teacher');
         Route::delete('/destroy_teacher', [TeacherController::class, 'destroy'])->middleware(['auth', 'verified'])->name('admin.destroy.teacher');
 
         // Class Routes
