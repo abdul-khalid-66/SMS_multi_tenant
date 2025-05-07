@@ -26,6 +26,22 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        $user = $request->user();
+
+        if ($user->status === 'pending') {
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Your account is pending. Please wait for admin approval.',
+            ]);
+        }
+
+        if ($user->status !== 'active') {
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Your account is not active. Please contact admin.',
+            ]);
+        }
+
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard', absolute: false));
