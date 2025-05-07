@@ -168,6 +168,11 @@ class TimetableController extends Controller
                     'teacher_id' => $isBreak ? null : ($period['teacher_id'] ?? null),
                 ];
 
+                TeacherSubject::firstOrCreate([
+                    'class_id' => $validated['class_id'],
+                    'subject_id' => $period['subject_id'] ?? null,
+                    'teacher_id' => $period['teacher_id'] ?? null,
+                ]);
                 // Create the entry
                 TimeTable::create($timeTableData);
             }
