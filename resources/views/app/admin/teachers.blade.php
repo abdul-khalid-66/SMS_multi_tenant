@@ -128,6 +128,22 @@
                                     <tr>
                                         <td>{{ $teacher->id }}</td>
                                         <td>
+                                            @if(isset($teacher->profile_pic))
+                                                <img src="{{ asset($teacher->profile_pic) }}" 
+                                                    alt="{{ $teacher->name }}" 
+                                                    class="rounded-circle" 
+                                                    width="30" 
+                                                    height="30">
+                                                @else
+                                                    <img src="{{ asset('backend/img/profile/1.jpg') }}" 
+                                                        alt="{{ $teacher->name }}" 
+                                                        class="rounded-circle" 
+                                                        width="30" 
+                                                        height="30">
+                                            @endif
+                                            {{ $teacher->name }}
+                                        </td>
+                                        {{-- <td>
                                             <div class="d-flex align-items-center">
                                                 @if($teacher->profile_pic  && $teacher->profile_pic)
                                                     <img src="{{ asset($teacher->profile_pic) }}" 
@@ -141,7 +157,7 @@
                                                 @endif
                                                 {{ $teacher->name }}
                                             </div>
-                                        </td>
+                                        </td> --}}
                                         <td>{{ $teacher->teacherProfile->employee_id ?? 'N/A' }}</td>
                                         <td>{{ $teacher->email }}</td>
                                         <td>{{ $teacher->phone }}</td>
