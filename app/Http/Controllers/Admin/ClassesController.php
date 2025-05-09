@@ -105,7 +105,7 @@ class ClassesController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'numeric_value' => 'required|integer|min:0',
+            'numeric_value' => 'required|integer',
             'teacher_id' => 'nullable|exists:users,id'
         ]);
 
@@ -126,11 +126,12 @@ class ClassesController extends Controller
         $class = Classes::findOrFail($id);
 
         // Check if class has sections before deleting
-        if ($class->sections()->count() > 0) {
+        if ($class->sections()->count() > 1) {
             return back()->with('error', 'Cannot delete class with sections');
         }
 
         $class->delete();
+        $class->sections()->delete();
 
         return redirect()->route('admin.academic.classes.index')
             ->with('success', 'Class deleted successfully');
