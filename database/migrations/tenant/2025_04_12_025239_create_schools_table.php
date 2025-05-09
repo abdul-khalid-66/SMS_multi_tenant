@@ -20,6 +20,16 @@ return new class extends Migration
             $table->string('logo')->nullable();
             $table->string('session_year', 20)->nullable();
             // New fields
+            $table->string('motto')->nullable();
+            $table->string('hero_image')->nullable();
+            $table->string('student_count')->nullable();
+            $table->string('teacher_count')->nullable();
+            $table->string('facility_count')->nullable();
+            $table->string('primary_color')->default('#2563eb');
+            $table->string('secondary_color')->default('#1e40af');
+            $table->text('short_description')->nullable();
+
+
             $table->string('type')->nullable()->comment('public/private/international');
             $table->string('affiliation')->nullable()->comment('School affiliation number');
             $table->string('principal')->nullable()->comment('Principal name');

@@ -128,6 +128,11 @@
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <ul class="breadcome-menu">
                                 <li>
+                                    <a href="{{ route('schools.cms') }}" class="btn btn-primary btn-sm" style="color: white">
+                                        <i class="fa fa-graduation-cap"></i> CMS
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="{{ route('schools.edit') }}" class="btn btn-primary btn-sm" style="color: white">
                                         <i class="fa fa-graduation-cap"></i> Profile Edit
                                     </a>

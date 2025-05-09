@@ -23,6 +23,15 @@ class School extends Model
         'established_year',
         'social_links',
 
+        'motto',
+        'hero_image',
+        'student_count',
+        'teacher_count',
+        'facility_count',
+        'primary_color',
+        'secondary_color',
+        'short_description',
+
     ];
 
     // Relationships
@@ -39,5 +48,17 @@ class School extends Model
     public function notices()
     {
         return $this->hasMany(Notice::class);
+    }
+
+
+
+    public function testimonials()
+    {
+        return $this->hasMany(Testimonial::class);
+    }
+
+    public function programs()
+    {
+        return $this->hasMany(Program::class);
     }
 }
