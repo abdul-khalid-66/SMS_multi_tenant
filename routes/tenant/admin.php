@@ -34,7 +34,78 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
     Route::get('/', function () {
-        return view('App.welcome');
+        $school = [
+            'name' => 'Greenwood International School',
+            'motto' => 'Learning for Life, Excellence in Education',
+            'logo' => null,
+            'hero_image' => null,
+            'established_year' => '1998',
+            'student_count' => '1250+',
+            'teacher_count' => '85+',
+            'facility_count' => '30+',
+            'primary_color' => '#2563eb',
+            'secondary_color' => '#1e40af',
+            'address' => '123 Education Avenue, Springfield, ST 12345',
+            'phone' => '+1 (555) 123-4567',
+            'email' => 'info@greenwood.edu',
+            'short_description' => 'Greenwood International provides a world-class education with a focus on holistic development and academic excellence.',
+
+            'programs' => [
+                (object)[
+                    'name' => 'Early Years Program',
+                    'description' => 'Play-based learning for ages 3-5 focusing on social, emotional and cognitive development'
+                ],
+                (object)[
+                    'name' => 'Elementary School',
+                    'description' => 'Grades 1-5 with a balanced curriculum emphasizing foundational skills'
+                ],
+                (object)[
+                    'name' => 'Middle School',
+                    'description' => 'Grades 6-8 with exploratory learning and subject specialization'
+                ],
+                (object)[
+                    'name' => 'High School',
+                    'description' => 'Grades 9-12 with college preparatory and honors tracks'
+                ],
+                (object)[
+                    'name' => 'STEM Program',
+                    'description' => 'Specialized science, technology, engineering and math curriculum'
+                ],
+                (object)[
+                    'name' => 'Arts Academy',
+                    'description' => 'Visual and performing arts with professional instruction'
+                ]
+            ],
+
+            'testimonials' => [
+                (object)[
+                    'author' => 'Sarah Johnson',
+                    'role' => 'Parent of 3rd Grader',
+                    'content' => 'The teachers at Greenwood truly care about each student. My daughter has flourished both academically and socially.',
+                    'rating' => 5,
+                    'avatar' => null
+                ],
+                (object)[
+                    'author' => 'Michael Chen',
+                    'role' => 'High School Senior',
+                    'content' => 'The STEM program prepared me for college better than I could have imagined. I already have research opportunities lined up!',
+                    'rating' => 5,
+                    'avatar' => null
+                ],
+                (object)[
+                    'author' => 'Dr. Emily Rodriguez',
+                    'role' => 'Faculty Member',
+                    'content' => 'Teaching at Greenwood allows me to innovate and connect with students in meaningful ways every day.',
+                    'rating' => 5,
+                    'avatar' => null
+                ]
+            ]
+        ];
+
+        // Convert the main school array to object
+        $school = (object)$school;
+
+        return view('App.welcome', compact('school'));
     });
 
 
