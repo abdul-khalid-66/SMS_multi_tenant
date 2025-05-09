@@ -434,6 +434,7 @@
                         
                         // 3. If a class is selected, fetch its sections
                         if (classId) {
+                            $('#attendanceSection').css('display', 'none');
                             // Show loading state
                             $sectionSelect.append('<option value="" disabled>Loading sections...</option>');
                             
