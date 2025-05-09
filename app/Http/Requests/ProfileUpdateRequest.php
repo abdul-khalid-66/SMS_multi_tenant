@@ -25,6 +25,15 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'address' => ['nullable', 'string', 'max:500'],
+            'gender' => ['required', 'in:male,female,other'],
+            'dob' => ['required', 'date'],
+            'profile_pic' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'current_password' => ['sometimes', 'required_with:password', 'current_password'],
+            'password' => ['sometimes', 'confirmed', 'min:8', 'different:current_password'],
+            'roles' => ['sometimes', 'array'],
+            'roles.*' => ['sometimes', 'string', 'exists:roles,name'],
         ];
     }
 }
