@@ -386,12 +386,56 @@
                     }
 
                     // Enable section dropdown when class is selected
+                    // $('#class_id').change(function() {
+                    //     const classId = $(this).val();
+                    //     $('#section_id').empty().append('<option value="">Select Section</option>');
+                        
+                    //     if (classId) {
+                    //         $('#section_id').prop('disabled', false);
+                            
+                    //         // Load sections for selected class
+                    //         $.ajax({
+                    //             url: '/attendance/get-sections',
+                    //             type: 'GET',
+                    //             data: { class_id: classId },
+                    //             success: function(response) {
+                    //                 if (response.sections.length > 0) {
+                    //                     $.each(response.sections, function(index, section) {
+                    //                         $('#section_id').append(`<option value="${section.id}">${section.name}</option>`);
+                    //                     });
+                    //                     // $('#loadStudentsBtn').prop('disabled', false);
+                    //                 } else {
+                    //                     $('#section_id').prop('disabled', true);
+                    //                     $('#loadStudentsBtn').prop('disabled', true);
+                    //                     showAlert('warning', 'No sections found for this class');
+                    //                 }
+                    //             }
+                    //         });
+                            
+                    //     } else {
+                    //         $('#section_id').prop('disabled', true);
+                    //         $('#loadStudentsBtn').prop('disabled', true);
+                    //     }
+                    // });
+
                     $('#class_id').change(function() {
                         const classId = $(this).val();
-                        $('#section_id').empty().append('<option value="">Select Section</option>');
+                        const $sectionSelect = $('#section_id');
                         
+                        // 1. Reset the section dropdown (works for both native and Select2)
+                        $sectionSelect.val(null)             // Clear selected value
+                                    .empty()               // Remove all options
+                                    .append('<option value="">Select Section</option>')
+                                    .prop('disabled', true) // Disable until sections load
+                                    .trigger('change');    // Required for Select2 to update UI
+                        
+                        // 2. Reset dependent elements (if any)
+                        $('#loadStudentsBtn').prop('disabled', true);
+                        
+                        // 3. If a class is selected, fetch its sections
                         if (classId) {
-                            $('#section_id').prop('disabled', false);
+                            // Show loading state
+                            $sectionSelect.append('<option value="" disabled>Loading sections...</option>');
                             
                             // Load sections for selected class
                             $.ajax({
@@ -399,22 +443,27 @@
                                 type: 'GET',
                                 data: { class_id: classId },
                                 success: function(response) {
-                                    if (response.sections.length > 0) {
+                                    // Clear loading state
+                                    $sectionSelect.empty().append('<option value="">Select Section</option>');
+                                    
+                                    // If sections exist, populate them
+                                    if (response.sections?.length > 0) {
                                         $.each(response.sections, function(index, section) {
-                                            $('#section_id').append(`<option value="${section.id}">${section.name}</option>`);
+                                            $sectionSelect.append(`<option value="${section.id}">${section.name}</option>`);
                                         });
-                                        // $('#loadStudentsBtn').prop('disabled', false);
+                                        $sectionSelect.prop('disabled', false)
+                                                    .trigger('change'); // Update Select2 UI
                                     } else {
-                                        $('#section_id').prop('disabled', true);
-                                        $('#loadStudentsBtn').prop('disabled', true);
                                         showAlert('warning', 'No sections found for this class');
                                     }
+                                },
+                                error: function() {
+                                    $sectionSelect.empty()
+                                        .append('<option value="">Error loading sections</option>')
+                                        .trigger('change');
+                                    showAlert('error', 'Failed to load sections');
                                 }
                             });
-                            
-                        } else {
-                            $('#section_id').prop('disabled', true);
-                            $('#loadStudentsBtn').prop('disabled', true);
                         }
                     });
                     
