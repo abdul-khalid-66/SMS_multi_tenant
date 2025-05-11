@@ -8,6 +8,7 @@ use App\Models\TeacherProfile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -155,13 +156,24 @@ class TeacherController extends Controller
             return back()->with('error', 'Error creating teacher: ' . $e->getMessage());
         }
     }
-    public function edit($id = null)
+    public function edit($encodedId = null)
     {
+        $id = Crypt::decrypt($encodedId);
         $teacher = User::role('teacher')->with('teacherProfile')
             ->orderBy('name')
             ->find($id);
         $classes = Classes::get();
         return view('app.admin.edit_teacher', compact('teacher', 'classes'));
+    }
+
+    public function show($encodedId = null)
+    {
+        $id = Crypt::decrypt($encodedId);
+        $teacher = User::role('teacher')->with(['teacherProfile', 'teacherSubjects', 'teacherClasses'])
+            ->orderBy('name')
+            ->find($id);
+
+        return view('app.admin.teacher', compact('teacher'));
     }
 
     public function update(Request $request, $id)
@@ -201,7 +213,6 @@ class TeacherController extends Controller
             'documents'     => 'nullable|array',
             'documents.*'   => 'file|mimes:pdf,doc,docx,jpeg,png,jpg',
         ]);
-        // dd($request->all());
         try {
             DB::beginTransaction();
 
@@ -230,11 +241,9 @@ class TeacherController extends Controller
                 'dob'         => $validated['dob'],
                 'roles'        => in_array('admin', $validated['roles']) ? 'admin' : 'teacher',
             ]);
-            foreach ($validated['roles'] as $role) {
-                $user->assignRole($role);
-            }
+
             // Sync roles
-            // $user->syncRoles([$validated['role']]);
+            $user->syncRoles($validated['roles']);
 
             // Handle signature update
             $signaturePath = $teacherProfile->signature;
@@ -286,5 +295,16 @@ class TeacherController extends Controller
             DB::rollBack();
             return back()->with('error', 'Error updating teacher: ' . $e->getMessage());
         }
+    }
+
+
+    public function updateStatus(Request $request)
+    {
+        // dd($request->all());
+        $teacher = User::findOrFail($request->id); // Assuming User is teacher
+        $teacher->status = $request->status;
+        $teacher->save();
+
+        return response()->json(['success' => true, 'status' => $teacher->status]);
     }
 }

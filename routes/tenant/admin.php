@@ -103,8 +103,10 @@ Route::middleware([
         Route::get('/add_teacher', [TeacherController::class, 'create'])->middleware(['auth', 'verified'])->name('dashboard.add.teacher');
         Route::post('/add_teacher', [TeacherController::class, 'store'])->middleware(['auth', 'verified'])->name('admin.store.teacher');
         Route::get('/edit_teacher/{id?}', [TeacherController::class, 'edit'])->middleware(['auth', 'verified'])->name('admin.edit.teacher');
+        Route::get('/teacher/{id?}', [TeacherController::class, 'show'])->middleware(['auth', 'verified'])->name('admin.show.teacher');
         Route::put('/edit_teacher/{id?}', [TeacherController::class, 'update'])->middleware(['auth', 'verified'])->name('admin.update.teacher');
         Route::delete('/destroy_teacher', [TeacherController::class, 'destroy'])->middleware(['auth', 'verified'])->name('admin.destroy.teacher');
+        Route::post('/teacher/status-update', [TeacherController::class, 'updateStatus'])->name('teacher.update.status');
 
         // Class Routes
         Route::prefix('classes')->middleware(['auth', 'verified'])->name('admin.academic.classes.')->group(function () {
@@ -112,6 +114,7 @@ Route::middleware([
             Route::get('/create', [ClassesController::class, 'create'])->name('create');
             Route::post('/', [ClassesController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [ClassesController::class, 'edit'])->name('edit');
+            Route::get('/{id}/show', [ClassesController::class, 'show'])->name('show');
             Route::put('/{id}', [ClassesController::class, 'update'])->name('update');
             Route::delete('/{id}', [ClassesController::class, 'destroy'])->name('destroy'); // <-- DELETE route
         });
@@ -138,6 +141,7 @@ Route::middleware([
         });
         Route::get('subject_assign/', [SubjectController::class, 'assign'])->name('admin.academic.subjects.assign');
         Route::post('subject_assign/', [SubjectController::class, 'assignTeacherStore'])->name('admin.academic.subjects.assign_teacher');
+        Route::post('/subjects/assign-class-teacher', [SubjectController::class, 'assignClassTeacherStore'])->name('admin.academic.subjects.assign_class_teacher');
 
         Route::middleware(['auth', 'verified'])->group(function () {
             // School Profile Routes

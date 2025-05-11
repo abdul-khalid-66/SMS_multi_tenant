@@ -157,13 +157,18 @@
                                                 </td>
                                                 <td>
                                                     <div style="display: flex; align-items: center; gap: 4px;">
-                                                        <a href="{{ route('admin.academic.classes.edit', $class->id) }}" 
+                                                        <a href="{{ route('admin.academic.classes.show', encrypt($class->id)) }}"
+                                                            class="btn btn-xs btn-success" 
+                                                            title="Edit">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
+                                                        <a href="{{ route('admin.academic.classes.edit', encrypt($class->id)) }}" 
                                                            class="btn btn-xs btn-primary" 
                                                            title="Edit">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
                                                 
-                                                        <form action="{{ route('admin.academic.classes.destroy', $class->id) }}" 
+                                                        <form action="{{ route('admin.academic.classes.destroy', encrypt($class->id)) }}" 
                                                               method="POST" 
                                                               class="delete-form">
                                                             @csrf

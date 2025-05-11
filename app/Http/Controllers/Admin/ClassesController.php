@@ -9,6 +9,7 @@ use App\Models\Section;
 use App\Models\SystemSetting;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class ClassesController extends Controller
 {
@@ -81,8 +82,9 @@ class ClassesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($encodedId)
     {
+        $id = Crypt::decrypt($encodedId);
         $class = Classes::findOrFail($id);
 
         $teachers = User::role('teacher')
@@ -92,6 +94,18 @@ class ClassesController extends Controller
         return view('app.admin.classes.edit', compact('class', 'teachers'));
     }
 
+
+    public function show($encodedId)
+    {
+        $id = Crypt::decrypt($encodedId);
+        echo "<h1>Under Construction</h1>";
+
+        // $teachers = User::role('teacher')
+        //     ->orderBy('name')
+        //     ->get();
+
+        // return view('app.admin.classes.edit', compact('class', 'teachers'));
+    }
     /**
      * Update the specified class in storage.
      *

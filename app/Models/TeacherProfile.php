@@ -26,6 +26,8 @@ class TeacherProfile extends Model
         'social_links',
         'is_class_teacher',
         'class_teacher_of',
+        'base_salary',
+        'current_salary',
     ];
 
     protected $casts = [

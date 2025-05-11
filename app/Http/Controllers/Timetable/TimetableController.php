@@ -167,11 +167,33 @@ class TimetableController extends Controller
                     'subject_id' => $isBreak ? null : ($period['subject_id'] ?? null),
                     'teacher_id' => $isBreak ? null : ($period['teacher_id'] ?? null),
                 ];
-                TeacherSubject::firstOrCreate([
-                    'class_id' => $validated['class_id'],
+                $teacherSubject = TeacherSubject::where([
                     'subject_id' => $period['subject_id'] ?? null,
                     'teacher_id' => $period['teacher_id'] ?? null,
-                ]);
+                ])->first();
+
+                if ($teacherSubject) {
+                    // If record exists with matching subject_id and teacher_id
+                    if ($teacherSubject->class_id === null || $teacherSubject->class_id == $validated['class_id']) {
+                        // Update if class_id is null or matches
+                        $teacherSubject->update(['class_id' => $validated['class_id']]);
+                    } else {
+                        // Create new record if class_id doesn't match
+                        TeacherSubject::create([
+                            'class_id' => $validated['class_id'],
+                            'subject_id' => $period['subject_id'],
+                            'teacher_id' => $period['teacher_id'],
+                        ]);
+                    }
+                } else {
+                    // Create new record if no matching record found
+                    TeacherSubject::create([
+                        'class_id' => $validated['class_id'],
+                        'subject_id' => $period['subject_id'],
+                        'teacher_id' => $period['teacher_id'],
+                    ]);
+                }
+
                 // Create the entry
                 TimeTable::create($timeTableData);
             }

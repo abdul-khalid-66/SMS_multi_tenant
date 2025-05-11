@@ -108,6 +108,7 @@
                                 data-toggle="table" 
                                 data-pagination="true" 
                                 data-search="true"
+                                data-show-columns="true" 
                                 data-resizable="true"
                                 data-cookie-id-table="teacher"
                                 data-toolbar="#toolbar">
@@ -119,14 +120,14 @@
                                         <th data-field="email">Email</th>
                                         <th data-field="phone">Phone</th>
                                         <th data-field="specialization">Specialization</th>
-                                        <th data-field="class_teacher" data-sortable="true">Class Teacher</th>
+                                        <th data-field="class_teacher" data-sortable="true">Status</th>
                                         <th data-field="action">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($teachers as $teacher)
+                                    @foreach($teachers as $key => $teacher)
                                     <tr>
-                                        <td>{{ $teacher->id }}</td>
+                                        <td>{{ $key+1 }}</td>
                                         <td>
                                             @if(isset($teacher->profile_pic))
                                                 <img src="{{ asset($teacher->profile_pic) }}" 
@@ -143,47 +144,42 @@
                                             @endif
                                             {{ $teacher->name }}
                                         </td>
-                                        {{-- <td>
-                                            <div class="d-flex align-items-center">
-                                                @if($teacher->profile_pic  && $teacher->profile_pic)
-                                                    <img src="{{ asset($teacher->profile_pic) }}" 
-                                                        class="rounded-circle avatar-xs me-2" alt="signature" width="70px" height="150px">
-                                                @else
-                                                    <div class="avatar-xs me-2">
-                                                        <span class="avatar-title rounded-circle bg-soft-primary text-primary">
-                                                            {{ substr($teacher->name, 0, 1) }}
-                                                        </span>
-                                                    </div>
-                                                @endif
-                                                {{ $teacher->name }}
-                                            </div>
-                                        </td> --}}
                                         <td>{{ $teacher->teacherProfile->employee_id ?? 'N/A' }}</td>
                                         <td>{{ $teacher->email }}</td>
                                         <td>{{ $teacher->phone }}</td>
                                         <td>{{ $teacher->teacherProfile->specialization ?? 'N/A' }}</td>
                                         <td>
-                                            @if($teacher->teacherProfile && $teacher->teacherProfile->is_class_teacher)
-                                                Class {{ $teacher->teacherProfile->class_teacher_of ?? 'N/A' }}
-                                            @else
-                                                No
-                                            @endif
+                                            <div class="status-wrapper">
+                                                <select class="form-control input-sm change-status" data-id="{{ $teacher->id }}">
+                                                    <option value="active" {{ $teacher->status == 'active' ? 'selected' : '' }}>
+                                                        ✅ Active
+                                                    </option>
+                                                    <option value="inactive" {{ $teacher->status == 'inactive' ? 'selected' : '' }}>
+                                                        ❌ Inactive
+                                                    </option>
+                                                    <option value="pending" {{ $teacher->status == 'pending' ? 'selected' : '' }}>
+                                                        ⏳ Pending
+                                                    </option>
+                                                </select>
+                                                <small class="text-muted saving-status" style="display:none;">Saving...</small>
+                                                <span class="label label-success status-label" style="display:none;">Updated</span>
+                                            </div>
                                         </td>
 
                                         <td>
                                             <div style="display: flex; align-items: center; gap: 4px;">
-                                                <a href="" 
+                                                <a href="{{ route('admin.show.teacher', encrypt($teacher->id)) }}"
                                                 class="btn btn-xs btn-success" 
                                                 title="Edit">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('admin.edit.teacher', $teacher->id) }}" 
+                                                <a href="{{ route('admin.edit.teacher', encrypt($teacher->id)) }}" 
                                                 class="btn btn-xs btn-primary" 
                                                 title="Edit">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                         
-                                                <form action="{{ route('admin.destroy.teacher', $teacher->id) }}" 
+                                                <form action="{{ route('admin.destroy.teacher', encrypt($teacher->id)) }}" 
                                                     method="POST" 
                                                     class="delete-form">
                                                     @csrf
@@ -260,6 +256,38 @@
     <script src="{{ asset('backend/js/plugins.js') }}"></script>
     <!-- main JS ============================================ -->
     <script src="{{ asset('backend/js/main.js') }}"></script>
+    <script>
+        $(document).on('change', '.change-status', function () {
+            var $this = $(this);
+            var teacherId = $this.data('id');
+            var status = $this.val();
+            var wrapper = $this.closest('.status-wrapper');
+            var savingMsg = wrapper.find('.saving-status');
+            var updatedLabel = wrapper.find('.status-label');
+
+            // Show "saving" message
+            savingMsg.show();
+            updatedLabel.hide();
+
+            $.ajax({
+                url: '{{ route("teacher.update.status") }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: teacherId,
+                    status: status
+                },
+                success: function (response) {
+                    savingMsg.hide();
+                    updatedLabel.show().delay(1500).fadeOut();
+                },
+                error: function () {
+                    savingMsg.hide();
+                    alert('❌ Failed to update status');
+                }
+            });
+        });
+    </script>
    @endpush
 
     

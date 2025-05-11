@@ -135,14 +135,135 @@ class SubjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function assign()
+    // {
+    //     $subjects = Subject::where('school_id', auth()->user()->school_id)
+    //         ->orderBy('name')
+    //         ->get();
+
+    //     // $classes = Classes::where('school_id', auth()->user()->school_id)
+    //     //     ->orderBy('numeric_value')
+    //     //     ->get();
+
+    //     $teachers = User::role('teacher')
+    //         ->where('school_id', auth()->user()->school_id)
+    //         ->orderBy('name')
+    //         ->get();
+
+    //     // Get current assignments
+    //     // $assignments = [];
+    //     // foreach ($subjects as $subject) {
+    //     //     // foreach ($classes as $class) {
+    //     //     $teacher = $subject->teachers()
+    //     //         ->wherePivot('class_id', $class->id)
+    //     //         ->first();
+
+    //     //     $assignments[$subject->id] = [
+    //     //         'teacher_id' => $teacher ? $teacher->id : null,
+    //     //         'is_class_teacher' => $teacher ? $teacher->pivot->is_class_teacher : false
+    //     //     ];
+    //     //     // }
+    //     // }
+
+    //     // dd($assignments);
+    //     return view('app.admin.subjects.assign', compact('subjects', 'teachers',));
+    // }
+
+    // public function assign()
+    // {
+    //     $subjects = Subject::where('school_id', auth()->user()->school_id)
+    //         ->orderBy('name')
+    //         ->get();
+
+    //     $teachers = User::role('teacher')
+    //         ->where('school_id', auth()->user()->school_id)
+    //         ->orderBy('name')
+    //         ->get();
+
+    //     // Get current assignments with all teachers for each subject
+    //     $assignments = [];
+    //     foreach ($subjects as $subject) {
+    //         $assignedTeachers = $subject->teachers()->get();
+
+    //         $assignments[$subject->id] = $assignedTeachers->mapWithKeys(function ($teacher) {
+    //             return [
+    //                 $teacher->id => [
+    //                     'is_class_teacher' => $teacher->pivot->is_class_teacher ?? false
+    //                 ]
+    //             ];
+    //         })->toArray();
+    //     }
+
+    //     return view('app.admin.subjects.assign', compact('subjects', 'teachers', 'assignments'));
+    // }
+
+    // public function assignTeacherStore(Request $request)
+    // {
+    //     // Validate the request
+    //     $request->validate([
+    //         'assignments' => 'required|array',
+    //         'assignments.*' => 'required|array',
+    //         'assignments.*.teachers' => 'nullable|array',
+    //         'assignments.*.teachers.*' => 'exists:users,id',
+    //         'assignments.*.class_teacher_id' => 'nullable|exists:users,id'
+    //     ]);
+
+    //     try {
+    //         DB::beginTransaction();
+
+    //         // Get all subjects in the school
+    //         $subjects = Subject::where('school_id', auth()->user()->school_id)->get();
+
+    //         foreach ($request->assignments as $subjectId => $assignmentData) {
+    //             $subject = Subject::findOrFail($subjectId);
+
+    //             // Get current assignments for this subject
+    //             $currentTeachers = $subject->teachers()
+    //                 ->get()
+    //                 ->pluck('pivot.is_class_teacher', 'id')
+    //                 ->toArray();
+
+    //             // Get new teacher IDs from request
+    //             $newTeacherIds = $assignmentData['teachers'] ?? [];
+    //             $classTeacherId = $assignmentData['class_teacher_id'] ?? null;
+
+    //             // Prepare sync data
+    //             $syncData = [];
+
+    //             foreach ($newTeacherIds as $teacherId) {
+    //                 $syncData[$teacherId] = [
+    //                     'is_class_teacher' => ($teacherId == $classTeacherId)
+    //                 ];
+    //             }
+
+    //             // Sync the teachers
+    //             $subject->teachers()->sync($syncData);
+
+    //             // If class teacher was removed from assigned teachers but still set as class teacher
+    //             if ($classTeacherId && !in_array($classTeacherId, $newTeacherIds)) {
+    //                 $subject->teachers()->updateExistingPivot($classTeacherId, [
+    //                     'is_class_teacher' => false
+    //                 ]);
+    //             }
+    //         }
+
+    //         DB::commit();
+
+    //         return redirect()->back()
+    //             ->with('success', 'Teacher assignments updated successfully!');
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return redirect()->back()
+    //             ->with('error', 'Error updating assignments: ' . $e->getMessage());
+    //     }
+    // }
+
+
     public function assign()
     {
+        // For Subjects Assignment
         $subjects = Subject::where('school_id', auth()->user()->school_id)
             ->orderBy('name')
-            ->get();
-
-        $classes = Classes::where('school_id', auth()->user()->school_id)
-            ->orderBy('numeric_value')
             ->get();
 
         $teachers = User::role('teacher')
@@ -150,132 +271,49 @@ class SubjectController extends Controller
             ->orderBy('name')
             ->get();
 
-        // Get current assignments
-        $assignments = [];
-        foreach ($subjects as $subject) {
-            foreach ($classes as $class) {
-                $teacher = $subject->teachers()
-                    ->wherePivot('class_id', $class->id)
-                    ->first();
+        // For Classes Assignment
+        $classes = Classes::where('school_id', auth()->user()->school_id)
+            ->orderBy('numeric_value')
+            ->get();
 
-                $assignments[$subject->id][$class->id] = [
-                    'teacher_id' => $teacher ? $teacher->id : null,
-                    'is_class_teacher' => $teacher ? $teacher->pivot->is_class_teacher : false
-                ];
-            }
+        // Get current subject-teacher assignments
+        $subjectAssignments = [];
+        foreach ($subjects as $subject) {
+            $assignedTeachers = $subject->teachers()->get();
+            $subjectAssignments[$subject->id] = $assignedTeachers->pluck('id')->toArray();
         }
 
-        return view('app.admin.subjects.assign', compact('subjects', 'classes', 'teachers', 'assignments'));
+        // Get current class teachers
+        $classTeachers = [];
+        foreach ($classes as $class) {
+            $classTeachers[$class->id] = $class->teacher_id;
+        }
+
+        return view('app.admin.subjects.assign', compact(
+            'subjects',
+            'teachers',
+            'classes',
+            'subjectAssignments',
+            'classTeachers'
+        ));
     }
-
-    /**
-     * Update teacher assignments for subjects.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    // public function updateAssignments(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'assignments' => 'required|array',
-    //         'assignments.*.*.teacher_id' => 'nullable|exists:users,id',
-    //         'assignments.*.*.is_class_teacher' => 'nullable|boolean'
-    //     ]);
-
-    //     // Clear all existing assignments
-    //     DB::table('teacher_subjects')
-    //         ->where('school_id', auth()->user()->school_id)
-    //         ->delete();
-
-    //     // Add new assignments
-    //     foreach ($validated['assignments'] as $subjectId => $classAssignments) {
-    //         foreach ($classAssignments as $classId => $assignment) {
-    //             if (!empty($assignment['teacher_id'])) {
-    //                 DB::table('teacher_subjects')->insert([
-    //                     'teacher_id' => $assignment['teacher_id'],
-    //                     'subject_id' => $subjectId,
-    //                     'class_id' => $classId,
-    //                     'is_class_teacher' => $assignment['is_class_teacher'] ?? false,
-    //                     'school_id' => auth()->user()->school_id,
-    //                     'created_at' => now(),
-    //                     'updated_at' => now()
-    //                 ]);
-    //             }
-    //         }
-    //     }
-
-    //     return redirect()->route('admin.academic.subjects.index')
-    //         ->with('success', 'Teacher assignments updated successfully');
-    // }
-
 
     public function assignTeacherStore(Request $request)
     {
-        // dd($request->all());
-        // Validate the request
+        // Validate subject assignments
         $request->validate([
-            'assignments' => 'required|array',
-            'assignments.*' => 'required|array',
-            'assignments.*.*' => 'required|array',
-            'assignments.*.*.teacher_id' => 'nullable|exists:users,id',
-            'assignments.*.*.is_class_teacher' => 'nullable|boolean'
+            'subject_assignments' => 'required|array',
+            'subject_assignments.*' => 'nullable|array',
+            'subject_assignments.*.*' => 'exists:users,id',
         ]);
-        // dd($request->all());
+
         try {
             DB::beginTransaction();
 
-            // Get all current assignments to compare
-            $currentAssignments = [];
-            $subjects   = Subject::where('school_id', auth()->user()->school_id)->get();
-            $classes    = Classes::where('school_id', auth()->user()->school_id)->get();
-
-            foreach ($subjects as $subject) {
-                foreach ($classes as $class) {
-                    $teacher = $subject->teachers()
-                        ->wherePivot('class_id', $class->id)
-                        ->first();
-
-                    $currentAssignments[$subject->id][$class->id] = [
-                        'teacher_id'        => $teacher ? $teacher->id : null,
-                        'is_class_teacher'  => $teacher ? $teacher->pivot->is_class_teacher : false
-                    ];
-                }
-            }
-
-            // Process the new assignments
-            foreach ($request->assignments as $subjectId => $classAssignments) {
+            // Process subject-teacher assignments
+            foreach ($request->subject_assignments as $subjectId => $teacherIds) {
                 $subject = Subject::findOrFail($subjectId);
-
-                foreach ($classAssignments as $classId => $assignment) {
-                    $teacherId = $assignment['teacher_id'] ?? null;
-                    $isClassTeacher = $assignment['is_class_teacher'] ?? false;
-                    if ($isClassTeacher) {
-                        Classes::where('id', $classId)->update(['teacher_id' => $teacherId]); // Update the class table
-                    }
-                    // Check if assignment has changed
-                    $current = $currentAssignments[$subjectId][$classId] ?? null;
-                    $isChanged = !$current || $current['teacher_id'] != $teacherId || $current['is_class_teacher'] != $isClassTeacher;
-
-                    if ($isChanged) {
-                        // Remove existing assignment if teacher changed
-                        if ($current && $current['teacher_id'] && $current['teacher_id'] != $teacherId) {
-                            $subject->teachers()->detach($current['teacher_id'], ['class_id' => $classId]);
-                        }
-
-                        // Add new assignment if teacher selected
-                        if ($teacherId) {
-                            $subject->teachers()->syncWithoutDetaching([
-                                $teacherId => [
-                                    'class_id' => $classId,
-                                    'is_class_teacher' => $isClassTeacher,
-                                ]
-                            ]);
-                        } elseif ($current && $current['teacher_id']) {
-                            // Remove assignment if teacher was unselected
-                            $subject->teachers()->detach($current['teacher_id'], ['class_id' => $classId]);
-                        }
-                    }
-                }
+                $subject->teachers()->sync($teacherIds ?? []);
             }
 
             DB::commit();
@@ -285,7 +323,35 @@ class SubjectController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()
-                ->with('error', 'Error updating assignments: ' . $e->getMessage());
+                ->with('error', 'Error updating teacher assignments: ' . $e->getMessage());
+        }
+    }
+
+    public function assignClassTeacherStore(Request $request)
+    {
+        // Validate class teacher assignments
+        $request->validate([
+            'class_teachers' => 'required|array',
+            'class_teachers.*' => 'nullable|exists:users,id',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Process class teacher assignments
+            foreach ($request->class_teachers as $classId => $teacherId) {
+                $class = Classes::findOrFail($classId);
+                $class->update(['teacher_id' => $teacherId]);
+            }
+
+            DB::commit();
+
+            return redirect()->back()
+                ->with('success', 'Class teachers updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->with('error', 'Error updating class teachers: ' . $e->getMessage());
         }
     }
 }

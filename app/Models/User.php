@@ -21,7 +21,8 @@ class User extends Authenticatable
         'address',
         'gender',
         'dob',
-        'role'
+        'role',
+        'status'
     ];
 
     protected $hidden = [
@@ -39,6 +40,20 @@ class User extends Authenticatable
     {
         return $this->hasOne(TeacherProfile::class, 'teacher_id');
     }
+    public function teacherSubjects() // assigned classes
+    {
+        return $this->belongsToMany(Subject::class, 'teacher_subjects', 'teacher_id', 'subject_id');
+    }
+    public function teacherClasses() // assigned classes
+    {
+        return $this->belongsToMany(Classes::class, 'time_tables', 'teacher_id', 'class_id');
+    }
+
+    public function timeTables() // assigned classes and subjected currently teaching
+    {
+        return $this->hasMany(TimeTable::class, 'teacher_id');
+    }
+
 
     public function studentProfile()
     {

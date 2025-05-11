@@ -27,7 +27,7 @@ return new class extends Migration
             $table->date('dob')->nullable();
             $table->string('remember_token', 100)->nullable();
             $table->enum('role', ['admin', 'teacher', 'parent', 'student', 'accountant', 'librarian']);
-            $table->enum('status', ['pending', 'active', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'active', 'inactive', 'rejected'])->default('pending');
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });

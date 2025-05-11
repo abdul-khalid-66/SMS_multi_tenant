@@ -43,18 +43,21 @@
         ============================================ -->
     <link rel="stylesheet" href="{{ asset('backend/css/calendar/fullcalendar.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/calendar/fullcalendar.print.min.css') }}">
-    <!-- x-editor CSS
-        ============================================ -->
-    <link rel="stylesheet" href="{{ asset('backend/css/editor/select2.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/css/editor/datetimepicker.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/css/editor/bootstrap-editable.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/css/editor/x-editor-style.css') }}">
-    <!-- normalize CSS
-        ============================================ -->
-    <link rel="stylesheet" href="{{ asset('backend/css/data-table/bootstrap-table.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/css/data-table/bootstrap-editable.css') }}">
-    <!-- style CSS
-        ============================================ -->
+
+
+
+
+    <link rel="stylesheet" href="{{ asset('backend/css/touchspin/jquery.bootstrap-touchspin.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/datapicker/datepicker3.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/form/themesaller-forms.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/colorpicker/colorpicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/chosen/bootstrap-chosen.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/ionRangeSlider/ion.rangeSlider.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/ionRangeSlider/ion.rangeSlider.skinFlat.css') }}">
+
+
+
     <link rel="stylesheet" href="{{ asset('backend/style.css') }}">
     <!-- responsive CSS
         ============================================ -->
@@ -104,86 +107,127 @@
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="all-form-element-inner">
-                                            <form id="assignTeacherForm" method="POST" action="{{ route('admin.academic.subjects.assign_teacher') }}">
-                                                @csrf
-                                                
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Subject</th>
-                                                                @foreach($classes as $class)
-                                                                    <th>{{ $class->name }}</th>
-                                                                @endforeach
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach($subjects as $subject)
-                                                                <tr>
-                                                                    <td>
-                                                                        <strong>{{ $subject->name }}</strong>
-                                                                        <small class="text-muted d-block">{{ $subject->code }}</small>
-                                                                    </td>
-                                                                    @foreach($classes as $class)
-                                                                        <td>
-                                                                            <select name="assignments[{{ $subject->id }}][{{ $class->id }}][teacher_id]" 
-                                                                                class="form-control chosen-select">
-                                                                                <option value="">-- Select Teacher --</option>
-                                                                                @foreach($teachers as $teacher)
-                                                                                    <option value="{{ $teacher->id }}" 
-                                                                                        {{ $assignments[$subject->id][$class->id]['teacher_id'] == $teacher->id ? 'selected' : '' }}>
-                                                                                        {{ $teacher->name }}
-                                                                                    </option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                            
-                                                                            {{-- <div class="checkbox checkbox-primary mt-2">
-                                                                                <input id="is_class_teacher_{{ $subject->id }}_{{ $class->id }}" 
-                                                                                    name="assignments[{{ $subject->id }}][{{ $class->id }}][is_class_teacher]" 
-                                                                                    type="checkbox" 
-                                                                                    value="1"
-                                                                                    {{ $assignments[$subject->id][$class->id]['is_class_teacher'] ? 'checked' : '' }}>
-                                                                                <label for="is_class_teacher_{{ $subject->id }}_{{ $class->id }}">
-                                                                                    Class Teacher
-                                                                                </label>
-                                                                            </div> --}}
-                                                                            <div class="form-check mt-2 d-flex align-items-center">
-                                                                                <input class="form-check-input m-0" 
-                                                                                       type="checkbox" 
-                                                                                       id="is_class_teacher_{{ $subject->id }}_{{ $class->id }}"
-                                                                                       name="assignments[{{ $subject->id }}][{{ $class->id }}][is_class_teacher]"
-                                                                                       value="1"
-                                                                                       {{ $assignments[$subject->id][$class->id]['is_class_teacher'] ? 'checked' : '' }}>
-                                                                                <label class="form-check-label ms-2" for="is_class_teacher_{{ $subject->id }}_{{ $class->id }}">
-                                                                                    Class Teacher
-                                                                                </label>
-                                                                            </div>
-                                                                        </td>
-                                                                    @endforeach
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
+                                            <!-- Form 1: Assign Teachers to Subjects -->
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <h5>Assign Teachers to Subjects</h5>
                                                 </div>
-                                                
-                                                <!-- Submit Button -->
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="form-group-inner">
-                                                        <div class="login-btn-inner">
-                                                            <div class="row">
-                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
-                                                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                                                                    <div class="login-horizental">
-                                                                        <button class="btn btn-sm btn-primary login-submit-cs" type="submit">
-                                                                            <i class="fa fa-save"></i> Save Assignments
-                                                                        </button>
+                                                <div class="card-body">
+                                                    <form id="assignTeacherForm" method="POST" action="{{ route('admin.academic.subjects.assign_teacher') }}">
+                                                        @csrf
+                                                        
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-hover">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Subject</th>
+                                                                        <th>Assigned Teachers</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach($subjects as $subject)
+                                                                        <tr>
+                                                                            <td>
+                                                                                <strong>{{ $subject->name }}</strong>
+                                                                                <small class="text-muted d-block">{{ $subject->code }}</small>
+                                                                            </td>
+                                                                            <td>
+                                                                                <select name="subject_assignments[{{ $subject->id }}][]" 
+                                                                                    class="chosen-select" multiple>
+                                                                                    @foreach($teachers as $teacher)
+                                                                                        <option value="{{ $teacher->id }}" 
+                                                                                            {{ in_array($teacher->id, $subjectAssignments[$subject->id] ?? []) ? 'selected' : '' }}>
+                                                                                            {{ $teacher->name }}
+                                                                                        </option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <div class="form-group-inner">
+                                                                <div class="login-btn-inner">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+                                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                            <div class="login-horizental">
+                                                                                <button class="btn btn-sm btn-primary login-submit-cs" type="submit">
+                                                                                    <i class="fa fa-save"></i> Save Teacher Assignments
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </form>
                                                 </div>
-                                            </form>
+                                            </div>
+                                    
+                                            <!-- Form 2: Assign Class Teachers -->
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>Assign Class Teachers</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <form id="assignClassTeacherForm" method="POST" action="{{ route('admin.academic.subjects.assign_class_teacher') }}">
+                                                        @csrf
+                                                        
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-hover">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Class</th>
+                                                                        <th>Class Teacher</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach($classes as $class)
+                                                                        <tr>
+                                                                            <td>
+                                                                                <strong>{{ $class->name }}</strong>
+                                                                            </td>
+                                                                            <td>
+                                                                                <select name="class_teachers[{{ $class->id }}]" 
+                                                                                    class="form-control">
+                                                                                    <option value="">-- Select Class Teacher --</option>
+                                                                                    @foreach($teachers as $teacher)
+                                                                                        <option value="{{ $teacher->id }}" 
+                                                                                            {{ $classTeachers[$class->id] == $teacher->id ? 'selected' : '' }}>
+                                                                                            {{ $teacher->name }}
+                                                                                        </option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <div class="form-group-inner">
+                                                                <div class="login-btn-inner">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+                                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                                            <div class="login-horizental">
+                                                                                <button class="btn btn-sm btn-primary login-submit-cs" type="submit">
+                                                                                    <i class="fa fa-save"></i> Save Class Teachers
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -195,7 +239,6 @@
         </div>
     </div>
     <!-- Advanced Form End-->
-
     @push('js')
         <!-- jquery ============================================ -->
         <script src="{{ asset('backend/js/vendor/jquery-1.12.4.min.js') }}"></script>
@@ -219,27 +262,37 @@
         <!-- metisMenu JS ============================================ -->
         <script src="{{ asset('backend/js/metisMenu/metisMenu.min.js') }}"></script>
         <script src="{{ asset('backend/js/metisMenu/metisMenu-active.js') }}"></script>
-        <!-- data table JS ============================================ -->
-        <script src="{{ asset('backend/js/data-table/bootstrap-table.js') }}"></script>
-        <script src="{{ asset('backend/js/data-table/tableExport.js') }}"></script>
-        <script src="{{ asset('backend/js/data-table/data-table-active.js') }}"></script>
-        <script src="{{ asset('backend/js/data-table/bootstrap-table-editable.js') }}"></script>
-        <script src="{{ asset('backend/js/data-table/bootstrap-editable.js') }}"></script>
-        <script src="{{ asset('backend/js/data-table/bootstrap-table-resizable.js') }}"></script>
-        <script src="{{ asset('backend/js/data-table/colResizable-1.5.source.js') }}"></script>
-        <script src="{{ asset('backend/js/data-table/bootstrap-table-export.js') }}"></script>
-        <!--  editable JS ============================================ -->
-        <script src="{{ asset('backend/js/editable/jquery.mockjax.js') }}"></script>
-        <script src="{{ asset('backend/js/editable/mock-active.js') }}"></script>
-        <script src="{{ asset('backend/js/editable/select2.js') }}"></script>
-        <script src="{{ asset('backend/js/editable/moment.min.js') }}"></script>
-        <script src="{{ asset('backend/js/editable/bootstrap-datetimepicker.js') }}"></script>
-        <script src="{{ asset('backend/js/editable/bootstrap-editable.js') }}"></script>
-        <script src="{{ asset('backend/js/editable/xediable-active.js') }}"></script>
-        <!-- Chart JS ============================================ -->
-        <script src="{{ asset('backend/js/chart/jquery.peity.min.js') }}"></script>
-        <script src="{{ asset('backend/js/peity/peity-active.js') }}"></script>
-        <!-- tab JS ============================================ -->
+        
+        
+        
+        <!-- touchspin JS============================================ -->
+        <script src="{{ asset('backend/js/touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
+        <script src="{{ asset('backend/js/touchspin/touchspin-active.js') }}"></script>
+        <!-- colorpicker JS============================================ -->
+        <script src="{{ asset('backend/js/colorpicker/jquery.spectrum.min.js') }}"></script>
+        <script src="{{ asset('backend/js/colorpicker/color-picker-active.js') }}"></script>
+        <!-- datapicker JS============================================ -->
+        <script src="{{ asset('backend/js/datapicker/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('backend/js/datapicker/datepicker-active.js') }}"></script>
+        <!-- input-mask JS============================================ -->
+        <script src="{{ asset('backend/js/input-mask/jasny-bootstrap.min.js') }}"></script>
+        <!-- chosen JS============================================ -->
+        <script src="{{ asset('backend/js/chosen/chosen.jquery.js') }}"></script>
+        <script src="{{ asset('backend/js/chosen/chosen-active.js') }}"></script>
+        <!-- select2 JS============================================ -->
+        <script src="{{ asset('backend/js/select2/select2.full.min.js') }}"></script>
+        <script src="{{ asset('backend/js/select2/select2-active.js') }}"></script>
+        <!-- ionRangeSlider JS============================================ -->
+        <script src="{{ asset('backend/js/ionRangeSlider/ion.rangeSlider.min.js') }}"></script>
+        <script src="{{ asset('backend/js/ionRangeSlider/ion.rangeSlider.active.js') }}"></script>
+        <!-- rangle-slider JS============================================ -->
+        <script src="{{ asset('backend/js/rangle-slider/jquery-ui-1.10.4.custom.min.js') }}"></script>
+        <script src="{{ asset('backend/js/rangle-slider/jquery-ui-touch-punch.min.js') }}"></script>
+        <script src="{{ asset('backend/js/rangle-slider/rangle-active.js') }}"></script>
+        <!-- knob JS============================================ -->
+        <script src="{{ asset('backend/js/knob/jquery.knob.js') }}"></script>
+        <script src="{{ asset('backend/js/knob/knob-active.js') }}"></script>
+        <!-- tab JS============================================ -->
         <script src="{{ asset('backend/js/tab.js') }}"></script>
         <!-- plugins JS ============================================ -->
         <script src="{{ asset('backend/js/plugins.js') }}"></script>
